@@ -1,20 +1,39 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# WASM File Converter
 
-# Run and deploy your AI Studio app
+A high-performance, fully client-side file converter utilizing WebAssembly, Web Workers, FFmpeg, and native web APIs. Designed for absolute privacy and speed, all conversions occur seamlessly within the browser's memory—no files are uploaded to any server.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/b5bed124-ced2-4191-b1ae-15b67c412aeb
+- **Total Data Privacy**: Zero server communication for file processing.
+- **Smart Logic Routing**: Automatically selects the most optimal conversion engine based on format:
+  - Native Canvas API for standard images (JPG, PNG, WEBP).
+  - Modern Polyfills for specialized formats (HEIC, PSD).
+  - WebAssembly (FFmpeg) for heavy media encoding.
+- **Intelligent Memory Management**: Implementing strict `URL.revokeObjectURL()` workflows with an autonomous 1-hour memory cleanup.
+- **Worker Queues**: Background Web Workers handle heavy computations without blocking the main UI thread.
 
-## Run Locally
+## Tech Stack
 
-**Prerequisites:**  Node.js
+- **Framework**: React 18, Vite
+- **Styling**: Tailwind CSS
+- **Local Processing**:
+  - `@ffmpeg/ffmpeg` (WASM)
+  - `heic2any` (HEIC parsing)
+  - `ag-psd` (PSD parsing)
 
+## Development
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+## Contribution
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes strictly conforming to Prettier styles (`.prettierrc.json`)
+4. Open a Pull Request
