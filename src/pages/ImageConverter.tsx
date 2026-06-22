@@ -14,7 +14,7 @@ export function ImageConverter() {
   // Initialize Worker
   useEffect(() => {
     // Standard Vite module worker import
-    workerRef.current = new Worker(new URL('@/workers/converter.worker.ts', import.meta.url), {
+    workerRef.current = new Worker(new URL('../workers/converter.worker.ts', import.meta.url), {
       type: 'module'
     });
 
