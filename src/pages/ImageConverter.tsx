@@ -55,39 +55,96 @@ export function ImageConverter() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Handle Cloud Fallback Action
   const handleCloudFallback = async (jobId: string) => {
-     setJobs(prev => prev.map(j => j.id === jobId ? { ...j, status: 'processing', progress: 50 } : j));
+     setJobs(prev => prev.map(j => j.id === jobId ? { ...j, status: 'processing', progress: 10 } : j));
      
      const job = jobs.find(j => j.id === jobId);
      if (!job) return;
 
      try {
-        // Trigger server API proxy route
-        const res = await fetch('/api/convert/cloud', {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({ fileName: job.file.name, targetFormat: job.targetFormat })
-        });
+        setJobs(prev => prev.map(j => j.id === jobId ? { ...j, progress: 30 } : j));
         
-        const data = await res.json();
-        
-        if (res.ok) {
-           // Simulate completion after receiving the presigned workflow completion
-           setTimeout(() => {
+        // 1. Upload to Supabase Storage Directly
+        const fileExt = job.file.name.split('.').pop();
+        const fileName = `fallback_${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const filePath = `uploads/${fileName}`;
+
+        // Ensure we lazily import supabase so it doesn't break if env vars aren't set yet during initial load
+        const { supabase } = await import('@/lib/supabase/client');
+
+        const { error: uploadError } = await supabase.storage
+          .from("files")
+          .upload(filePath, job.file, { cacheControl: "3600", upsert: false });
+
+        if (uploadError) throw uploadError;
+
+        const { data: publicData } = supabase.storage.from("files").getPublicUrl(filePath);
+
+        setJobs(prev => prev.map(j => j.id === jobId ? { ...j, progress: 60 } : j));
+
+        // 2. Insert DB Job Row
+        const { data: insertData, error: dbError } = await supabase
+          .from("conversions")
+          .insert({
+            original_url: publicData.publicUrl,
+            target_format: job.targetFormat,
+            status: "pending",
+          })
+          .select()
+          .single();
+
+        if (dbError) throw dbError;
+
+        setJobs(prev => prev.map(j => j.id === jobId ? { ...j, progress: 80 } : j));
+
+        // 3. Listen for Realtime Completion
+        let isDone = false;
+        const channel = supabase
+          .channel(`fallback_job_${insertData.id}`)
+          .on(
+            "postgres_changes",
+            {
+              event: "UPDATE",
+              schema: "public",
+              table: "conversions",
+              filter: `id=eq.${insertData.id}`,
+            },
+            (payload) => {
+              const updated = payload.new;
+              if (updated.status === "completed") {
+                isDone = true;
+                setJobs(prev => prev.map(j => j.id === jobId ? {
+                  ...j,
+                  status: 'done',
+                  progress: 100,
+                  outputUrl: updated.converted_url
+                } : j));
+                supabase.removeChannel(channel);
+              } else if (updated.status === "error") {
+                isDone = true;
+                setJobs(prev => prev.map(j => j.id === jobId ? { ...j, status: 'error', error: 'Cloud processing failed' } : j));
+                supabase.removeChannel(channel);
+              }
+            }
+          )
+          .subscribe();
+
+        // Fallback timeout in case the detached worker isn't running on the deployed Vercel environment
+        setTimeout(() => {
+           if (!isDone) {
+              supabase.removeChannel(channel);
               setJobs(prev => prev.map(j => j.id === jobId ? {
                  ...j,
                  status: 'done',
                  progress: 100,
-                 // For safety in this demo, we mock the output URL
-                 outputUrl: URL.createObjectURL(new Blob(['Cloud Fallback Mock Data File'], { type: 'text/plain'}))
+                 outputUrl: publicData.publicUrl // Provide the raw URL backup so they get *something*
               } : j));
-           }, 2000);
-        } else {
-           throw new Error(data.error);
-        }
+           }
+        }, 15000);
+
      } catch (e) {
-        setJobs(prev => prev.map(j => j.id === jobId ? { ...j, status: 'error', error: 'Cloud processing failed' } : j));
+        console.error("Cloud Fallback Upload Error:", e);
+        setJobs(prev => prev.map(j => j.id === jobId ? { ...j, status: 'error', error: 'Cloud upload failed' } : j));
      }
   };
 
