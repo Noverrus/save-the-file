@@ -151,6 +151,16 @@ export default function SupabaseImageConverter() {
                 <option value="webp">Convert to WEBP</option>
                 <option value="png">Convert to PNG</option>
                 <option value="jpg">Convert to JPG</option>
+                <option value="avif">Convert to AVIF</option>
+                <option value="heic">Convert to HEIC</option>
+                <option value="eps">Convert to EPS</option>
+                <option value="dds">Convert to DDS</option>
+                <option value="dpx">Convert to DPX</option>
+                <option value="pcx">Convert to PCX</option>
+                <option value="ppm">Convert to PPM</option>
+                <option value="djv">Convert to DJV</option>
+                <option value="wmz">Convert to WMZ</option>
+                <option value="art">Convert to ART</option>
               </select>
               <button
                 onClick={handleConvert}

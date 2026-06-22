@@ -217,7 +217,7 @@ export function ImageConverter() {
           id="img-upload" 
           type="file" 
           multiple 
-          accept="image/*,.heic,.psd"
+          accept="image/*,.heic,.psd,.djv,.eps,.ppm,.art,.dpx,.wmz,.dds,.avif,.pcx"
           className="hidden" 
           onChange={(e) => {
             if (e.target.files) {
@@ -236,7 +236,7 @@ export function ImageConverter() {
           <Upload className="h-8 w-8 text-slate-500" />
         </div>
         <p className="font-semibold text-slate-800">Drag & Drop images or folders</p>
-        <p className="text-sm text-slate-500 mt-1">Queue supports HEIC, JPG, PNG, WEBP</p>
+        <p className="text-sm text-slate-500 mt-1">Queue natively supports HEIC, JPG, PNG, WEBP. Advanced formats (AVIF, EPS, DDS, etc) use Cloud Fallback.</p>
       </div>
 
       {/* Jobs Queue */}
@@ -272,6 +272,16 @@ export function ImageConverter() {
                          <option value="webp">to WEBP</option>
                          <option value="png">to PNG</option>
                          <option value="jpg">to JPG</option>
+                         <option value="avif">to AVIF</option>
+                         <option value="heic">to HEIC</option>
+                         <option value="eps">to EPS</option>
+                         <option value="dds">to DDS</option>
+                         <option value="dpx">to DPX</option>
+                         <option value="pcx">to PCX</option>
+                         <option value="ppm">to PPM</option>
+                         <option value="djv">to DJV</option>
+                         <option value="wmz">to WMZ</option>
+                         <option value="art">to ART</option>
                        </select>
                        <button
                          onClick={() => setJobs(prev => prev.map(j => j.id === job.id ? { ...j, status: 'queued' } : j))}
