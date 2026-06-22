@@ -118,8 +118,8 @@ export function ImageConverter() {
       const activeCount = jobs.filter(j => j.status === 'processing').length;
       if (activeCount >= MAX_CONCURRENT_JOBS) return;
 
-      const idleJobs = jobs.filter(j => j.status === 'idle');
-      const jobsToStart = idleJobs.slice(0, MAX_CONCURRENT_JOBS - activeCount);
+      const queuedJobs = jobs.filter(j => j.status === 'queued');
+      const jobsToStart = queuedJobs.slice(0, MAX_CONCURRENT_JOBS - activeCount);
 
       if (jobsToStart.length > 0) {
         setJobs(current => current.map(job => 
@@ -259,15 +259,30 @@ export function ImageConverter() {
 
                 <div className="flex items-center gap-4 w-full sm:w-auto shrink-0 justify-between sm:justify-end border-t sm:border-0 pt-4 sm:pt-0">
                    {job.status === 'idle' && (
-                     <select 
-                       value={job.targetFormat}
-                       onChange={(e) => handleFormatChange(job.id, e.target.value)}
-                       className="border rounded px-3 py-1.5 text-sm bg-white"
-                     >
-                       <option value="webp">to WEBP</option>
-                       <option value="png">to PNG</option>
-                       <option value="jpg">to JPG</option>
-                     </select>
+                     <div className="flex items-center gap-2">
+                       <select 
+                         value={job.targetFormat}
+                         onChange={(e) => handleFormatChange(job.id, e.target.value)}
+                         className="border rounded px-3 py-1.5 text-sm bg-white focus:ring-2 outline-none focus:ring-indigo-500"
+                       >
+                         <option value="webp">to WEBP</option>
+                         <option value="png">to PNG</option>
+                         <option value="jpg">to JPG</option>
+                       </select>
+                       <button
+                         onClick={() => setJobs(prev => prev.map(j => j.id === job.id ? { ...j, status: 'queued' } : j))}
+                         className="bg-indigo-600 text-white px-4 py-1.5 rounded text-sm font-medium hover:bg-indigo-700 transition"
+                       >
+                         Convert
+                       </button>
+                     </div>
+                   )}
+
+                   {job.status === 'queued' && (
+                     <div className="flex items-center text-slate-500 font-medium text-sm">
+                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                       Waiting in queue...
+                     </div>
                    )}
 
                    {job.status === 'processing' && (

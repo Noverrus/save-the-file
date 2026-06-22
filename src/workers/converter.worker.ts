@@ -2,7 +2,7 @@
 
 import heic2any from 'heic2any';
 
-export type JobStatus = 'idle' | 'processing' | 'done' | 'error' | 'cloud_fallback_required';
+export type JobStatus = 'idle' | 'queued' | 'processing' | 'done' | 'error' | 'cloud_fallback_required';
 
 export interface ConversionJob {
   id: string;
