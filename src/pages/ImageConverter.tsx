@@ -18,6 +18,10 @@ export function ImageConverter() {
       type: 'module'
     });
 
+    workerRef.current.onerror = (e) => {
+      console.error("Worker error:", e);
+    };
+
     workerRef.current.onmessage = (e: MessageEvent<WorkerMessageOut>) => {
       const { type, id } = e.data;
       

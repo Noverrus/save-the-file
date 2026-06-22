@@ -1,7 +1,5 @@
 /// <reference lib="webworker" />
 
-import heic2any from 'heic2any';
-
 export type JobStatus = 'idle' | 'queued' | 'processing' | 'done' | 'error' | 'cloud_fallback_required';
 
 export interface ConversionJob {
@@ -47,6 +45,7 @@ self.onmessage = async (e: MessageEvent<WorkerMessageIn>) => {
       // --- ROUTE 1: HEIC Polyfill ---
       if (ext === 'heic' || ext === 'heif') {
         self.postMessage({ type: 'PROGRESS', id, progress: 40 } as WorkerMessageOut);
+        const heic2any = (await import('heic2any')).default;
         const result = await heic2any({ blob: file, toType: mimeType });
         blobResponse = Array.isArray(result) ? result[0] : result;
       }
