@@ -1,10 +1,8 @@
 /// <reference lib="webworker" />
 
 import heic2any from 'heic2any';
-// Note: Some complex libraries like ag-psd might require DOM canvas injections and are better suited for main thread 
-// or require explicit OffscreenCanvas initialization. We will stub PSD here with standard Offscreen API logic assumption.
 
-export type JobStatus = 'idle' | 'processing' | 'done' | 'error';
+export type JobStatus = 'idle' | 'processing' | 'done' | 'error' | 'cloud_fallback_required';
 
 export interface ConversionJob {
   id: string;
@@ -19,7 +17,7 @@ export interface ConversionJob {
 export type WorkerMessageOut =
   | { type: 'PROGRESS'; id: string; progress: number }
   | { type: 'COMPLETE'; id: string; blob: Blob }
-  | { type: 'ERROR'; id: string; error: string };
+  | { type: 'ERROR'; id: string; error: string; requiresCloudFallback: boolean };
 
 export type WorkerMessageIn = 
   | { type: 'START_CONVERSION'; job: { id: string; file: File; targetFormat: string } };
@@ -29,7 +27,15 @@ self.onmessage = async (e: MessageEvent<WorkerMessageIn>) => {
     const { id, file, targetFormat } = e.data.job;
 
     try {
-      // 1. SMART ROUTING LOGIC
+      // 1. SMART ROUTING & LOW-END DEVICE CHECKS
+      // `navigator.deviceMemory` may be undefined on some browsers, fallback to 8 if so.
+      const memoryCapacity = (navigator as any).deviceMemory || 8;
+      
+      // If file is > 100MB and memory is 4GB or less, immediately fallback to cloud to prevent OOM
+      if (memoryCapacity <= 4 && file.size > 100 * 1024 * 1024) {
+        throw new Error('MEMORY_LIMIT_EXCEEDED');
+      }
+
       const ext = file.name.split('.').pop()?.toLowerCase() || '';
 
       self.postMessage({ type: 'PROGRESS', id, progress: 10 } as WorkerMessageOut);
@@ -50,6 +56,11 @@ self.onmessage = async (e: MessageEvent<WorkerMessageIn>) => {
         
         const imageBitmap = await createImageBitmap(file);
         
+        // Massive image check to prevent Canvas OOM
+        if (imageBitmap.width * imageBitmap.height > 50000000 && memoryCapacity <= 4) {
+             throw new Error('CANVAS_DIMENSION_LIMIT_EXCEEDED');
+        }
+
         self.postMessage({ type: 'PROGRESS', id, progress: 60 } as WorkerMessageOut);
         
         const canvas = new OffscreenCanvas(imageBitmap.width, imageBitmap.height);
@@ -60,21 +71,24 @@ self.onmessage = async (e: MessageEvent<WorkerMessageIn>) => {
         }
       }
       // --- ROUTE 3: Fallback / Unsupported ---
-      // (For formats like RAW, GIF, TIF needing FFmpeg, we'd route them to the FFmpeg engine)
       else {
-        throw new Error(`Format .${ext} requires main-thread FFmpeg handling or is unsupported.`);
+        // Formats needing heavy lifting like RAW/TIFF would fall here.
+        // We simulate a strict memory boundary by throwing to the cloud fallback for heavy files.
+        throw new Error('UNSUPPORTED_FORMAT_LOCAL');
       }
 
       self.postMessage({ type: 'PROGRESS', id, progress: 95 } as WorkerMessageOut);
 
       if (!blobResponse) {
-        throw new Error('Failed to generate output blob.');
+        throw new Error('BLOB_GENERATION_FAILED');
       }
 
       self.postMessage({ type: 'COMPLETE', id, blob: blobResponse } as WorkerMessageOut);
 
     } catch (err: any) {
-      self.postMessage({ type: 'ERROR', id, error: err.message || 'Unknown processing error' } as WorkerMessageOut);
+      const errorMsg = err.message || 'Unknown processing error';
+      const requiresCloudFallback = ['MEMORY_LIMIT_EXCEEDED', 'CANVAS_DIMENSION_LIMIT_EXCEEDED', 'UNSUPPORTED_FORMAT_LOCAL', 'Out of memory'].includes(errorMsg);
+      self.postMessage({ type: 'ERROR', id, error: errorMsg, requiresCloudFallback } as WorkerMessageOut);
     }
   }
 };

@@ -32,6 +32,9 @@ export function ImageConverter() {
             const url = URL.createObjectURL(e.data.blob);
             return { ...job, status: 'done', progress: 100, outputUrl: url };
           case 'ERROR':
+            if ('requiresCloudFallback' in e.data && e.data.requiresCloudFallback) {
+               return { ...job, status: 'cloud_fallback_required', progress: 0 };
+            }
             return { ...job, status: 'error', error: e.data.error, progress: 0 };
           default:
             return job;
@@ -47,6 +50,42 @@ export function ImageConverter() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Handle Cloud Fallback Action
+  const handleCloudFallback = async (jobId: string) => {
+     setJobs(prev => prev.map(j => j.id === jobId ? { ...j, status: 'processing', progress: 50 } : j));
+     
+     const job = jobs.find(j => j.id === jobId);
+     if (!job) return;
+
+     try {
+        // Trigger server API proxy route
+        const res = await fetch('/api/convert/cloud', {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({ fileName: job.file.name, targetFormat: job.targetFormat })
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok) {
+           // Simulate completion after receiving the presigned workflow completion
+           setTimeout(() => {
+              setJobs(prev => prev.map(j => j.id === jobId ? {
+                 ...j,
+                 status: 'done',
+                 progress: 100,
+                 // For safety in this demo, we mock the output URL
+                 outputUrl: URL.createObjectURL(new Blob(['Cloud Fallback Mock Data File'], { type: 'text/plain'}))
+              } : j));
+           }, 2000);
+        } else {
+           throw new Error(data.error);
+        }
+     } catch (e) {
+        setJobs(prev => prev.map(j => j.id === jobId ? { ...j, status: 'error', error: 'Cloud processing failed' } : j));
+     }
+  };
 
   // Global Memory Cleanup Timer (1 Hour after any successful job)
   useEffect(() => {
@@ -235,6 +274,18 @@ export function ImageConverter() {
                      <div className="flex items-center text-indigo-600 font-medium text-sm">
                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                        {job.progress}%
+                     </div>
+                   )}
+
+                   {job.status === 'cloud_fallback_required' && (
+                     <div className="flex flex-col sm:flex-row items-center gap-3">
+                       <p className="text-xs text-amber-600 font-medium hidden sm:block">Memory Low</p>
+                       <button 
+                         onClick={() => handleCloudFallback(job.id)}
+                         className="px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 text-xs font-semibold rounded transition-colors"
+                       >
+                         Switch to Cloud
+                       </button>
                      </div>
                    )}
 
