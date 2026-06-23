@@ -122,8 +122,17 @@ export function MediaConverter() {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setSelectedFile(e.dataTransfer.files[0]);
-      setOutputUrl(null); // Reset
+      const file = e.dataTransfer.files[0];
+      const ext = file.name.split('.').pop()?.toLowerCase() || '';
+      const supportedMedia = ['mp4','webm','avi','mov','mkv','wmv','flv','mp3','wav','ogg','m4a','aac','flac'];
+      if (supportedMedia.includes(ext)) {
+        setSelectedFile(file);
+        setOutputUrl(null); // Reset
+        setErrorMSG(null);
+      } else {
+        setErrorMSG("Format file tidak didukung. Harap upload format media standar.");
+        setSelectedFile(null);
+      }
     }
   };
 
@@ -157,11 +166,19 @@ export function MediaConverter() {
           id="file-upload" 
           type="file" 
           className="hidden" 
-          accept="video/*,audio/*"
+          accept=".mp4,.webm,.avi,.mov,.mkv,.wmv,.flv,.mp3,.wav,.ogg,.m4a,.aac,.flac"
           onChange={(e) => {
             if (e.target.files && e.target.files[0]) {
-              setSelectedFile(e.target.files[0]);
-              setOutputUrl(null);
+              const file = e.target.files[0];
+              const ext = file.name.split('.').pop()?.toLowerCase() || '';
+              const supportedMedia = ['mp4','webm','avi','mov','mkv','wmv','flv','mp3','wav','ogg','m4a','aac','flac'];
+              if (supportedMedia.includes(ext)) {
+                setSelectedFile(file);
+                setOutputUrl(null);
+              } else {
+                setErrorMSG("Format file tidak didukung. Harap upload format media standar.");
+                setSelectedFile(null);
+              }
             }
           }}
         />

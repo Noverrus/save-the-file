@@ -111,13 +111,8 @@ export function ImageConverter() {
 
     Array.from(filesList).forEach(file => {
       const ext = file.name.split('.').pop()?.toLowerCase() || '';
-      if (SUPPORTED_EXTENSIONS.includes(ext) || file.type.startsWith('image/')) {
-        // Double check for explicitly unsupported files that might pretend to be images or just be unknown
-        if (['wmz', 'wmf', 'djv', 'eps', 'ppm', 'art', 'dpx', 'dds', 'pcx'].includes(ext)) {
-           invalidFiles.push(file);
-        } else {
-           validFiles.push(file);
-        }
+      if (SUPPORTED_EXTENSIONS.includes(ext)) {
+        validFiles.push(file);
       } else {
         invalidFiles.push(file);
       }
@@ -219,7 +214,7 @@ export function ImageConverter() {
           id="img-upload" 
           type="file" 
           multiple 
-          accept="image/*,.heic,.heif,.webp"
+          accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.bmp,.gif,.tif,.tiff"
           className="hidden" 
           onChange={(e) => {
             if (e.target.files) {

@@ -7,6 +7,27 @@ A high-performance file media converter built with React (Vite) as a 100% Client
 
 ![App Setup State](https://img.shields.io/badge/Architecture-React%20%2B%20Vite%20%2B%20WASM-blue)
 
+## Supported Offline Formats
+
+Hanya format offline yang aman dan umum digunakan yang didukung. Format yang tidak didukung atau format vektor yang tidak direkomendasikan (seperti `.wmz`, `.wmf`, `.eps`, `.djv`) **ditolak secara otomatis** pada antarmuka upload file untuk menjaga performa dan memori perangkat.
+
+**Image Conversions**:
+- **Format Input (Diterima)**: `.jpg`, `.jpeg`, `.png`, `.webp`, `.heic`, `.heif`, `.bmp`, `.gif`, `.tif`, `.tiff`
+- **Format Output (Dihasilkan)**: `.webp`, `.png`, `.jpg`, `.gif`
+
+**Media Conversions (Video & Audio)**:
+- **Format Input (Diterima)**: `.mp4`, `.webm`, `.avi`, `.mov`, `.mkv`, `.wmv`, `.flv`, `.mp3`, `.wav`, `.ogg`, `.m4a`, `.aac`, `.flac`
+- **Format Output (Dihasilkan)**: `.mp4`, `.webm`, `.avi`, `.mp3`, `.wav`
+
+## Core Technologies
+
+Website ini menggunakan teknologi mutakhir untuk konversi berbasis pada sisi klien sepenuhnya (WebAssembly dan Canvas API).
+
+- **React + Vite**: Menghadirkan antarmuka (Frontend) yang sangat modern dan cepat.
+- **Web Workers**: Mengaktifkan kemampuan pemrosesan multithreading yang memisahkan rendering antarmuka dari konversi gambar/media berbeban berat agar UI tidak freeze.
+- **WebAssembly via FFmpeg (`@ffmpeg/ffmpeg`)**: Menjalankan file biner engine media konversi secara natif dan offline langsung di dalam memori sandbox web browser pengguna.
+- **HTML5 Canvas API**: Digunakan untuk rendering piksel dan ekstraksi gambar ultra-cepat secara optimal di browser tanpa perlu menggunakan dependensi eksternal untuk format-format ringan.
+
 ## Architecture Overview
 
 - **Frontend (React + Vite)**: Provides a drag-and-drop interface, managing a local queue of jobs via background Web Workers.

@@ -96,7 +96,7 @@ export function Home() {
       {/* Features */}
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-8 py-12 px-4 max-w-5xl mx-auto text-center border-t border-slate-100">
         <div className="flex flex-col items-center">
-          <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+           <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center mb-4">
              <ShieldCheck className="h-6 w-6 text-slate-700" />
           </div>
           <h4 className="font-bold text-slate-900">100% Privacy First</h4>
@@ -110,12 +110,55 @@ export function Home() {
           <p className="text-sm text-slate-500 mt-2">Leverages highly optimized WebAssembly (via FFmpeg) for incredibly fast local encoding.</p>
         </div>
         <div className="flex flex-col items-center">
-          <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-            <HardDrive className="h-6 w-6 text-blue-500" />
+           <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+             <HardDrive className="h-6 w-6 text-blue-500" />
           </div>
           <h4 className="font-bold text-slate-900">Auto Memory Cleanup</h4>
           <p className="text-sm text-slate-500 mt-2">Links automatically expire and clear out of RAM after exactly 1 hour to keep your device running smooth.</p>
         </div>
+      </section>
+
+      {/* Supported Formats */}
+      <section className="py-12 px-4 max-w-5xl mx-auto border-t border-slate-100">
+        <h3 className="text-2xl font-bold text-slate-900 text-center mb-10">Supported Offline Formats</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div className="flex items-center gap-3 mb-4">
+              <Image className="w-6 h-6 text-blue-500" />
+              <h4 className="font-bold text-slate-900 text-lg">Image Conversions</h4>
+            </div>
+            <div className="space-y-4">
+              <div>
+                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Inputs Allowed</span>
+                 <p className="text-slate-700 font-medium mt-1">.jpg, .jpeg, .png, .webp, .heic, .heif, .bmp, .gif, .tif, .tiff</p>
+              </div>
+              <div>
+                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Outputs Available</span>
+                 <p className="text-slate-700 font-medium mt-1">.webp, .png, .jpg, .gif</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div className="flex items-center gap-3 mb-4">
+              <Video className="w-6 h-6 text-indigo-500" />
+              <h4 className="font-bold text-slate-900 text-lg">Media Conversions</h4>
+            </div>
+            <div className="space-y-4">
+              <div>
+                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Inputs Allowed</span>
+                 <p className="text-slate-700 font-medium mt-1">.mp4, .webm, .avi, .mov, .mkv, .wmv, .flv, .mp3, .wav, .ogg, .m4a, .aac, .flac</p>
+              </div>
+              <div>
+                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Outputs Available</span>
+                 <p className="text-slate-700 font-medium mt-1">.mp4, .webm, .avi, .mp3, .wav</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="text-center text-sm text-slate-500 mt-8">
+          To ensure 100% privacy and safety, unsupported formats and heavily compressed/proprietary files (like .wmz, .eps) are intentionally blocked from being uploaded to memory.
+        </p>
       </section>
 
     </div>
