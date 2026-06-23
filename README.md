@@ -1,37 +1,31 @@
 # Image Batch Converter Pro
 
-A high-performance file media converter built with React (Vite) and an Express fallback backend. This application uses a dual-engine architecture:
-1. **Local Browser Engine**: Heavy lifting is done on the client side using Web Workers and WebAssembly (WASM), processing standard images and formats like HEIC entirely locally to preserve privacy and reduce server costs.
-2. **Cloud Fallback Engine**: Advanced and uncommon formats (such as AVIF, EPS, DDS, DPX, PCX, PPM, DJV, WMZ, ART) trigger a fast proxy fallback that streams the file to the Express server for heavy-duty conversion using Node.js tools.
+A high-performance file media converter built with React (Vite) as a 100% Client-Side, Privacy-First application. This application uses a single Local Browser Engine architecture abandoning all server costs and payload limitations.
 
-![App Setup State](https://img.shields.io/badge/Architecture-React%20%2B%20Vite%20%2B%20Express-blue)
+1. **Local Browser Engine**: Heavy lifting is done on the client side using Web Workers, Canvas APIs, and WebAssembly (WASM via FFmpeg), processing standard images and heavy media formats entirely locally to preserve privacy and reduce server costs.
+2. **Absolute Privacy**: Files never upload anywhere. The processing happens strictly inside your device's memory. Unsafe or extremely obscure vector formats are gracefully rejected to preserve performance and privacy.
+
+![App Setup State](https://img.shields.io/badge/Architecture-React%20%2B%20Vite%20%2B%20WASM-blue)
 
 ## Architecture Overview
 
 - **Frontend (React + Vite)**: Provides a drag-and-drop interface, managing a local queue of jobs via background Web Workers.
 - **Web Workers**: Enables true multithreaded processing, separating UI rendering from heavy image encoding/decoding.
-- **Express Backend (`server.ts` & `worker-service`)**: Acts as an API proxy and fallback processing unit. Capable of processing image buffers with libraries like `sharp` for advanced format handling. Custom `.wmz` (Windows Metafile) extraction is supported via `zlib` and `unzipper` and renders via `gm`.
-
-> **Note on Exotic Formats (.WMZ / .WMF)**
-> The Cloud Fallback natively supports converting `.wmz` (Compressed Windows Metafile format). However, to successfully rasterize these vector graphics to standard images (like `.png` or `.jpg`), your hosting server **MUST have ImageMagick installed** on the system level. If not installed, the conversion will fallback safely and return an error notification.
+- **Pure Client-Side**: 100% offline-capable rendering with zero backend node processes required.
 
 ## Code Directory Flow
 
 - `/src/pages/ImageConverter.tsx`: Advanced UI tracking conversion jobs.
-- `/src/workers/converter.worker.ts`: Web Worker script mapping standard processing and triggering cloud fallback for unsupported types.
-- `/server.ts`: Express backend handling cloud fallback proxying and custom format processing.
+- `/src/workers/converter.worker.ts`: Web Worker script mapping standard processing and leveraging WebAssembly capabilities safely off the main JS thread.
 
 ## Initial Setup & Initialization
-
-### Environment Variables
-Configure your environment using the `.env.example` file. Avoid storing API secrets in client-side code directly unless necessary (use `VITE_` prefix only for public keys).
 
 ### Run Local Environment
 ```bash
 # Sync platform dependencies
 npm install
 
-# Start local React/Vite dev stream (with Express proxy)
+# Start local React/Vite dev stream
 npm run dev
 ```
 

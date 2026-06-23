@@ -1,15 +1,17 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Upload, FileImage, Download, Loader2, AlertCircle, Trash2, ShieldCheck } from "lucide-react";
+import { Upload, FileImage, Download, Loader2, AlertCircle, Trash2, ShieldCheck, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConversionJob, WorkerMessageOut } from "@/workers/converter.worker.ts";
 
 const MAX_CONCURRENT_JOBS = 2; // Prevent OOM by limiting concurrent processing
 const MEMORY_TIMEOUT_MS = 3600000; // 1 hour memory limit
+const SUPPORTED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'bmp', 'gif', 'tif', 'tiff'];
 
 export function ImageConverter() {
   const [jobs, setJobs] = useState<ConversionJob[]>([]);
   const workerRef = useRef<Worker | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [toastError, setToastError] = useState<string | null>(null);
 
   // Initialize Worker
   useEffect(() => {
@@ -36,9 +38,6 @@ export function ImageConverter() {
             const url = URL.createObjectURL(e.data.blob);
             return { ...job, status: 'done', progress: 100, outputUrl: url };
           case 'ERROR':
-            if ('requiresCloudFallback' in e.data && e.data.requiresCloudFallback) {
-               return { ...job, status: 'cloud_fallback_required', progress: 0 };
-            }
             return { ...job, status: 'error', error: e.data.error, progress: 0 };
           default:
             return job;
@@ -54,45 +53,6 @@ export function ImageConverter() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleCloudFallback = async (jobId: string) => {
-     setJobs(prev => prev.map(j => j.id === jobId ? { ...j, status: 'processing', progress: 10 } : j));
-     
-     const job = jobs.find(j => j.id === jobId);
-     if (!job) return;
-
-     try {
-        setJobs(prev => prev.map(j => j.id === jobId ? { ...j, progress: 30 } : j));
-        
-        // Trigger server API proxy route
-        const res = await fetch('/api/convert/cloud', {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({ fileName: job.file.name, targetFormat: job.targetFormat })
-        });
-        
-        const data = await res.json();
-        
-        if (res.ok) {
-           // Simulate completion after receiving the presigned workflow completion
-           setTimeout(() => {
-              setJobs(prev => prev.map(j => j.id === jobId ? {
-                 ...j,
-                 status: 'done',
-                 progress: 100,
-                 // For safety in this demo, we mock the output URL
-                 outputUrl: URL.createObjectURL(new Blob(['Cloud Fallback Mock Data File'], { type: 'text/plain'}))
-              } : j));
-           }, 2000);
-        } else {
-           throw new Error(data.error);
-        }
-
-     } catch (e) {
-        console.error("Cloud Fallback Upload Error:", e);
-        setJobs(prev => prev.map(j => j.id === jobId ? { ...j, status: 'error', error: 'Cloud upload failed' } : j));
-     }
-  };
 
   // Global Memory Cleanup Timer (1 Hour after any successful job)
   useEffect(() => {
@@ -145,10 +105,31 @@ export function ImageConverter() {
     processQueue();
   }, [jobs]);
 
-  const handleFilesDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    if (e.dataTransfer.files) {
-      const newJobs = Array.from(e.dataTransfer.files).map(file => ({
+  const loadFiles = (filesList: FileList | File[]) => {
+    const validFiles: File[] = [];
+    const invalidFiles: File[] = [];
+
+    Array.from(filesList).forEach(file => {
+      const ext = file.name.split('.').pop()?.toLowerCase() || '';
+      if (SUPPORTED_EXTENSIONS.includes(ext) || file.type.startsWith('image/')) {
+        // Double check for explicitly unsupported files that might pretend to be images or just be unknown
+        if (['wmz', 'wmf', 'djv', 'eps', 'ppm', 'art', 'dpx', 'dds', 'pcx'].includes(ext)) {
+           invalidFiles.push(file);
+        } else {
+           validFiles.push(file);
+        }
+      } else {
+        invalidFiles.push(file);
+      }
+    });
+
+    if (invalidFiles.length > 0) {
+      setToastError("Unsupported format. To ensure your privacy and device performance, this app only processes supported offline formats.");
+      setTimeout(() => setToastError(null), 5000);
+    }
+
+    if (validFiles.length > 0) {
+      const newJobs = validFiles.map(file => ({
         id: crypto.randomUUID(),
         file,
         targetFormat: 'webp', // Default format
@@ -156,6 +137,13 @@ export function ImageConverter() {
         progress: 0
       }));
       setJobs(prev => [...prev, ...newJobs]);
+    }
+  };
+
+  const handleFilesDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    if (e.dataTransfer.files) {
+      loadFiles(e.dataTransfer.files);
     }
   };
 
@@ -189,11 +177,22 @@ export function ImageConverter() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-8">
+    <div className="w-full max-w-4xl mx-auto space-y-8 relative">
+      {/* Toast Notification */}
+      {toastError && (
+        <div className="fixed top-4 right-4 z-50 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg shadow-lg flex items-start gap-3 animate-in fade-in slide-in-from-top-4 max-w-md">
+          <AlertCircle className="w-5 h-5 shrink-0 text-red-600 mt-0.5" />
+          <p className="text-sm font-medium leading-relaxed">{toastError}</p>
+          <button onClick={() => setToastError(null)} className="shrink-0 p-1 hover:bg-red-100 rounded-full transition-colors ml-auto">
+            <X className="w-4 h-4 text-red-600" />
+          </button>
+        </div>
+      )}
+
       <div>
         <h2 className="text-3xl font-bold text-slate-800">Image Batch Converter</h2>
         <p className="text-slate-500 mt-1">
-          High-performance background rendering engine. Supports WASM local and Cloud fallback for advanced formats.
+          High-performance background rendering engine. 100% Client-Side processing.
         </p>
       </div>
 
@@ -220,18 +219,11 @@ export function ImageConverter() {
           id="img-upload" 
           type="file" 
           multiple 
-          accept="image/*,.heic,.psd,.djv,.eps,.ppm,.art,.dpx,.wmz,.dds,.avif,.pcx"
+          accept="image/*,.heic,.heif,.webp"
           className="hidden" 
           onChange={(e) => {
             if (e.target.files) {
-              const newJobs = Array.from(e.target.files).map(file => ({
-                id: crypto.randomUUID(),
-                file,
-                targetFormat: 'webp',
-                status: 'idle' as const,
-                progress: 0
-              }));
-              setJobs(prev => [...prev, ...newJobs]);
+              loadFiles(e.target.files);
             }
           }}
         />
@@ -239,7 +231,7 @@ export function ImageConverter() {
           <Upload className="h-8 w-8 text-slate-500" />
         </div>
         <p className="font-semibold text-slate-800">Drag & Drop images or folders</p>
-        <p className="text-sm text-slate-500 mt-1">Queue natively supports HEIC, JPG, PNG, WEBP. Advanced formats (AVIF, EPS, DDS, etc) use Cloud Fallback.</p>
+        <p className="text-sm text-slate-500 mt-1">Queue supports HEIC, JPG, PNG, WEBP and more locally.</p>
       </div>
 
       {/* Jobs Queue */}
@@ -260,7 +252,7 @@ export function ImageConverter() {
                   </div>
                   <div className="min-w-0 flex-1">
                      <p className="font-medium text-slate-900 truncate pr-4">{job.file.name}</p>
-                     <p className="text-xs text-slate-500 mt-0.5">{(job.file.size / 1024 / 1024).toFixed(2)} MB • Engine: Auto</p>
+                     <p className="text-xs text-slate-500 mt-0.5">{(job.file.size / 1024 / 1024).toFixed(2)} MB • Engine: WASM/Canvas</p>
                   </div>
                 </div>
 
@@ -275,16 +267,7 @@ export function ImageConverter() {
                          <option value="webp">to WEBP</option>
                          <option value="png">to PNG</option>
                          <option value="jpg">to JPG</option>
-                         <option value="avif">to AVIF</option>
-                         <option value="heic">to HEIC</option>
-                         <option value="eps">to EPS</option>
-                         <option value="dds">to DDS</option>
-                         <option value="dpx">to DPX</option>
-                         <option value="pcx">to PCX</option>
-                         <option value="ppm">to PPM</option>
-                         <option value="djv">to DJV</option>
-                         <option value="wmz">to WMZ</option>
-                         <option value="art">to ART</option>
+                         <option value="gif">to GIF</option>
                        </select>
                        <button
                          onClick={() => setJobs(prev => prev.map(j => j.id === job.id ? { ...j, status: 'queued' } : j))}
@@ -309,20 +292,8 @@ export function ImageConverter() {
                      </div>
                    )}
 
-                   {job.status === 'cloud_fallback_required' && (
-                     <div className="flex flex-col sm:flex-row items-center gap-3">
-                       <p className="text-xs text-amber-600 font-medium hidden sm:block">Memory Low</p>
-                       <button 
-                         onClick={() => handleCloudFallback(job.id)}
-                         className="px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 text-xs font-semibold rounded transition-colors"
-                       >
-                         Switch to Cloud
-                       </button>
-                     </div>
-                   )}
-
                    {job.status === 'error' && (
-                     <div className="flex items-center text-red-600 text-sm font-medium">
+                     <div className="flex items-center text-red-600 text-sm font-medium" title={job.error}>
                        <AlertCircle className="w-4 h-4 mr-1.5" />
                        Failed
                      </div>
