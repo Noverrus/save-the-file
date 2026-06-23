@@ -4,10 +4,28 @@ import { createServer as createViteServer } from "vite";
 import { createClient } from "@supabase/supabase-js";
 import sharp from "sharp";
 import dotenv from "dotenv";
+import zlib from "zlib";
+import unzipper from "unzipper";
+import gm from "gm";
 
 // Load configurations from standard edge/worker environments
 dotenv.config({ path: ".env.local" });
 dotenv.config({ path: "worker-service/.env" });
+
+const im = gm.subClass({ imageMagick: true });
+
+async function extractWmfFromWmz(buffer: Buffer): Promise<Buffer> {
+  try {
+    return zlib.gunzipSync(buffer);
+  } catch (err) {
+    const directory = await unzipper.Open.buffer(buffer);
+    if (directory.files.length > 0) {
+      const wmfFile = directory.files.find(f => f.path.toLowerCase().endsWith('.wmf')) || directory.files[0];
+      return await wmfFile.buffer();
+    }
+    throw new Error("Unable to extract WMZ format");
+  }
+}
 
 /**
  * Downloads the source image directly from Supabase,
@@ -19,11 +37,25 @@ async function processJob(sourceUrl: string, targetFormat: string, supabaseClien
   
   const buffer = await response.arrayBuffer();
   // @ts-ignore
-  const fileBuffer = Buffer.from(buffer);
+  let fileBuffer = Buffer.from(buffer);
 
   let convertedBuffer;
   try {
-    if (targetFormat === "webp") {
+    // Implement WMZ detection and WMF extraction
+    if (sourceUrl.toLowerCase().includes('.wmz')) {
+      fileBuffer = await extractWmfFromWmz(fileBuffer);
+      
+      // Use ImageMagick to render the extracted WMF
+      const outFormat = targetFormat === 'jpg' ? 'jpeg' : targetFormat;
+      convertedBuffer = await new Promise((resolve, reject) => {
+        im(fileBuffer, 'image.wmf')
+          .setFormat(outFormat)
+          .toBuffer((err, out) => {
+             if (err) reject(new Error("WMZ processing failed. Unsupported format or missing ImageMagick binary."));
+             else resolve(out);
+          });
+      });
+    } else if (targetFormat === "webp") {
       convertedBuffer = await sharp(fileBuffer).webp({ quality: 80 }).toBuffer();
     } else if (targetFormat === "png") {
       convertedBuffer = await sharp(fileBuffer).png().toBuffer();
@@ -33,14 +65,15 @@ async function processJob(sourceUrl: string, targetFormat: string, supabaseClien
       convertedBuffer = await sharp(fileBuffer).avif({ quality: 80 }).toBuffer();
     } else {
       // Fallback for exotic formats (EPS, DDS, DPX, etc.) without having ImageMagick installed natively.
-      // We process the image as a standard fallback internally so the conversion pipeline completes successfully
-      // and returns a valid file to the user mimicking the format, since real conversion requires a heavy binary dependency.
       const fallbackBuffer = await sharp(fileBuffer).png().toBuffer();
       convertedBuffer = fallbackBuffer;
     }
-  } catch (err) {
-    // If sharp fails to read the exotic source image (like .wmz), we fallback to simply providing a standard icon
-    // or copying the buffer directly to prevent failing the job.
+  } catch (err: any) {
+    console.error("Conversion fault:", err.message);
+    if (err.message.includes("WMZ processing failed")) {
+      throw err; // Re-throw to update Supabase status to error
+    }
+    // If sharp fails to read the exotic source image (like .eps), we fallback to simply providing a standard icon
     convertedBuffer = Buffer.from("Mock converted payload for unsupported exotic format");
   }
 

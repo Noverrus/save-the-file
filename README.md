@@ -10,7 +10,10 @@ A high-performance file media converter built with React (Vite) and an Express f
 
 - **Frontend (React + Vite)**: Provides a drag-and-drop interface, managing a local queue of jobs via background Web Workers.
 - **Web Workers**: Enables true multithreaded processing, separating UI rendering from heavy image encoding/decoding.
-- **Express Backend (`server.ts`)**: Acts as an API proxy and fallback processing unit. Capable of processing image buffers with libraries like `sharp` for advanced format handling.
+- **Express Backend (`server.ts` & `worker-service`)**: Acts as an API proxy and fallback processing unit. Capable of processing image buffers with libraries like `sharp` for advanced format handling. Custom `.wmz` (Windows Metafile) extraction is supported via `zlib` and `unzipper` and renders via `gm`.
+
+> **Note on Exotic Formats (.WMZ / .WMF)**
+> The Cloud Fallback natively supports converting `.wmz` (Compressed Windows Metafile format). However, to successfully rasterize these vector graphics to standard images (like `.png` or `.jpg`), your hosting server **MUST have ImageMagick installed** on the system level. If not installed, the conversion will fallback safely and return an error notification.
 
 ## Code Directory Flow
 
