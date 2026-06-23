@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Upload, FileImage, Download, Loader2, AlertCircle, Trash2, ShieldCheck, X } from "lucide-react";
+import { Upload, FileImage, Download, Loader2, AlertCircle, Trash2, ShieldCheck, X, Archive } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConversionJob, WorkerMessageOut } from "@/workers/converter.worker.ts";
+import JSZip from "jszip";
 
 const MAX_CONCURRENT_JOBS = 2; // Prevent OOM by limiting concurrent processing
 const MEMORY_TIMEOUT_MS = 3600000; // 1 hour memory limit
@@ -12,6 +13,7 @@ export function ImageConverter() {
   const workerRef = useRef<Worker | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [toastError, setToastError] = useState<string | null>(null);
+  const [isZipping, setIsZipping] = useState(false);
 
   // Initialize Worker
   useEffect(() => {
@@ -163,6 +165,42 @@ export function ImageConverter() {
     setJobs([]);
   }, [jobs]);
 
+  const handleDownloadAllZip = async () => {
+    const doneJobs = jobs.filter(j => j.status === 'done' && j.outputUrl);
+    if (doneJobs.length === 0) return;
+
+    setIsZipping(true);
+    try {
+      const zip = new JSZip();
+      
+      const fetchPromises = doneJobs.map(async (job) => {
+        const response = await fetch(job.outputUrl!);
+        const blob = await response.blob();
+        const originalName = job.file.name.split('.')[0];
+        zip.file(`${originalName}.${job.targetFormat}`, blob);
+      });
+
+      await Promise.all(fetchPromises);
+      
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      const zipUrl = URL.createObjectURL(zipBlob);
+      
+      const link = document.createElement('a');
+      link.href = zipUrl;
+      link.download = `Images_${Date.now()}.zip`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      
+      URL.revokeObjectURL(zipUrl);
+    } catch (e) {
+      console.error("Failed to generate zip", e);
+      setToastError("Failed to pack files into ZIP. Memory limit exceeded.");
+    } finally {
+      setIsZipping(false);
+    }
+  };
+
   const formatMS = (ms: number | null) => {
     if (ms === null) return '';
     const totalSeconds = Math.floor(ms / 1000);
@@ -234,9 +272,21 @@ export function ImageConverter() {
         <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
           <div className="bg-slate-50 px-6 py-4 border-b flex justify-between items-center">
              <h3 className="font-semibold text-slate-700">Conversion Queue ({jobs.length})</h3>
-             <button onClick={handleClearAll} className="text-sm text-red-600 hover:text-red-700 flex items-center">
-                <Trash2 className="w-4 h-4 mr-1"/> Clear All
-             </button>
+             <div className="flex items-center gap-4">
+               {jobs.filter(j => j.status === 'done').length > 1 && (
+                 <button 
+                   onClick={handleDownloadAllZip} 
+                   disabled={isZipping}
+                   className="text-sm font-medium text-emerald-600 hover:text-emerald-700 flex items-center bg-emerald-50 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+                 >
+                   {isZipping ? <Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> : <Archive className="w-4 h-4 mr-1.5" />}
+                   {isZipping ? "Zipping..." : "Download ZIP"}
+                 </button>
+               )}
+               <button onClick={handleClearAll} className="text-sm text-red-600 hover:text-red-700 flex items-center">
+                  <Trash2 className="w-4 h-4 mr-1"/> Clear All
+               </button>
+             </div>
           </div>
           <div className="divide-y max-h-[500px] overflow-y-auto">
             {jobs.map(job => (

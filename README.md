@@ -25,8 +25,14 @@ Website ini menggunakan teknologi mutakhir untuk konversi berbasis pada sisi kli
 
 - **React + Vite**: Menghadirkan antarmuka (Frontend) yang sangat modern dan cepat.
 - **Web Workers**: Mengaktifkan kemampuan pemrosesan multithreading yang memisahkan rendering antarmuka dari konversi gambar/media berbeban berat agar UI tidak freeze.
-- **WebAssembly via FFmpeg (`@ffmpeg/ffmpeg`)**: Menjalankan file biner engine media konversi secara natif dan offline langsung di dalam memori sandbox web browser pengguna.
-- **HTML5 Canvas API**: Digunakan untuk rendering piksel dan ekstraksi gambar ultra-cepat secara optimal di browser tanpa perlu menggunakan dependensi eksternal untuk format-format ringan.
+- **WebAssembly via FFmpeg (`@ffmpeg/ffmpeg`)**: Menjalankan file biner engine media konversi secara natif dan offline langsung di dalam memori sandbox web browser pengguna. Dilengkapi mode Queue sekuensial yang mengamankan memori saat memroses video berukuran besar.
+- **HTML5 Canvas API / jsPDF**: Digunakan untuk ekstraksi dokumen dan pembuatan file PDF gabungan secara instan, sepenuhnya di klien.
+- **JSZip**: Memberikan kemampuan Bulk Export (Download All as ZIP) dalam satu kali klik.
+
+## New Pro Features Rollout
+* **Document Converter Engine**: Menggabungkan ribuan gambar atau dokumen teks sederhana ke dalam format `.pdf` dalam hitungan milidetik secara offline. 
+* **Media Batch Mode**: Pemrosesan video bertahap dengan kontrol Kompresi Lanjutan (High, Medium, Low `-crf` parameters).
+* **ZIP Archive Exporter**: Zipping semua hasil konversi ke satu file arsip yang terkompres rapi untuk menghemat waktu.
 
 ## Architecture Overview
 

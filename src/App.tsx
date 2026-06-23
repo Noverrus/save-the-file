@@ -8,6 +8,7 @@ import { Layout } from "@/components/Layout";
 import { Home } from "@/pages/Home";
 import { MediaConverter } from "@/pages/MediaConverter";
 import { ImageConverter } from "@/pages/ImageConverter";
+import { DocumentConverter } from "@/pages/DocumentConverter";
 
 // Placeholders for other routes mentioned in scope
 function Placeholder({ title }: { title: string }) {
@@ -26,7 +27,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="image" element={<ImageConverter />} />
-          <Route path="document" element={<Placeholder title="Document" />} />
+          <Route path="document" element={<DocumentConverter />} />
           <Route path="media" element={<MediaConverter />} />
           <Route path="audio" element={<MediaConverter />} />
         </Route>
