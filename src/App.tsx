@@ -24,6 +24,9 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="image" element={<ImageConverter />} />
+          <Route path="image/:format" element={<ImageConverter />} />
+          <Route path="image-converter" element={<ImageConverter />} />
+          <Route path="image-converter/:format" element={<ImageConverter />} />
           <Route path="document" element={<DocumentConverter />} />
           <Route path="video" element={<VideoConverter />} />
           <Route path="archive" element={<ArchiveConverter />} />

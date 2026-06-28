@@ -3,7 +3,7 @@ import { FileCode2, Image, FileText, Video, Archive, FileCode, BookOpen, Type, P
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { name: "Image", path: "/image", icon: Image },
+  { name: "Image", path: "/image-converter", icon: Image },
   { name: "Document", path: "/document", icon: FileText },
   { name: "Video", path: "/video", icon: Video },
   { name: "Archive", path: "/archive", icon: Archive },

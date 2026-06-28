@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Upload, FileImage, Download, Loader2, AlertCircle, Trash2, ShieldCheck, X, Archive } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Upload, FileImage, Download, Loader2, AlertCircle, Trash2, ShieldCheck, X, Archive, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConversionJob, WorkerMessageOut } from "@/workers/converter.worker.ts";
 import JSZip from "jszip";
@@ -9,11 +10,20 @@ const MEMORY_TIMEOUT_MS = 3600000; // 1 hour memory limit
 const SUPPORTED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'bmp', 'gif', 'tif', 'tiff'];
 
 export function ImageConverter() {
+  const { format } = useParams();
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState<ConversionJob[]>([]);
   const workerRef = useRef<Worker | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [toastError, setToastError] = useState<string | null>(null);
   const [isZipping, setIsZipping] = useState(false);
+  const [selectedTargetFormat, setSelectedTargetFormat] = useState<string>("webp");
+
+  const sourceFormatsList = ["PNG", "JPG", "WEBP", "HEIC", "GIF", "BMP", "TIFF"];
+  const targetFormatsList = ["WEBP", "PNG", "JPG", "GIF"];
+  
+  // Normalize the active source format from param (case insensitive, default to PNG)
+  const activeSourceFormat = format ? format.toUpperCase() : "PNG";
 
   // Initialize Worker
   useEffect(() => {
@@ -126,10 +136,14 @@ export function ImageConverter() {
     }
 
     if (validFiles.length > 0) {
+      // Auto-detect the extension of the first valid file and update the URL
+      const detectedExt = validFiles[0].name.split('.').pop()?.toUpperCase() || 'PNG';
+      navigate(`/image-converter/${detectedExt}`, { replace: true });
+
       const newJobs = validFiles.map(file => ({
         id: crypto.randomUUID(),
         file,
-        targetFormat: 'webp', // Default format
+        targetFormat: selectedTargetFormat, // Auto-apply pre-selected target format
         status: 'idle' as const,
         progress: 0
       }));
@@ -209,6 +223,16 @@ export function ImageConverter() {
     return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
+  const handleSelectSourceFormat = (src: string) => {
+    navigate(`/image-converter/${src}`);
+  };
+
+  const handleSelectTargetFormat = (tgt: string) => {
+    const tgtLower = tgt.toLowerCase();
+    setSelectedTargetFormat(tgtLower);
+    setJobs(prev => prev.map(job => job.status === 'idle' ? { ...job, targetFormat: tgtLower } : job));
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8 relative">
       {/* Toast Notification */}
@@ -227,6 +251,82 @@ export function ImageConverter() {
         <p className="text-slate-500 mt-1">
           High-performance background rendering engine. 100% Client-Side processing.
         </p>
+      </div>
+
+      {/* Quick Format Flow Selector */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-sm">
+        <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+          <span>🎯 Pilih Alur Konversi Gambar (Quick Selector)</span>
+          <span className="text-xs font-normal text-slate-500">(atau langsung unggah file Anda)</span>
+        </h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          {/* Source format selection */}
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-600 block">
+              1. Pilih Format Asal (From):
+            </label>
+            <div className="flex flex-wrap gap-1.5">
+              {sourceFormatsList.map((src) => {
+                const isActive = activeSourceFormat === src;
+                return (
+                  <button
+                    key={src}
+                    type="button"
+                    onClick={() => handleSelectSourceFormat(src)}
+                    className={cn(
+                      "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all",
+                      isActive
+                        ? "bg-indigo-600 border-indigo-600 text-white shadow-sm font-bold"
+                        : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700"
+                    )}
+                  >
+                    {src}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Target format selection */}
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-600 block">
+              2. Pilih Format Hasil (To):
+            </label>
+            <div className="flex flex-wrap gap-1.5 items-center">
+              {targetFormatsList.map((tgt) => {
+                const isActive = selectedTargetFormat === tgt.toLowerCase();
+                return (
+                  <button
+                    key={tgt}
+                    type="button"
+                    onClick={() => handleSelectTargetFormat(tgt)}
+                    className={cn(
+                      "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all",
+                      isActive
+                        ? "bg-emerald-600 border-emerald-600 text-white shadow-sm font-bold"
+                        : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700"
+                    )}
+                  >
+                    {tgt}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-indigo-50/50 p-3 rounded-xl border border-indigo-100/80 text-xs text-indigo-800 flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <span className="font-semibold">Aliran Konversi Saat Ini:</span>
+            <span className="font-mono bg-indigo-100/80 px-2 py-0.5 rounded text-indigo-700 font-bold">{activeSourceFormat}</span>
+            <ArrowRight className="w-3.5 h-3.5 text-indigo-500" />
+            <span className="font-mono bg-emerald-100/80 px-2 py-0.5 rounded text-emerald-700 font-bold">{selectedTargetFormat.toUpperCase()}</span>
+          </div>
+          <span className="text-[10px] text-slate-500 hidden sm:inline">
+            URL: /image-converter/{activeSourceFormat}
+          </span>
+        </div>
       </div>
 
       {timeLeft !== null && (
