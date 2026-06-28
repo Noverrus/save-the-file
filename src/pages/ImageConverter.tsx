@@ -32,7 +32,7 @@ export function ImageConverter() {
   }, [location.state]);
 
   const sourceFormatsList = ["PNG", "JPG", "WEBP", "HEIC", "GIF", "BMP", "TIFF"];
-  const targetFormatsList = ["WEBP", "PNG", "JPG", "GIF"];
+  const targetFormatsList = ["WEBP", "PNG", "JPG", "GIF", "AVIF", "BMP", "EPS", "ICO", "ODD", "PS", "PSD", "TIFF", "PDF"];
   
   // Normalize the active source format from param (case insensitive, default to PNG)
   const activeSourceFormat = format ? format.toUpperCase() : "PNG";
@@ -401,10 +401,9 @@ export function ImageConverter() {
                      aria-label="Apply target format to all idle items"
                    >
                      <option value="" disabled>Select Format</option>
-                     <option value="webp">WEBP</option>
-                     <option value="png">PNG</option>
-                     <option value="jpg">JPG</option>
-                     <option value="gif">GIF</option>
+                     {targetFormatsList.map(fmt => (
+                       <option key={fmt} value={fmt.toLowerCase()}>{fmt}</option>
+                     ))}
                    </select>
                  </div>
                )}
@@ -462,10 +461,9 @@ export function ImageConverter() {
                          className="border-2 border-black rounded-lg px-3 py-1.5 text-xs font-mono font-bold bg-white focus-visible:ring-2 focus-visible:ring-black outline-none"
                          aria-label={`Select target format for ${job.file.name}`}
                        >
-                         <option value="webp">to WEBP</option>
-                         <option value="png">to PNG</option>
-                         <option value="jpg">to JPG</option>
-                         <option value="gif">to GIF</option>
+                         {targetFormatsList.map(fmt => (
+                           <option key={fmt} value={fmt.toLowerCase()}>to {fmt}</option>
+                         ))}
                        </select>
                        <button
                          onClick={() => setJobs(prev => prev.map(j => j.id === job.id ? { ...j, status: 'queued' } : j))}

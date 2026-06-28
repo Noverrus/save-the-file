@@ -120,7 +120,7 @@ const formatData = [
     description: "Konversi dan optimasi gambar secara mandiri & luring langsung di browser Anda.",
     subFlows: [
       { from: "PNG", to: "JPG, WEBP, GIF", details: "Mengonversi file PNG transparan maupun opak menjadi JPG berkualitas tinggi, WEBP ultra terkompresi, atau GIF." },
-      { from: "JPG", to: "PNG, WEBP, GIF", details: "Mengonversi gambar JPEG/JPG standar menjadi PNG tanpa penurunan kualitas (lossless), WEBP modern, atau animasi GIF tunggal." },
+      { from: "JPG", to: "PNG, WEBP, GIF, AVIF, BMP, EPS, ICO, ODD, PS, PSD, TIFF, PDF", details: "Mengonversi gambar JPEG/JPG standar menjadi PNG, WEBP, GIF, AVIF, BMP, EPS, ICO, ODD, PS, PSD, TIFF, atau PDF." },
       { from: "WEBP", to: "PNG, JPG, GIF", details: "Mendekompresi gambar WEBP modern menjadi PNG berkualitas tinggi atau JPG standar." },
       { from: "HEIC / HEIF", to: "PNG, JPG, WEBP, GIF", details: "Membongkar format gambar Apple HEIC berdefinisi tinggi langsung di browser menjadi format ramah web luring." },
       { from: "BMP", to: "PNG, JPG, WEBP, GIF", details: "Mengubah gambar Bitmap mentah menjadi format web terkompresi." },
