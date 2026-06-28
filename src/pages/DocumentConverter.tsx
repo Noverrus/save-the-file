@@ -204,36 +204,36 @@ export function DocumentConverter() {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8 relative">
       {toastError && (
-        <div className="fixed top-4 right-4 z-50 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg shadow-lg flex items-start gap-3 animate-in fade-in slide-in-from-top-4 max-w-md">
-          <AlertCircle className="w-5 h-5 shrink-0 text-red-600 mt-0.5" />
-          <p className="text-sm font-medium leading-relaxed">{toastError}</p>
-          <button onClick={() => setToastError(null)} className="shrink-0 p-1 hover:bg-red-100 rounded-full transition-colors ml-auto">
-            <X className="w-4 h-4 text-red-600" />
+        <div className="fixed top-4 right-4 z-50 bg-[#ff5a5f] border-3 border-black text-white px-4 py-3 rounded-xl shadow-[4px_4px_0px_0px_#000] flex items-start gap-3 animate-in fade-in slide-in-from-top-4 max-w-md">
+          <AlertCircle className="w-5 h-5 shrink-0 text-white mt-0.5 stroke-[2.5]" />
+          <p className="text-sm font-display font-black leading-relaxed">{toastError}</p>
+          <button onClick={() => setToastError(null)} className="shrink-0 p-1 bg-white hover:bg-slate-100 rounded-lg border-2 border-black ml-auto text-black transition-colors shadow-[1.5px_1.5px_0px_0px_#000]">
+            <X className="w-4 h-4 stroke-[2.5]" />
           </button>
         </div>
       )}
 
       <div>
-        <h2 className="text-3xl font-bold text-slate-800">Document & PDF Converter</h2>
-        <p className="text-slate-500 mt-1">
-          Create PDFs from images or text entirely in your browser using Client-Side memory.
+        <h2 className="text-3xl font-display font-black uppercase tracking-wide text-black">Document & PDF Converter</h2>
+        <p className="text-slate-700 font-mono text-xs font-semibold mt-1">
+          📄 Create PDFs from images or text entirely in your browser using Client-Side memory.
         </p>
       </div>
 
       {timeLeft !== null && (
-        <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg flex items-center justify-between text-sm shadow-sm transition-all animate-in slide-in-from-top-2">
+        <div className="bg-[#ffde43] border-3 border-black text-black px-4 py-3 rounded-xl flex items-center justify-between text-xs font-mono shadow-[4px_4px_0px_0px_#000] transition-all">
           <div className="flex items-center">
-             <ShieldCheck className="w-5 h-5 mr-3 shrink-0 text-amber-600" />
-             <p className="font-medium">Strict Privacy Policy Active</p>
+             <ShieldCheck className="w-5 h-5 mr-3 shrink-0 text-black stroke-[2.5]" />
+             <p className="font-bold uppercase tracking-wide">Strict Privacy Policy Active</p>
           </div>
-          <div className="font-mono bg-white px-3 py-1 rounded shadow-sm">
-            Auto-Purge in: <span className="font-bold">{formatMS(timeLeft)}</span>
+          <div className="font-mono bg-white border-2 border-black px-3 py-1 rounded shadow-[2px_2px_0px_0px_#000] font-black">
+            Auto-Purge in: <span className="text-[#e11d48]">{formatMS(timeLeft)}</span>
           </div>
         </div>
       )}
 
       <div 
-        className="w-full h-48 border-2 border-dashed border-slate-300 rounded-2xl flex flex-col items-center justify-center hover:border-indigo-400 bg-white hover:bg-indigo-50/10 cursor-pointer transition-colors"
+        className="w-full h-48 border-3 border-dashed border-black rounded-xl flex flex-col items-center justify-center hover:bg-[#38bdf8]/5 bg-white text-black cursor-pointer shadow-[4px_4px_0px_0px_#000] transition-all"
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleFilesDrop}
         onClick={() => document.getElementById("doc-upload")?.click()}
@@ -250,31 +250,34 @@ export function DocumentConverter() {
             }
           }}
         />
-        <div className="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110">
-          <Upload className="h-8 w-8 text-slate-500" />
+        <div className="h-16 w-16 bg-[#38bdf8] border-2 border-black rounded-xl flex items-center justify-center mb-4 shadow-[2px_2px_0px_0px_#000] transition-transform hover:scale-105">
+          <Upload className="h-8 w-8 text-black stroke-[2.5]" />
         </div>
-        <p className="font-semibold text-slate-800">Drag & Drop images or texts to merge into PDF</p>
-        <p className="text-sm text-slate-500 mt-1">Accepts JPG, PNG, WEBP, and TXT.</p>
+        <p className="font-display font-black text-base uppercase tracking-wider text-center px-4">Drag & Drop images or texts to merge into PDF</p>
+        <p className="text-xs font-mono font-semibold text-slate-600 mt-1">Accepts JPG, PNG, WEBP, and TXT.</p>
       </div>
 
       {jobs.length > 0 && (
-        <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
-           <div className="bg-slate-50 px-6 py-4 border-b flex justify-between items-center">
-             <h3 className="font-semibold text-slate-700">Document Queue ({jobs.length})</h3>
-             <button onClick={handleClearAll} className="text-sm text-red-600 hover:text-red-700 flex items-center">
-                <Trash2 className="w-4 h-4 mr-1"/> Clear All
+        <div className="bg-white rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_#000] overflow-hidden">
+           <div className="bg-[#f5f5f0] px-6 py-4 border-b-3 border-black flex justify-between items-center">
+             <h3 className="font-display font-black text-sm uppercase tracking-wider text-black">Document Queue ({jobs.length})</h3>
+             <button 
+               onClick={handleClearAll} 
+               className="text-xs font-display font-black uppercase tracking-wider text-[#ff5a5f] bg-red-50 hover:bg-red-100 border-2 border-black px-3 py-1.5 rounded-lg shadow-[2px_2px_0px_0px_#000] transition-all cursor-pointer flex items-center font-bold"
+             >
+                <Trash2 className="w-4 h-4 mr-1 stroke-[2.5]"/> Clear All
              </button>
           </div>
-          <div className="divide-y max-h-[500px] overflow-y-auto">
+          <div className="divide-y divide-black max-h-[500px] overflow-y-auto">
             {jobs.map(job => (
-              <div key={job.id} className="p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 hover:bg-slate-50 transition-colors">
+              <div key={job.id} className="p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 hover:bg-[#fdfdfb] transition-colors bg-white">
                 <div className="flex-1 flex items-center w-full min-w-0">
-                  <div className="h-10 w-10 bg-indigo-100 rounded flex items-center justify-center shrink-0 mr-4">
-                     <FileText className="w-5 h-5 text-indigo-600" />
+                  <div className="h-10 w-10 bg-[#38bdf8]/20 border-2 border-black rounded-lg flex items-center justify-center shrink-0 mr-4 shadow-[1.5px_1.5px_0px_0px_#000]">
+                     <FileText className="w-5 h-5 text-black stroke-[2.5]" />
                   </div>
                   <div className="min-w-0 flex-1">
-                     <p className="font-medium text-slate-900 truncate pr-4">{job.fileName}.pdf</p>
-                     <p className="text-xs text-slate-500 mt-0.5">{job.files.length} items • Engine: jsPDF</p>
+                     <p className="font-bold text-slate-900 truncate pr-4 font-mono text-xs">{job.fileName}.pdf</p>
+                     <p className="text-[10px] font-mono text-slate-500 mt-0.5">{job.files.length} items • Engine: jsPDF</p>
                   </div>
                 </div>
 
@@ -283,7 +286,7 @@ export function DocumentConverter() {
                      <div className="flex items-center gap-2">
                        <button
                          onClick={() => processJob(job.id)}
-                         className="bg-indigo-600 text-white px-4 py-1.5 rounded text-sm font-medium hover:bg-indigo-700 transition"
+                         className="bg-[#ffde43] hover:bg-[#ffd100] border-2 border-black text-black font-display font-black uppercase text-xs px-4 py-1.5 rounded-lg shadow-[2px_2px_0px_0px_#000] active:scale-95 cursor-pointer"
                        >
                          Merge to PDF
                        </button>
@@ -291,15 +294,15 @@ export function DocumentConverter() {
                    )}
 
                    {job.status === 'processing' && (
-                     <div className="flex items-center text-indigo-600 font-medium text-sm">
-                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                     <div className="flex items-center text-indigo-700 font-mono font-black text-xs">
+                       <Loader2 className="w-4 h-4 mr-2 animate-spin stroke-[2.5]" />
                        {job.progress}%
                      </div>
                    )}
 
                    {job.status === 'error' && (
-                     <div className="flex items-center text-red-600 text-sm font-medium" title={job.error}>
-                       <AlertCircle className="w-4 h-4 mr-1.5" />
+                     <div className="flex items-center text-[#ff5a5f] text-xs font-mono font-bold" title={job.error}>
+                       <AlertCircle className="w-4 h-4 mr-1.5 stroke-[2.5]" />
                        Failed
                      </div>
                    )}
@@ -308,18 +311,18 @@ export function DocumentConverter() {
                      <a 
                        href={job.outputUrl}
                        download={`${job.fileName}.pdf`}
-                       className="inline-flex items-center justify-center px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors"
+                       className="inline-flex items-center justify-center px-4 py-1.5 bg-[#a3e635] hover:bg-[#86efac] text-black text-xs font-display font-black uppercase tracking-wide border-2 border-black rounded-lg shadow-[2px_2px_0px_0px_#000] active:scale-95"
                      >
-                       <Download className="w-4 h-4 mr-1.5" />
+                       <Download className="w-4 h-4 mr-1.5 stroke-[2.5]" />
                        Save PDF
                      </a>
                    )}
 
                    <button 
                      onClick={() => handleRemove(job.id)}
-                     className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors ml-2"
+                     className="p-1.5 text-slate-400 hover:text-[#ff5a5f] border-2 border-transparent hover:border-black hover:bg-red-50 rounded-lg transition-colors ml-2 cursor-pointer"
                    >
-                     <Trash2 className="w-4 h-4" />
+                     <Trash2 className="w-4 h-4 stroke-[2.5]" />
                    </button>
                 </div>
               </div>

@@ -14,90 +14,100 @@ const tools = [
     description: "Convert and optimize WEBP, PNG, JPG, and GIF locally.",
     icon: Image,
     href: "/image-converter",
-    borderColor: "border-blue-200 hover:border-blue-500",
-    bgColor: "bg-blue-50",
-    textColor: "text-blue-700",
+    borderColor: "border-black",
+    bgColor: "bg-[#ff90e8]", // Hot Pink
+    textColor: "text-black",
+    shadowColor: "shadow-[5px_5px_0px_0px_#000]",
   },
   {
     name: "Document Converter",
     description: "Convert PDF, TXT, Word, HTML and PDF structures instantly.",
     icon: FileText,
     href: "/document-converter",
-    borderColor: "border-rose-200 hover:border-rose-500",
-    bgColor: "bg-rose-50",
-    textColor: "text-rose-700",
+    borderColor: "border-black",
+    bgColor: "bg-[#38bdf8]", // Sky Blue
+    textColor: "text-black",
+    shadowColor: "shadow-[5px_5px_0px_0px_#000]",
   },
   {
     name: "Video Converter",
     description: "WASM-encoded sequential offline video & audio conversions.",
     icon: Video,
     href: "/video-converter",
-    borderColor: "border-indigo-200 hover:border-indigo-500",
-    bgColor: "bg-indigo-50",
-    textColor: "text-indigo-700",
+    borderColor: "border-black",
+    bgColor: "bg-[#a3e635]", // Lime Green
+    textColor: "text-black",
+    shadowColor: "shadow-[5px_5px_0px_0px_#000]",
   },
   {
     name: "Archive Manager",
     description: "Build custom ZIP files or extract ZIPs offline securely.",
     icon: Archive,
     href: "/archive-converter",
-    borderColor: "border-emerald-200 hover:border-emerald-500",
-    bgColor: "bg-emerald-50",
-    textColor: "text-emerald-700",
+    borderColor: "border-black",
+    bgColor: "bg-[#ffde43]", // Vibrant Yellow
+    textColor: "text-black",
+    shadowColor: "shadow-[5px_5px_0px_0px_#000]",
   },
   {
     name: "CAD Vector Converter",
     description: "Render DXF/SVG lines to canvas and export to standard image or PDF.",
     icon: FileCode,
     href: "/cad-converter",
-    borderColor: "border-amber-200 hover:border-amber-500",
-    bgColor: "bg-amber-50",
-    textColor: "text-amber-700",
+    borderColor: "border-black",
+    bgColor: "bg-[#fb923c]", // Vibrant Orange
+    textColor: "text-black",
+    shadowColor: "shadow-[5px_5px_0px_0px_#000]",
   },
   {
     name: "Ebook Publisher",
     description: "Compile TXT, MD, and HTML manuscripts directly into EPUB publications.",
     icon: BookOpen,
     href: "/ebook-converter",
-    borderColor: "border-cyan-200 hover:border-cyan-500",
-    bgColor: "bg-cyan-50",
-    textColor: "text-cyan-700",
+    borderColor: "border-black",
+    bgColor: "bg-[#c084fc]", // Purple
+    textColor: "text-black",
+    shadowColor: "shadow-[5px_5px_0px_0px_#000]",
   },
   {
     name: "Font CSS Packager",
     description: "Load dynamic typography faces and build embedding @font-face CSS packages.",
     icon: Type,
     href: "/font-converter",
-    borderColor: "border-purple-200 hover:border-purple-500",
-    bgColor: "bg-purple-50",
-    textColor: "text-purple-700",
+    borderColor: "border-black",
+    bgColor: "bg-[#2dd4bf]", // Teal
+    textColor: "text-black",
+    shadowColor: "shadow-[5px_5px_0px_0px_#000]",
   },
   {
     name: "Presentation Slideshow",
     description: "Draft, style, and compile high-resolution PDF presentation slide decks.",
     icon: Presentation,
     href: "/presentation-converter",
-    borderColor: "border-teal-200 hover:border-teal-500",
-    bgColor: "bg-teal-50",
-    textColor: "text-teal-700",
+    borderColor: "border-black",
+    bgColor: "bg-[#f472b6]", // Pastel Pink
+    textColor: "text-black",
+    shadowColor: "shadow-[5px_5px_0px_0px_#000]",
   },
   {
     name: "Spreadsheet & Data",
     description: "Instantly parse CSV to JSON or generate CSV from JSON arrays locally.",
     icon: FileSpreadsheet,
     href: "/spreadsheet-converter",
-    borderColor: "border-slate-300 hover:border-slate-600",
-    bgColor: "bg-slate-100",
-    textColor: "text-slate-800",
+    borderColor: "border-black",
+    bgColor: "bg-[#94a3b8]", // Gray-slate
+    textColor: "text-black",
+    shadowColor: "shadow-[5px_5px_0px_0px_#000]",
   },
   {
     name: "Vector Rasterizer",
     description: "Convert vector SVGs into PNG, JPEG, or WEBP at crisp resolutions.",
     icon: Layers,
     href: "/vector-converter",
-    borderColor: "border-sky-200 hover:border-sky-500",
-    bgColor: "bg-sky-50",
-    textColor: "text-sky-700",
+    borderColor: "border-black",
+    bgColor: "bg-[#60a5fa]", // Blue
+    textColor: "text-black",
+    shadowColor: "shadow-[5px_5px_0px_0px_#000]",
   },
 ];
 
@@ -118,7 +128,7 @@ const formatData = [
       { from: "TIFF / TIF", to: "PNG, JPG, WEBP, GIF", details: "Mengonversi format gambar TIFF cetak berkualitas tinggi menjadi format yang kompatibel dengan browser." }
     ],
     details: "Mendukung kompresi tingkat lanjut, rotasi sudut, dan penyesuaian dimensi piksel secara instan di sisi pengguna tanpa perlu server tambahan.",
-    accentColor: "bg-blue-50 text-blue-700 border-blue-200",
+    accentColor: "bg-[#ff90e8] text-black border-black",
   },
   {
     id: "document",
@@ -130,7 +140,7 @@ const formatData = [
       { from: "Teks Polos (.txt)", to: "PDF Dokumen Terpadu", details: "Mengemas draf manuskrip polos teks lurus menjadi berkas tata letak PDF modern." }
     ],
     details: "Membantu menata tata urutan lembar halaman, mengatur margin tepi dokumen, serta menyesuaikan layout Portrait / Landscape secara luring.",
-    accentColor: "bg-rose-50 text-rose-700 border-rose-200",
+    accentColor: "bg-[#38bdf8] text-black border-black",
   },
   {
     id: "video",
@@ -145,7 +155,7 @@ const formatData = [
       { from: "Audio (MP3, WAV, FLAC, AAC, M4A)", to: "MP3, WAV", details: "Mengompresi format audio lossless atau lossy ke tingkat bit rate target." }
     ],
     details: "Menjalankan kompilasi offline murni di browser menggunakan porting binary FFmpeg WASM. Dilengkapi antrean proses berurutan untuk menjamin efisiensi memori.",
-    accentColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
+    accentColor: "bg-[#a3e635] text-black border-black",
   },
   {
     id: "archive",
@@ -157,7 +167,7 @@ const formatData = [
       { from: "Berkas ZIP", to: "Ekstraksi File Asli", details: "Mengekstrak isi dari berkas ZIP langsung ke sistem memori browser untuk diunduh terpisah." }
     ],
     details: "Sistem pengompresan JSZip berkecepatan tinggi yang bebas dari batasan payload unggahan. Mengamankan file rahasia dari intaian server pihak ketiga.",
-    accentColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    accentColor: "bg-[#ffde43] text-black border-black",
   },
   {
     id: "cad",
@@ -169,7 +179,7 @@ const formatData = [
       { from: "SVG (Scalable Vector)", to: "PNG, PDF", details: "Merender garis vektor mentah menjadi format gambar bitmap piksel atau PDF cetak." }
     ],
     details: "Membaca data entitas vektor seperti lingkaran, garis lurus, dan busur secara mekanis ke kanvas HTML5 lengkap dengan navigasi zoom dan pan.",
-    accentColor: "bg-amber-50 text-amber-700 border-amber-200",
+    accentColor: "bg-[#fb923c] text-black border-black",
   },
   {
     id: "ebook",
@@ -181,7 +191,7 @@ const formatData = [
       { from: "TXT / MD", to: "PDF Dokumen, TXT Bersih", details: "Mengekspor draf tulisan menjadi layout PDF siap cetak atau file teks terformat." }
     ],
     details: "Sangat ideal untuk penulis mandiri. Unggah naskah bab demi bab, tambahkan berkas sampul luar, dan ekspor e-book yang lolos uji baca Google Books, Apple Books, maupun Kindle.",
-    accentColor: "bg-cyan-50 text-cyan-700 border-cyan-200",
+    accentColor: "bg-[#c084fc] text-black border-black",
   },
   {
     id: "font",
@@ -193,7 +203,7 @@ const formatData = [
       { from: "WOFF / WOFF2 (Web Fonts)", to: "CSS @font-face & Pratinjau", details: "Mengonverifikasi font web agar kompatibel dengan peramban lama atau modern." }
     ],
     details: "Menggunakan FontFace API browser secara real-time untuk memuat rupa huruf. Mempermudah pengembang web untuk memeriksa karakter glif secara luring.",
-    accentColor: "bg-purple-50 text-purple-700 border-purple-200",
+    accentColor: "bg-[#2dd4bf] text-black border-black",
   },
   {
     id: "presentation",
@@ -204,7 +214,7 @@ const formatData = [
       { from: "Draf Slide Editor", to: "Slide PDF (16:9)", details: "Membuat dokumen draf presentasi widescreen lalu mengonversinya langsung menjadi berkas dokumen PDF tajam." }
     ],
     details: "Pilihan cepat pengganti PowerPoint. Cukup masukkan konten presentasi Anda ke editor visual kami dan sistem akan menata grid dokumen secara dinamis.",
-    accentColor: "bg-teal-50 text-teal-700 border-teal-200",
+    accentColor: "bg-[#f472b6] text-black border-black",
   },
   {
     id: "spreadsheet",
@@ -216,7 +226,7 @@ const formatData = [
       { from: "JSON (Array of Objects)", to: "CSV Tabular", details: "Mengonversi format data raw JSON menjadi berkas spreadsheet CSV terformat koma." }
     ],
     details: "Sangat berguna untuk pengolahan data spreadsheet yang aman. Penguraian baris data berlangsung cepat di browser tanpa risiko kebocoran data rahasia perusahaan.",
-    accentColor: "bg-slate-100 text-slate-800 border-slate-300",
+    accentColor: "bg-[#94a3b8] text-black border-black",
   },
   {
     id: "vector",
@@ -227,7 +237,7 @@ const formatData = [
       { from: "SVG (Scalable Vector Graphics)", to: "PNG, JPG, WEBP, PDF", details: "Meraster berkas SVG tajam menjadi gambar piksel raster (lossy/lossless) dengan kontrol pengali ketajaman hingga 4x lipat." }
     ],
     details: "Mendukung penskalaan pengali hingga 4x lipat ukuran dasar untuk memastikan kurva tipografi dan logo SVG tetap tajam saat diekspor menjadi format raster.",
-    accentColor: "bg-sky-50 text-sky-700 border-sky-200",
+    accentColor: "bg-[#60a5fa] text-black border-black",
   },
 ];
 
@@ -254,7 +264,7 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 10 },
+  hidden: { opacity: 0, y: 15 },
   show: { opacity: 1, y: 0 }
 };
 
@@ -360,33 +370,33 @@ export function Home() {
   }).filter(cat => cat.formats.length > 0);
 
   return (
-    <div className="flex-1 flex flex-col space-y-12 pb-12 relative">
+    <div className="flex-1 flex flex-col space-y-12 pb-16 relative">
       
-      {/* Gambar 1 - Premium CloudConvert-inspired Hero Selector Section */}
+      {/* Gambar 1 - Premium CloudConvert-inspired Hero Selector Section in Neo-brutalist Style */}
       <section className="w-full max-w-4xl mx-auto px-4 pt-4 sm:pt-8">
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-12 relative overflow-hidden shadow-2xl">
+        <div className="bg-[#161a24] border-[4px] border-black rounded-2xl p-6 sm:p-10 relative overflow-hidden shadow-[8px_8px_0px_0px_#000]">
           {/* Subtle Grid backdrop */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none"></div>
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#262b3a_1px,transparent_1px),linear-gradient(to_bottom,#262b3a_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-40 pointer-events-none"></div>
 
           <div className="relative z-10 text-center space-y-6">
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-5xl font-display font-extrabold text-[#a3e635] tracking-tight uppercase leading-none">
               Convert Any File
             </h1>
-            <p className="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed font-normal">
-              Drop a file and pick what to turn it into. CloudConvert handles 200+ formats across documents, images, audio, video, archives and more — straight from your browser.
+            <p className="text-slate-300 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed font-mono font-medium">
+              Drop a file and pick what to turn it into. Handles 200+ formats across documents, images, audio, video, archives and more — straight from your browser.
             </p>
 
             {/* Interactive Formats Picker Widgets (DOCX TO PDF) */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 py-4 max-w-lg mx-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 py-2 max-w-lg mx-auto">
               {/* Left format card (Source) */}
               <button
                 onClick={() => setOpenSelector("source")}
-                className="w-full sm:w-44 bg-slate-800/40 border border-slate-700/80 hover:border-slate-500 hover:bg-slate-800/70 rounded-2xl p-4 text-left transition-all flex flex-col justify-between h-24 text-slate-100 shadow-md relative group active:scale-[0.98]"
+                className="w-full sm:w-44 bg-white border-3 border-black rounded-xl p-4 text-left transition-all flex flex-col justify-between h-24 text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] active:scale-95 cursor-pointer"
               >
-                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 block">From</span>
-                <div className="flex items-center justify-between w-full mb-1">
-                  <span className="font-mono text-xl font-black text-slate-100">{activeSourceFormat}</span>
-                  <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
+                <span className="text-[10px] uppercase font-display font-extrabold tracking-widest text-[#ff6b2b]">From</span>
+                <div className="flex items-center justify-between w-full">
+                  <span className="font-mono text-xl font-black">{activeSourceFormat}</span>
+                  <ChevronDown className="w-5 h-5 text-black stroke-[3]" />
                 </div>
               </button>
 
@@ -394,23 +404,23 @@ export function Home() {
               <div className="flex flex-col items-center justify-center shrink-0">
                 <button
                   onClick={handleSwapFormats}
-                  className="h-10 w-10 rounded-full bg-indigo-600/10 border border-indigo-500/30 hover:border-indigo-500/80 hover:bg-indigo-600/20 text-indigo-400 hover:text-white transition-all flex items-center justify-center shadow-md active:rotate-180"
+                  className="h-10 w-10 rounded-full bg-[#ffde43] border-3 border-black hover:bg-[#ffe566] text-black transition-all flex items-center justify-center shadow-[2px_2px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] active:scale-95"
                   title="Swap formats"
                 >
-                  <RefreshCw className="w-4 h-4" />
+                  <RefreshCw className="w-4 h-4 stroke-[2.5]" />
                 </button>
-                <span className="text-[9px] uppercase font-bold tracking-widest text-slate-500 mt-1.5">TO</span>
+                <span className="text-[9px] uppercase font-display font-black tracking-widest text-slate-400 mt-1.5">TO</span>
               </div>
 
               {/* Right format card (Target) */}
               <button
                 onClick={() => setOpenSelector("target")}
-                className="w-full sm:w-44 bg-slate-800/40 border border-slate-700/80 hover:border-slate-500 hover:bg-slate-800/70 rounded-2xl p-4 text-left transition-all flex flex-col justify-between h-24 text-slate-100 shadow-md relative group active:scale-[0.98]"
+                className="w-full sm:w-44 bg-white border-3 border-black rounded-xl p-4 text-left transition-all flex flex-col justify-between h-24 text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] active:scale-95 cursor-pointer"
               >
-                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 block">To</span>
-                <div className="flex items-center justify-between w-full mb-1">
-                  <span className="font-mono text-xl font-black text-slate-100">{activeTargetFormat}</span>
-                  <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
+                <span className="text-[10px] uppercase font-display font-extrabold tracking-widest text-indigo-600">To</span>
+                <div className="flex items-center justify-between w-full">
+                  <span className="font-mono text-xl font-black">{activeTargetFormat}</span>
+                  <ChevronDown className="w-5 h-5 text-black stroke-[3]" />
                 </div>
               </button>
             </div>
@@ -420,29 +430,29 @@ export function Home() {
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              className={`border-2 border-dashed rounded-2xl p-8 max-w-lg mx-auto transition-all flex flex-col items-center justify-center gap-4 ${
+              className={`border-3 border-dashed rounded-xl p-8 max-w-lg mx-auto transition-all flex flex-col items-center justify-center gap-4 ${
                 isDragging
-                  ? "border-red-500 bg-red-500/10"
-                  : "border-slate-800 bg-slate-950/40 hover:bg-slate-950/60"
+                  ? "border-[#ff5a5f] bg-[#ff5a5f]/10"
+                  : "border-black bg-white text-black shadow-[4px_4px_0px_0px_#000]"
               }`}
             >
-              <div className="h-14 w-14 rounded-full bg-[#e04f4f]/10 flex items-center justify-center text-[#e04f4f]">
-                <UploadCloud className="w-7 h-7" />
+              <div className="h-14 w-14 rounded-xl bg-[#ff5a5f] border-3 border-black flex items-center justify-center text-white shadow-[2px_2px_0px_0px_#000]">
+                <UploadCloud className="w-7 h-7 stroke-[2.5]" />
               </div>
-              <div className="space-y-0.5">
-                <p className="text-sm font-bold text-slate-200">Select your file here to get started</p>
-                <p className="text-xs text-slate-500">or drop your file here.</p>
+              <div className="space-y-1">
+                <p className="text-sm font-display font-black uppercase tracking-wider">Select your file here to get started</p>
+                <p className="text-xs font-mono font-semibold text-slate-600">or drop your file here.</p>
               </div>
 
               {/* Red-Orange select file button */}
               <div className="relative inline-block mt-1">
                 <button
                   onClick={() => document.getElementById("hero-file-selector")?.click()}
-                  className="bg-[#e04f4f] hover:bg-[#c93e3e] text-white px-5 py-3 rounded-xl text-xs font-bold transition-all inline-flex items-center gap-2 shadow-lg active:scale-95"
+                  className="bg-[#e04f4f] hover:bg-[#ff5a5f] text-white border-2 border-black px-5 py-3 rounded-xl text-xs font-display font-black uppercase tracking-wide transition-all inline-flex items-center gap-2 shadow-[3px_3px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_#000] active:scale-95 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer"
                 >
-                  <File className="w-4 h-4" />
+                  <File className="w-4 h-4 stroke-[2.5]" />
                   Select File
-                  <ChevronDown className="w-3.5 h-3.5 border-l border-white/20 pl-1 ml-1" />
+                  <ChevronDown className="w-3.5 h-3.5 border-l-2 border-black pl-1 ml-1" />
                 </button>
                 <input
                   id="hero-file-selector"
@@ -457,7 +467,7 @@ export function Home() {
         </div>
       </section>
 
-      {/* Gambar 2 - Premium Searchable Multi-Category Formats Popover Dialog Modal */}
+      {/* Gambar 2 - Searchable Multi-Category Formats Popover Dialog Modal (Neo-brutalist Edition) */}
       <AnimatePresence>
         {openSelector && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -470,7 +480,7 @@ export function Home() {
                 setOpenSelector(null);
                 setSearchQuery("");
               }}
-              className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             />
 
             {/* Modal Body */}
@@ -479,13 +489,13 @@ export function Home() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ type: "spring", duration: 0.3 }}
-              className="relative w-full max-w-2xl bg-[#161a24] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[520px] text-slate-200"
+              className="relative w-full max-w-2xl bg-white border-[4px] border-black rounded-xl overflow-hidden shadow-[8px_8px_0px_0px_#000] flex flex-col h-[520px] text-black"
             >
               {/* Popover Header */}
-              <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                <h3 className="font-bold text-sm text-slate-100 flex items-center gap-2">
+              <div className="p-4 border-b-3 border-black bg-[#ffde43] flex items-center justify-between">
+                <h3 className="font-display font-black text-sm uppercase tracking-wider flex items-center gap-2">
                   <span>Select {openSelector === "source" ? "Source" : "Target"} Format</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-normal">
+                  <span className="text-[10px] px-2 py-0.5 border-2 border-black rounded bg-white font-mono font-bold">
                     {openSelector === "source" ? "From" : "To"}
                   </span>
                 </h3>
@@ -494,21 +504,21 @@ export function Home() {
                     setOpenSelector(null);
                     setSearchQuery("");
                   }}
-                  className="p-1 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                  className="p-1 rounded-lg border-2 border-black bg-white hover:bg-[#ff90e8] text-black transition-colors shadow-[2px_2px_0px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-4 h-4 stroke-[2.5]" />
                 </button>
               </div>
 
               {/* Search Bar Input */}
-              <div className="p-4 bg-[#11141c] border-b border-slate-800 flex items-center relative gap-3">
-                <Search className="w-4 h-4 text-slate-500 absolute left-7 pointer-events-none" />
+              <div className="p-4 bg-[#f5f5f0] border-b-3 border-black flex items-center relative gap-3">
+                <Search className="w-4 h-4 text-black stroke-[3] absolute left-7 pointer-events-none" />
                 <input
                   type="text"
-                  placeholder="Search Format"
+                  placeholder="Search Format (e.g. PNG, JPG, PDF...)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-[#1e2330] text-slate-100 placeholder-slate-500 border border-slate-800/80 focus:border-indigo-500 focus:outline-none rounded-xl py-2.5 pl-11 pr-4 text-xs font-mono tracking-wider transition-colors"
+                  className="w-full bg-white text-black placeholder-slate-500 border-2 border-black focus:outline-none rounded-xl py-2.5 pl-11 pr-4 text-xs font-mono font-bold tracking-wider transition-colors shadow-[3px_3px_0px_0px_#000]"
                   autoFocus
                 />
               </div>
@@ -517,17 +527,17 @@ export function Home() {
               <div className="flex-1 flex overflow-hidden">
                 {searchQuery ? (
                   /* Search Results Panel */
-                  <div className="flex-1 p-4 overflow-y-auto space-y-4">
+                  <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-[#fdfdfb]">
                     {filteredCategories.length > 0 ? (
                       filteredCategories.map(cat => (
                         <div key={cat.id} className="space-y-2">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{cat.name}</span>
+                          <span className="text-[10px] font-display font-black uppercase tracking-wider text-slate-500">{cat.name}</span>
                           <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
                             {cat.formats.map(fmt => (
                               <button
                                 key={fmt}
                                 onClick={() => handleSelectFormat(fmt, cat.page)}
-                                className="bg-[#1e2330]/80 hover:bg-[#e04f4f] border border-slate-800 hover:border-[#e04f4f] text-slate-200 hover:text-white font-mono text-xs font-bold py-2 px-1 rounded-lg text-center transition-all shadow-sm active:scale-95"
+                                className="bg-white hover:bg-[#ff90e8] border-2 border-black text-black font-mono text-xs font-bold py-2 px-1 rounded-lg text-center transition-all shadow-[2px_2px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] active:scale-95 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer"
                               >
                                 {fmt}
                               </button>
@@ -537,8 +547,8 @@ export function Home() {
                       ))
                     ) : (
                       <div className="text-center py-12 space-y-2">
-                        <p className="text-sm text-slate-500">No formats matched your search.</p>
-                        <p className="text-xs text-slate-600 font-mono">Try searching for JPG, PNG, MP4, CSV, ZIP, etc.</p>
+                        <p className="text-sm font-bold text-slate-600">No formats matched your search.</p>
+                        <p className="text-xs text-slate-500 font-mono">Try searching for JPG, PNG, MP4, CSV, ZIP, etc.</p>
                       </div>
                     )}
                   </div>
@@ -546,39 +556,39 @@ export function Home() {
                   /* Standard Categories Split Panel */
                   <>
                     {/* Left Pane: Indonesian/English standard format categories list */}
-                    <div className="w-1/3 border-r border-slate-800 bg-[#12151e] overflow-y-auto">
+                    <div className="w-1/3 border-r-3 border-black bg-[#fdfdfb] overflow-y-auto">
                       {categoriesList.map(cat => {
                         const isActive = activeCategoryTab === cat.id;
                         return (
                           <button
                             key={cat.id}
                             onClick={() => setActiveCategoryTab(cat.id)}
-                            className={`w-full text-left px-4 py-3 text-xs font-semibold flex items-center justify-between transition-colors border-l-2 ${
+                            className={`w-full text-left px-4 py-3.5 text-xs font-extrabold font-display uppercase tracking-wider flex items-center justify-between transition-all border-b-2 border-black border-l-4 ${
                               isActive
-                                ? "bg-[#1e2330] border-[#e04f4f] text-slate-100 font-bold"
-                                : "border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30"
+                                ? "bg-[#38bdf8] border-l-[#ff5a5f] text-black font-black"
+                                : "border-l-transparent text-slate-600 hover:text-black hover:bg-slate-100/80"
                             }`}
                           >
                             <span>{cat.name}</span>
-                            <ArrowRight className={`w-3 h-3 transition-transform ${isActive ? "translate-x-0.5 opacity-100 text-[#e04f4f]" : "opacity-0"}`} />
+                            <ArrowRight className={`w-3.5 h-3.5 transition-transform stroke-[2.5] ${isActive ? "translate-x-0.5 opacity-100" : "opacity-0"}`} />
                           </button>
                         );
                       })}
                     </div>
 
                     {/* Right Pane: Grid of format buttons inside categories */}
-                    <div className="w-2/3 p-4 overflow-y-auto bg-[#161a24]">
+                    <div className="w-2/3 p-4 overflow-y-auto bg-[#fafaf9]">
                       {categoriesList.map(cat => {
                         if (cat.id !== activeCategoryTab) return null;
                         return (
                           <div key={cat.id} className="space-y-3">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{cat.name} Formats</span>
+                            <span className="text-[10px] font-display font-black uppercase tracking-widest text-slate-500">{cat.name} Formats</span>
                             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                               {cat.formats.map(fmt => (
                                 <button
                                   key={fmt}
                                   onClick={() => handleSelectFormat(fmt, cat.page)}
-                                  className="bg-[#1e2330] hover:bg-[#e04f4f] border border-slate-800/80 hover:border-[#e04f4f] text-slate-200 hover:text-white font-mono text-xs font-bold py-3 px-1 rounded-xl text-center transition-all shadow-sm active:scale-95"
+                                  className="bg-white hover:bg-[#ffde43] border-2 border-black text-black font-mono text-xs font-bold py-3 px-1 rounded-xl text-center transition-all shadow-[2px_2px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3.5px_3.5px_0px_0px_#000] active:scale-95 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer"
                                 >
                                   {fmt}
                                 </button>
@@ -596,7 +606,7 @@ export function Home() {
         )}
       </AnimatePresence>
 
-      {/* Tools Grid - Flat design style */}
+      {/* Tools Grid - Neo-brutalist high contrast design style */}
       <motion.div 
         variants={containerVariants} 
         initial="hidden" 
@@ -607,65 +617,65 @@ export function Home() {
           <motion.div key={tool.name} variants={itemVariants}>
             <Link
               to={tool.href}
-              className={`group relative flex flex-col items-start justify-between p-6 h-full bg-white border-2 rounded-xl transition-all ${tool.borderColor}`}
+              className={`group relative flex flex-col items-start justify-between p-6 h-full bg-white border-[3px] border-black rounded-xl transition-all ${tool.shadowColor} hover:translate-x-[-3px] hover:translate-y-[-3px] hover:shadow-[8px_8px_0px_0px_#000] active:translate-x-0 active:translate-y-0 active:shadow-[5px_5px_0px_0px_#000]`}
             >
               <div className="space-y-4 w-full">
-                <div className={`inline-flex items-center justify-center p-3 rounded-lg ${tool.bgColor} ${tool.textColor}`}>
-                  <tool.icon className="w-5 h-5" />
+                <div className={`inline-flex items-center justify-center p-3 rounded-lg border-2 border-black ${tool.bgColor} ${tool.textColor} shadow-[2px_2px_0px_0px_#000]`}>
+                  <tool.icon className="w-5 h-5 stroke-[2.5]" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                  <h3 className="text-base font-display font-extrabold text-black uppercase tracking-wide group-hover:text-indigo-600 transition-colors">
                     {tool.name}
                   </h3>
-                  <p className="text-slate-500 mt-1 text-xs leading-relaxed">{tool.description}</p>
+                  <p className="text-slate-700 mt-1.5 text-xs leading-relaxed font-semibold">{tool.description}</p>
                 </div>
               </div>
-              <div className="mt-5 flex items-center text-xs font-bold text-indigo-600 transition-all">
-                Launch Tool <ArrowRight className="ml-1 w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
+              <div className="mt-5 flex items-center text-xs font-display font-bold uppercase tracking-wider text-black bg-[#ffde43] border-2 border-black px-2.5 py-1.5 shadow-[2px_2px_0px_0px_#000] group-hover:bg-[#ff90e8] transition-colors">
+                Launch Tool <ArrowRight className="ml-1 w-3.5 h-3.5 stroke-[3] transform group-hover:translate-x-0.5 transition-transform" />
               </div>
             </Link>
           </motion.div>
         ))}
       </motion.div>
 
-      {/* Features - Flat layout */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-8 py-10 px-4 max-w-5xl mx-auto text-center border-t border-slate-200">
-        <div className="flex flex-col items-center p-4">
-          <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center mb-3">
-            <ShieldCheck className="h-5 w-5 text-indigo-600" />
+      {/* Features - Neo-brutalist styled layouts */}
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-8 py-10 px-4 max-w-5xl mx-auto text-center border-t-[3px] border-black">
+        <div className="flex flex-col items-center p-5 bg-white border-3 border-black rounded-xl shadow-[4px_4px_0px_0px_#000]">
+          <div className="h-10 w-10 rounded-lg bg-[#a3e635] border-2 border-black flex items-center justify-center mb-3 shadow-[2px_2px_0px_0px_#000]">
+            <ShieldCheck className="h-5 w-5 text-black stroke-[2.5]" />
           </div>
-          <h4 className="font-bold text-sm text-slate-900">100% Privacy Sandbox</h4>
-          <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">No tracking, no server storage. Everything processes in local client memory securely.</p>
+          <h4 className="font-display font-black text-sm uppercase tracking-wide">100% Privacy Sandbox</h4>
+          <p className="text-xs text-slate-700 font-semibold mt-1.5 leading-relaxed font-mono">No tracking, no server storage. Everything processes in local client memory securely.</p>
         </div>
-        <div className="flex flex-col items-center p-4">
-          <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center mb-3">
-            <Zap className="h-5 w-5 text-amber-500" />
+        <div className="flex flex-col items-center p-5 bg-white border-3 border-black rounded-xl shadow-[4px_4px_0px_0px_#000]">
+          <div className="h-10 w-10 rounded-lg bg-[#ffde43] border-2 border-black flex items-center justify-center mb-3 shadow-[2px_2px_0px_0px_#000]">
+            <Zap className="h-5 w-5 text-black stroke-[2.5]" />
           </div>
-          <h4 className="font-bold text-sm text-slate-900">Pure Offline Architecture</h4>
-          <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">Leverages client-side WebAssembly rendering kernels to perform high-speed compilation.</p>
+          <h4 className="font-display font-black text-sm uppercase tracking-wide">Pure Offline WASM</h4>
+          <p className="text-xs text-slate-700 font-semibold mt-1.5 leading-relaxed font-mono">Leverages client-side WebAssembly rendering kernels to perform high-speed compilation.</p>
         </div>
-        <div className="flex flex-col items-center p-4">
-          <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center mb-3">
-            <HardDrive className="h-5 w-5 text-emerald-600" />
+        <div className="flex flex-col items-center p-5 bg-white border-3 border-black rounded-xl shadow-[4px_4px_0px_0px_#000]">
+          <div className="h-10 w-10 rounded-lg bg-[#ff90e8] border-2 border-black flex items-center justify-center mb-3 shadow-[2px_2px_0px_0px_#000]">
+            <HardDrive className="h-5 w-5 text-black stroke-[2.5]" />
           </div>
-          <h4 className="font-bold text-sm text-slate-900">Auto Garbage Cleanup</h4>
-          <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">Memory blobs expire and purge automatically after 1 hour to prevent system memory leaks.</p>
+          <h4 className="font-display font-black text-sm uppercase tracking-wide">Auto Garbage Cleanup</h4>
+          <p className="text-xs text-slate-700 font-semibold mt-1.5 leading-relaxed font-mono">Memory blobs expire and purge automatically after 1 hour to prevent system memory leaks.</p>
         </div>
       </section>
 
-      {/* Collapsible Supported Formats Guide - Interactive Accordion with Chevron Arrows */}
-      <section className="max-w-4xl mx-auto w-full px-4 pt-4 pb-12 border-t border-slate-200">
+      {/* Collapsible Supported Formats Guide - Interactive Accordion in Neo-brutalist style */}
+      <section className="max-w-4xl mx-auto w-full px-4 pt-4 pb-12 border-t-[3px] border-black">
         <div className="text-center space-y-2 mb-8">
-          <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center justify-center gap-2">
-            <HelpCircle className="w-6 h-6 text-indigo-600" />
+          <h2 className="text-2xl font-display font-black uppercase text-black tracking-tight flex items-center justify-center gap-2">
+            <HelpCircle className="w-6 h-6 text-black stroke-[2.5]" />
             Panduan Format yang Didukung
           </h2>
-          <p className="text-xs text-slate-500 max-w-lg mx-auto">
+          <p className="text-xs font-mono font-semibold text-slate-600 max-w-lg mx-auto">
             Klik pada kategori konverter di bawah ini untuk melihat format file asal yang didukung dan format tujuan hasil konversinya.
           </p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {formatData.map((item) => {
             const isExpanded = expandedId === item.id;
             const IconComponent = item.icon;
@@ -673,28 +683,28 @@ export function Home() {
             return (
               <div 
                 key={item.id} 
-                className="bg-white border border-slate-200 rounded-xl overflow-hidden transition-all duration-200 hover:shadow-sm"
+                className="bg-white border-[3px] border-black rounded-xl overflow-hidden transition-all duration-200 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000]"
               >
                 {/* Accordion Trigger Header */}
                 <button
                   onClick={() => toggleAccordion(item.id)}
-                  className="w-full flex items-center justify-between p-4 text-left transition-colors hover:bg-slate-50 focus:outline-none"
+                  className="w-full flex items-center justify-between p-4 text-left transition-colors hover:bg-slate-50 focus:outline-none cursor-pointer"
                 >
                   <div className="flex items-center space-x-3.5">
-                    <div className={`p-2 rounded-lg ${item.accentColor.split(" ")[0]} ${item.accentColor.split(" ")[1]}`}>
-                      <IconComponent className="w-4.5 h-4.5" />
+                    <div className={`p-2 rounded-lg border-2 border-black ${item.accentColor} shadow-[2px_2px_0px_0px_#000]`}>
+                      <IconComponent className="w-4.5 h-4.5 stroke-[2.5]" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-sm text-slate-900">{item.name}</h3>
-                      <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{item.description}</p>
+                      <h3 className="font-display font-black uppercase tracking-wider text-sm text-black">{item.name}</h3>
+                      <p className="text-xs font-mono font-semibold text-slate-600 mt-0.5 line-clamp-1">{item.description}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2 pl-4">
-                    <span className="text-slate-400 text-[10px] hidden sm:inline-block font-medium">
-                      {isExpanded ? "Tutup" : "Lihat Detail"}
+                    <span className="text-black text-[10px] hidden sm:inline-block font-display font-black uppercase bg-[#f5f5f0] border-2 border-black px-2 py-1 shadow-[1.5px_1.5px_0px_0px_#000]">
+                      {isExpanded ? "Tutup" : "Buka"}
                     </span>
-                    <div className="p-1 rounded-full hover:bg-slate-200 text-slate-500 transition-colors">
-                      {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    <div className="p-1 rounded-full border-2 border-black bg-[#ffde43] text-black shadow-[1.5px_1.5px_0px_0px_#000] transition-colors">
+                      {isExpanded ? <ChevronUp className="w-4 h-4 stroke-[3]" /> : <ChevronDown className="w-4 h-4 stroke-[3]" />}
                     </div>
                   </div>
                 </button>
@@ -708,32 +718,32 @@ export function Home() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.15, ease: "easeInOut" }}
                     >
-                      <div className="px-5 pb-5 pt-3 border-t border-slate-100 bg-slate-50/50 space-y-4 text-xs">
+                      <div className="px-5 pb-5 pt-3 border-t-3 border-black bg-[#fafaf9] space-y-4 text-xs">
                         {/* Extra Description / Method details */}
-                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm leading-relaxed text-slate-600">
-                          <strong className="text-slate-900 block mb-1">Mekanisme Kerja Sandbox:</strong>
+                        <div className="bg-white p-4 rounded-xl border-2 border-black shadow-[3px_3px_0px_0px_#000] leading-relaxed text-slate-700 font-medium">
+                          <strong className="text-black font-display font-extrabold uppercase text-xs block mb-1">Mekanisme Kerja Sandbox:</strong>
                           {item.details}
                         </div>
 
                         {/* Nested Collapsible Sub-Flows */}
                         <div className="space-y-2">
-                          <span className="font-bold text-[10px] uppercase tracking-wider text-slate-400 block mb-2">
+                          <span className="font-display font-black text-[10px] uppercase tracking-wider text-slate-500 block mb-2">
                             Aliran Format Terperinci (Klik untuk memperluas):
                           </span>
-                          <div className="space-y-1.5">
+                          <div className="space-y-2">
                             {item.subFlows.map((flow, idx) => (
-                              <details key={idx} className="group bg-white rounded-lg border border-slate-200/80 overflow-hidden transition-all shadow-sm">
-                                <summary className="p-3 font-semibold text-xs text-slate-700 hover:bg-slate-50 cursor-pointer flex items-center justify-between list-none">
+                              <details key={idx} className="group bg-white rounded-lg border-2 border-black overflow-hidden transition-all shadow-[2.5px_2.5px_0px_0px_#000]">
+                                <summary className="p-3 font-mono font-bold text-xs text-black hover:bg-[#ff90e8]/10 cursor-pointer flex items-center justify-between list-none">
                                   <div className="flex items-center gap-1.5 flex-wrap">
-                                    <span className="font-mono bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded border border-indigo-100/60 font-bold">{flow.from}</span>
-                                    <span className="text-slate-400 font-bold">→</span>
-                                    <span className="font-mono bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-100/60 font-bold">{flow.to}</span>
+                                    <span className="font-mono bg-[#ff90e8] text-black px-1.5 py-0.5 rounded border border-black font-bold">{flow.from}</span>
+                                    <span className="text-black font-bold">→</span>
+                                    <span className="font-mono bg-[#a3e635] text-black px-1.5 py-0.5 rounded border border-black font-bold">{flow.to}</span>
                                   </div>
-                                  <div className="p-0.5 rounded-full hover:bg-slate-100 text-slate-400 transition-colors shrink-0">
-                                    <ChevronDown className="w-3.5 h-3.5 transform group-open:rotate-180 transition-transform" />
+                                  <div className="p-0.5 rounded-full border border-black bg-white text-black transition-colors shrink-0 shadow-[1px_1px_0px_0px_#000]">
+                                    <ChevronDown className="w-3.5 h-3.5 stroke-[3] transform group-open:rotate-180 transition-transform" />
                                   </div>
                                 </summary>
-                                <div className="p-3 pt-1 border-t border-slate-100 text-xs text-slate-500 leading-relaxed bg-slate-50/30">
+                                <div className="p-3 pt-1 border-t-2 border-black text-xs font-semibold text-slate-600 leading-relaxed bg-[#fdfdfb]">
                                   {flow.details}
                                 </div>
                               </details>

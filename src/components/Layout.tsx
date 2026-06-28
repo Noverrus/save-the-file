@@ -19,23 +19,28 @@ export function Layout() {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-[#fafafa] text-slate-900 font-sans flex flex-col antialiased">
-      {/* Navbar - Pure Flat Design */}
-      <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white shrink-0">
+    <div className="min-h-screen bg-[#f5f5f0] text-black font-sans flex flex-col antialiased">
+      {/* Navbar - Premium Neo-brutalist Design */}
+      <header className="sticky top-0 z-40 w-full border-b-[3px] border-black bg-white shrink-0">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center space-x-6 w-full">
-            <Link to="/" className="flex items-center space-x-2 mr-4 text-indigo-600 shrink-0">
-              <FileCode2 className="h-6 w-6" />
-              <span className="font-bold tracking-tight text-slate-900">WASM Converter</span>
+            <Link 
+              to="/" 
+              className="flex items-center space-x-2 mr-4 font-display font-black text-sm sm:text-base uppercase tracking-wider bg-[#ffde43] border-2 border-black px-3 py-1.5 shadow-[2px_2px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] transition-all shrink-0 active:scale-95"
+            >
+              <FileCode2 className="h-5 w-5 stroke-[2.5]" />
+              <span className="font-extrabold tracking-tight">WASM CONVERTER</span>
             </Link>
             
             {/* Scrollable horizontal list on mobile, neat list on desktop */}
-            <nav className="flex items-center space-x-1 overflow-x-auto scrollbar-none py-1 flex-1 mask-linear">
+            <nav className="flex items-center space-x-2 overflow-x-auto scrollbar-none py-2 flex-1 mask-linear">
               <Link 
                 to="/"
                 className={cn(
-                  "text-xs sm:text-sm font-medium px-3 py-2 rounded-lg transition-all shrink-0 hover:bg-slate-100",
-                  location.pathname === "/" ? "bg-slate-100 text-indigo-600 font-semibold" : "text-slate-600"
+                  "text-xs font-bold font-display uppercase tracking-wider px-3 py-2 rounded-lg border-2 transition-all shrink-0 active:scale-95",
+                  location.pathname === "/" 
+                    ? "bg-[#ff90e8] border-black text-black font-extrabold shadow-[2px_2px_0px_0px_#000]" 
+                    : "bg-white border-transparent text-slate-700 hover:border-black hover:bg-slate-100"
                 )}
               >
                 Dashboard
@@ -48,11 +53,13 @@ export function Layout() {
                     key={link.path}
                     to={link.path}
                     className={cn(
-                      "flex items-center space-x-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all shrink-0 hover:bg-slate-100",
-                      isActive ? "bg-indigo-600 text-white font-semibold" : "text-slate-600"
+                      "flex items-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-bold font-display uppercase tracking-wider border-2 transition-all shrink-0 active:scale-95",
+                      isActive 
+                        ? "bg-[#38bdf8] border-black text-black font-extrabold shadow-[2px_2px_0px_0px_#000]" 
+                        : "bg-white border-transparent text-slate-700 hover:border-black hover:bg-slate-100"
                     )}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-4 w-4 stroke-[2.5]" />
                     <span>{link.name}</span>
                   </Link>
                 );
@@ -67,11 +74,21 @@ export function Layout() {
         <Outlet />
       </main>
 
-      {/* Footer - Flat minimalist design */}
-      <footer className="shrink-0 border-t border-slate-200 py-8 text-center text-xs text-slate-500 bg-white">
-        <div className="max-w-7xl mx-auto px-4 space-y-2">
-          <p className="font-medium text-slate-600">Pure Client-Side WebAssembly File Processing Suite</p>
-          <p className="text-slate-400">Copyright (c) 2026 Noverrus Dev. Hak Cipta Dilindungi Undang-Undang.</p>
+      {/* Footer - Neo-brutalist minimalist design */}
+      <footer className="shrink-0 border-t-[3px] border-black py-8 bg-white text-black font-mono">
+        <div className="max-w-7xl mx-auto px-4 text-center space-y-3">
+          <p className="font-extrabold text-sm uppercase tracking-wide">
+            ⚡ PURE CLIENT-SIDE WASM CONVERTER ⚡
+          </p>
+          <p className="text-xs text-slate-600 font-semibold">
+            Semua proses dilakukan 100% luring di dalam memori peramban Anda. Tidak ada data yang dikirim ke server.
+          </p>
+          <div className="inline-block bg-[#a3e635] border-2 border-black px-3 py-1 font-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_#000]">
+            Privacy Sandbox Secured
+          </div>
+          <p className="text-[10px] text-slate-500 font-semibold pt-1">
+            Copyright &copy; 2026 WASM Converter Corp. Hak Cipta Dilindungi Undang-Undang.
+          </p>
         </div>
       </footer>
     </div>
