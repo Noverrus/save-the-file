@@ -1,72 +1,186 @@
-# WASM File Conversion Suite
+# WASM File Converter
 
-A high-performance file media converter and processing suite built with React (Vite) as a 100% Client-Side, Privacy-First, Offline-capable application. This application uses a single Local Browser Engine architecture abandoning all server costs and payload limitations.
+A high-performance, 100% client-side offline file converter. Supports multiple document, media, archive, sheet, vector, and CAD formats using a single, secure Local Browser Sandbox model. 
 
-1. **Local Browser Engine**: Heavy lifting is done on the client side using Web Workers, Canvas APIs, and WebAssembly (WASM via FFmpeg), processing standard images and heavy media formats entirely locally to preserve privacy and reduce server costs.
-2. **Absolute Privacy**: Files never upload anywhere. The processing happens strictly inside your device's memory. Unsafe or extremely obscure vector formats are gracefully rejected to preserve performance and privacy.
-3. **Flat Design Style**: The interface employs a clean, elegant flat design style with minimal borders, flat pastel badges, custom layouts, and highly responsive horizontal navigation.
+Written with **React**, **Vite**, **TypeScript**, and **WebAssembly**.
 
-![App Setup State](https://img.shields.io/badge/Architecture-React%20%2B%20Vite%20%2B%20WASM-blue)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Vite](https://img.shields.io/badge/Vite-B73BFE?logo=vite&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
+![WebAssembly](https://img.shields.io/badge/WebAssembly-654FF0?logo=webassembly&logoColor=white)
+![FFmpeg](https://img.shields.io/badge/FFmpeg-007800?logo=ffmpeg&logoColor=white)
 
-## Supported Offline Categories & Formats
+## Features
 
-Hanya format offline yang aman dan umum digunakan yang didukung. Format yang tidak didukung atau format vektor yang tidak direkomendasikan (seperti `.wmz`, `.wmf`, `.eps`, `.djv`) **ditolak secara otomatis** pada antarmuka upload file untuk menjaga performa dan memori perangkat.
+- **100% Client-Side Engine**: Heavy processing is executed inside your browser using WebWorkers, HTML5 Canvas, and WebAssembly (via FFmpeg WASM) with zero server-side storage or API latency.
+- **Privacy First Sandbox**: Files are never uploaded. Everything is handled inside the volatile sandbox memory of your device.
+- **Sequential Queue System**: Large multi-job operations run in serial tasks, ensuring RAM stability and preventing browser crashes.
+- **Auto Memory Purge**: Secure client-side garbage cleanup removes volatile memory blobs after 1 hour.
 
-* **Image Converter**:
-  - **Input**: `.jpg`, `.jpeg`, `.png`, `.webp`, `.heic`, `.heif`, `.bmp`, `.gif`, `.tif`, `.tiff`
-  - **Output**: `.webp`, `.png`, `.jpg`, `.gif`
-* **Document Converter**:
-  - **Input/Output**: PDF and image manuscripts compilation offline.
-* **Video Converter**:
-  - **Input**: `.mp4`, `.webm`, `.avi`, `.mov`, `.mkv`, `.wmv`, `.flv`, `.mp3`, `.wav`, `.ogg`, `.m4a`, `.aac`, `.flac`
-  - **Output**: `.mp4`, `.webm`, `.avi`, `.mp3`, `.wav`
-* **Archive Manager**:
-  - **Input/Output**: Pack folders and multiple files into optimized `.zip` files, or extract any `.zip` archive completely client-side in seconds using `jszip`.
-* **CAD Vector Converter**:
-  - **Input**: `.dxf`, `.svg`
-  - **Output**: Render coordinates onto canvas and export as crisp `.png`, vector `.pdf`, or `.svg`.
-* **Ebook Publisher**:
-  - **Input**: `.txt`, `.md`, `.html`
-  - **Output**: `.epub`, `.pdf`, `.txt`
-* **Font CSS Packager**:
-  - **Input**: `.ttf`, `.otf`, `.woff`, `.woff2`
-  - **Output**: Previews custom fonts dynamically using the browser FontFace API and packages `@font-face` CSS code offline.
-* **Presentation Slideshow**:
-  - Design premium widescreen slides and compile beautiful presentation decks to high-resolution `.pdf`.
-* **Spreadsheet & Data**:
-  - Parse `.csv` files into well-structured `.json` data tables, or generate clean, comma-separated `.csv` sheets from JSON arrays.
-* **Vector Rasterizer**:
-  - Rasterize complex `.svg` vector paths into crisp `.png`, `.jpg`, `.webp`, or `.pdf` formats at custom scale multipliers (up to 4x resolution).
+---
 
-## Core Technologies
+## 🛠️ Panduan Format yang Didukung (Collapsible / Gunakan Panah untuk Membaca)
 
-Website ini menggunakan teknologi mutakhir untuk konversi berbasis pada sisi klien sepenuhnya (WebAssembly dan Canvas API).
+Silakan klik setiap kategori konverter di bawah ini untuk melihat detail format file asal yang didukung dan format tujuan hasil konversinya.
 
-- **React + Vite**: Menghadirkan antarmuka (Frontend) yang sangat modern dan cepat.
-- **Web Workers**: Mengaktifkan kemampuan pemrosesan multithreading yang memisahkan rendering antarmuka dari konversi gambar/media berbeban berat agar UI tidak freeze.
-- **WebAssembly via FFmpeg (`@ffmpeg/ffmpeg`)**: Menjalankan file biner engine media konversi secara natif dan offline langsung di dalam memori sandbox web browser pengguna. Dilengkapi mode Queue sekuensial yang mengamankan memori saat memroses video berukuran besar.
-- **HTML5 Canvas API / jsPDF**: Digunakan untuk ekstraksi dokumen dan pembuatan file PDF gabungan secara instan, sepenuhnya di klien.
-- **JSZip**: Memberikan kemampuan Bulk Export (Download All as ZIP) dalam satu kali klik.
+<details>
+<summary><b>🖼️ Image Converter</b> (Click to expand / Klik untuk membuka)</summary>
 
-## Architecture Overview
+### Image Converter Details
+Mengonversi dan mengoptimasi berbagai format gambar standar.
 
-- **Frontend (React + Vite)**: Provides a drag-and-drop interface, managing a local queue of jobs via background Web Workers.
-- **Web Workers**: Enables true multithreaded processing, separating UI rendering from heavy image encoding/decoding.
-- **Pure Client-Side**: 100% offline-capable rendering with zero backend node processes required.
+| Kategori | Format Input (Converts From) | Format Output (Converts To) | Mekanisme |
+| --- | --- | --- | --- |
+| **Gambar** | `.jpg`, `.jpeg`, `.png`, `.webp`, `.heic`, `.heif`, `.bmp`, `.gif`, `.tif`, `.tiff` | `.webp`, `.png`, `.jpg`, `.gif` | Pemrosesan di latar belakang menggunakan Web Worker & Canvas API luring. |
 
-## Initial Setup & Initialization
+</details>
 
-### Run Local Environment
+<details>
+<summary><b>📄 Document Converter</b> (Click to expand / Klik untuk membuka)</summary>
+
+### Document Converter Details
+Menggabungkan barisan gambar atau manuskrip mentah menjadi file dokumen PDF terkompilasi.
+
+| Kategori | Format Input (Converts From) | Format Output (Converts To) | Mekanisme |
+| --- | --- | --- | --- |
+| **Dokumen** | Gambar (`.jpg`, `.png`, `.webp`, dll.) atau draf manuskrip teks lurus (`.txt`) | `.pdf` | Menggunakan jsPDF secara luring untuk menyusun tata urutan halaman, orientasi, dan margin dokumen. |
+
+</details>
+
+<details>
+<summary><b>🎥 Video & Audio Converter</b> (Click to expand / Klik untuk membuka)</summary>
+
+### Video & Audio Converter Details
+Mengonversi berkas video dan audio populer dengan presisi tinggi.
+
+| Kategori | Format Input (Converts From) | Format Output (Converts To) | Mekanisme |
+| --- | --- | --- | --- |
+| **Multimedia** | `.mp4`, `.webm`, `.avi`, `.mov`, `.mkv`, `.wmv`, `.flv`, `.mp3`, `.wav`, `.ogg`, `.m4a`, `.aac`, `.flac` | `.mp4`, `.webm`, `.avi`, `.mp3`, `.wav` | Menjalankan mesin biner FFmpeg WebAssembly (`@ffmpeg/ffmpeg`) langsung dalam memori browser secara berurutan. |
+
+</details>
+
+<details>
+<summary><b>📦 Archive Manager</b> (Click to expand / Klik untuk membuka)</summary>
+
+### Archive Manager Details
+Mengompresi sekumpulan berkas menjadi format ZIP atau mengekstrak isi file arsip ZIP secara luring.
+
+| Kategori | Format Input (Converts From) | Format Output (Converts To) | Mekanisme |
+| --- | --- | --- | --- |
+| **Arsip** | File digital apa pun (kompresi) ATAU dokumen `.zip` (ekstraksi) | `.zip` terkompresi atau berkas hasil ekstraksi asli | Menggunakan JSZip untuk pengompresan cepat tanpa batas payload upload server. |
+
+</details>
+
+<details>
+<summary><b>📐 CAD Vector Converter</b> (Click to expand / Klik untuk membuka)</summary>
+
+### CAD Vector Converter Details
+Mengurai entitas garis cetak biru CAD untuk digambar ke kanvas interaktif dan diekspor.
+
+| Kategori | Format Input (Converts From) | Format Output (Converts To) | Mekanisme |
+| --- | --- | --- | --- |
+| **CAD** | `.dxf` (AutoCAD Standard), `.svg` | `.png`, `.pdf` (vektor), `.svg` | Pembacaan matematika entitas kurva dan garis ke HTML5 Canvas dilengkapi kontrol zoom & pan. |
+
+</details>
+
+<details>
+<summary><b>📚 Ebook Publisher</b> (Click to expand / Klik untuk membuka)</summary>
+
+### Ebook Publisher Details
+Menyusun naskah digital Anda menjadi buku elektronik EPUB yang siap dipublikasikan.
+
+| Kategori | Format Input (Converts From) | Format Output (Converts To) | Mekanisme |
+| --- | --- | --- | --- |
+| **E-book** | `.txt`, `.md`, `.html` (naskah bab) | `.epub`, `.pdf`, `.txt` | Membuntal struktur manifest e-book EPUB valid yang siap dibaca di Google Books, Apple Books, dan Kindle. |
+
+</details>
+
+<details>
+<summary><b>🔤 Font CSS Packager</b> (Click to expand / Klik untuk membuka)</summary>
+
+### Font CSS Packager Details
+Menganalisis rupa huruf tipografi Anda dan membuat file stylesheet `@font-face` siap pakai.
+
+| Kategori | Format Input (Converts From) | Format Output (Converts To) | Mekanisme |
+| --- | --- | --- | --- |
+| **Tipografi** | `.ttf`, `.otf`, `.woff`, `.woff2` | Pratinjau interaktif & Bundel berkas `@font-face` CSS | Menggunakan FontFace API browser secara real-time untuk merender huruf secara luring. |
+
+</details>
+
+<details>
+<summary><b>📊 Presentation Slideshow</b> (Click to expand / Klik untuk membuka)</summary>
+
+### Presentation Slideshow Details
+Membuat draf presentasi minimalis rasio 16:9 dan mengekspornya ke PDF resolusi tinggi.
+
+| Kategori | Format Input (Converts From) | Format Output (Converts To) | Mekanisme |
+| --- | --- | --- | --- |
+| **Presentasi** | Judul, subjudul, teks isi, dan warna tema slide | `.pdf` (Widescreen 16:9) | Menggunakan generator koordinat canvas jsPDF luring untuk tata letak presentasi instan. |
+
+</details>
+
+<details>
+<summary><b>📋 Spreadsheet & Data Converter</b> (Click to expand / Klik untuk membuka)</summary>
+
+### Spreadsheet & Data Converter Details
+Mengonversi format tabular koma menjadi format JSON terstruktur untuk pemrograman.
+
+| Kategori | Format Input (Converts From) | Format Output (Converts To) | Mekanisme |
+| --- | --- | --- | --- |
+| **Data** | `.csv` (koma/titik-koma) ATAU berkas `.json` (array objek) | `.json` (terstruktur) ATAU `.csv` | Penguraian teks data secara instan di sisi klien untuk melindungi rahasia data perusahaan. |
+
+</details>
+
+<details>
+<summary><b>📈 Vector Rasterizer</b> (Click to expand / Klik untuk membuka)</summary>
+
+### Vector Rasterizer Details
+Mengubah gambar kurva vektor SVG menjadi format piksel raster jernih dengan kontrol kualitas.
+
+| Kategori | Format Input (Converts From) | Format Output (Converts To) | Mekanisme |
+| --- | --- | --- | --- |
+| **Vektor** | `.svg` | `.png`, `.jpg`, `.webp`, `.pdf` | Mendukung faktor penskalaan (scale multiplier) dari 1x hingga 4x untuk menjaga ketajaman resolusi kurva SVG. |
+
+</details>
+
+---
+
+## 🚀 Deployment
+
+Sistem ini bersifat **Client-Side Pure Static App**, sehingga dapat di-host secara gratis di platform static hosting seperti GitHub Pages, Vercel, Netlify, atau Cloudflare Pages.
+
+### Menjalankan Docker lokal (Opsional)
+Aplikasi dikemas dalam container luring mandiri:
+
 ```bash
-# Sync platform dependencies
-npm install
-
-# Start local React/Vite dev stream
-npm run dev
+docker run -d -p 3000:3000 wasm-file-converter
 ```
 
-## Licensing
+---
+
+## 🛠️ Development
+
+Untuk memulai pengembangan lokal di komputer Anda:
+
+1. **Instal dependensi**:
+   ```bash
+   npm install
+   ```
+
+2. **Jalankan Development Server**:
+   ```bash
+   npm run dev
+   ```
+
+3. **Kompilasi produksi**:
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 📝 Lisensi
 
 **Copyright (c) 2026 Noverrus Dev. Hak Cipta Dilindungi Undang-Undang.**
 
-Please see the `LICENSE` file for usage restrictions. Commercial use is strictly prohibited.
+Penggunaan komersial dilarang keras. Segala proses berjalan 100% pada peranti keras pengguna secara luring untuk privasi yang absolut.
