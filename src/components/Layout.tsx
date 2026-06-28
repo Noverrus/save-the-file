@@ -4,15 +4,15 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { name: "Image", path: "/image-converter", icon: Image },
-  { name: "Document", path: "/document", icon: FileText },
-  { name: "Video", path: "/video", icon: Video },
-  { name: "Archive", path: "/archive", icon: Archive },
-  { name: "CAD", path: "/cad", icon: FileCode },
-  { name: "Ebook", path: "/ebook", icon: BookOpen },
-  { name: "Font", path: "/font", icon: Type },
-  { name: "Presentation", path: "/presentation", icon: Presentation },
-  { name: "Spreadsheet", path: "/spreadsheet", icon: FileSpreadsheet },
-  { name: "Vector", path: "/vector", icon: Layers },
+  { name: "Document", path: "/document-converter", icon: FileText },
+  { name: "Video", path: "/video-converter", icon: Video },
+  { name: "Archive", path: "/archive-converter", icon: Archive },
+  { name: "CAD", path: "/cad-converter", icon: FileCode },
+  { name: "Ebook", path: "/ebook-converter", icon: BookOpen },
+  { name: "Font", path: "/font-converter", icon: Type },
+  { name: "Presentation", path: "/presentation-converter", icon: Presentation },
+  { name: "Spreadsheet", path: "/spreadsheet-converter", icon: FileSpreadsheet },
+  { name: "Vector", path: "/vector-converter", icon: Layers },
 ];
 
 export function Layout() {

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Upload, FileImage, Download, Loader2, AlertCircle, Trash2, ShieldCheck, X, Archive, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConversionJob, WorkerMessageOut } from "@/workers/converter.worker.ts";
@@ -12,12 +12,24 @@ const SUPPORTED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'bmp
 export function ImageConverter() {
   const { format } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [jobs, setJobs] = useState<ConversionJob[]>([]);
   const workerRef = useRef<Worker | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [toastError, setToastError] = useState<string | null>(null);
   const [isZipping, setIsZipping] = useState(false);
   const [selectedTargetFormat, setSelectedTargetFormat] = useState<string>("webp");
+
+  // Handle preloaded files from Home Page
+  useEffect(() => {
+    if (location.state?.preloadedFiles) {
+      if (location.state.preloadedTargetFormat) {
+        setSelectedTargetFormat(location.state.preloadedTargetFormat);
+      }
+      loadFiles(location.state.preloadedFiles);
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state]);
 
   const sourceFormatsList = ["PNG", "JPG", "WEBP", "HEIC", "GIF", "BMP", "TIFF"];
   const targetFormatsList = ["WEBP", "PNG", "JPG", "GIF"];

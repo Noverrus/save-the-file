@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import { Upload, FileVideo, Download, Loader2, AlertCircle, RefreshCcw, Trash2, ShieldCheck, X, Archive } from "lucide-react";
@@ -20,6 +21,8 @@ interface MediaJob {
 }
 
 export function VideoConverter() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState<MediaJob[]>([]);
   const ffmpegRef = useRef<FFmpeg | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -27,6 +30,42 @@ export function VideoConverter() {
   const [toastError, setToastError] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [isZipping, setIsZipping] = useState(false);
+
+  // Handle preloaded files from Home Page
+  useEffect(() => {
+    if (location.state?.preloadedFiles) {
+      const targetFormat = location.state.preloadedTargetFormat || "mp4";
+      const validFiles: File[] = [];
+      const invalidFiles: File[] = [];
+
+      Array.from(location.state.preloadedFiles as File[]).forEach(file => {
+        const ext = file.name.split('.').pop()?.toLowerCase() || '';
+        if (SUPPORTED_EXTENSIONS.includes(ext)) {
+          validFiles.push(file);
+        } else {
+          invalidFiles.push(file);
+        }
+      });
+
+      if (invalidFiles.length > 0) {
+        setToastError("Unsupported format. Please upload standard media formats.");
+        setTimeout(() => setToastError(null), 5000);
+      }
+
+      if (validFiles.length > 0) {
+        const newJobs: MediaJob[] = validFiles.map(file => ({
+          id: crypto.randomUUID(),
+          file,
+          targetFormat: targetFormat,
+          quality: 'medium',
+          status: 'idle',
+          progress: 0
+        }));
+        setJobs(prev => [...prev, ...newJobs]);
+      }
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state]);
 
   // Initialize FFmpeg
   const loadFFmpeg = async () => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Upload, FileText, Download, Loader2, AlertCircle, Trash2, ShieldCheck, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import jsPDF from "jspdf";
@@ -18,9 +19,19 @@ interface DocJob {
 }
 
 export function DocumentConverter() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState<DocJob[]>([]);
   const [toastError, setToastError] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
+  // Handle preloaded files from Home Page
+  useEffect(() => {
+    if (location.state?.preloadedFiles) {
+      loadFiles(location.state.preloadedFiles);
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state]);
 
   const handleClearAll = () => {
     jobs.forEach(job => {
