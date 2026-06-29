@@ -29,10 +29,15 @@ async function getFFmpeg() {
   ffmpeg = new FFmpeg();
   
   const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
-  await ffmpeg.load({
-    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-  });
+  try {
+    await ffmpeg.load({
+      coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+      wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+    });
+  } catch (error) {
+    ffmpeg = null; // Reset so they can retry
+    throw new Error("Could not download WebAssembly conversion engine (FFmpeg) from CDN. Please check your internet connection or verify network permissions.");
+  }
   return ffmpeg;
 }
 

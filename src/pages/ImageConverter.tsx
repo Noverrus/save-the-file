@@ -4,6 +4,7 @@ import { Upload, FileImage, Download, Loader2, AlertCircle, Trash2, ShieldCheck,
 import { cn } from "@/lib/utils";
 import type { ConversionJob, WorkerMessageOut } from "@/workers/converter.worker.ts";
 import JSZip from "jszip";
+import { DropZone } from "@/components/DropZone";
 
 const MAX_CONCURRENT_JOBS = 2; // Prevent OOM by limiting concurrent processing
 const MEMORY_TIMEOUT_MS = 3600000; // 1 hour memory limit
@@ -254,7 +255,7 @@ export function ImageConverter() {
     <div className="w-full max-w-4xl mx-auto space-y-8 relative">
       {/* Toast Notification */}
       {toastError && (
-        <div className="fixed top-4 right-4 z-50 bg-[#ff5a5f] border-3 border-black text-white px-4 py-3 rounded-xl shadow-[4px_4px_0px_0px_#000] flex items-start gap-3 animate-in fade-in slide-in-from-top-4 max-w-md">
+        <div className="fixed top-4 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-md z-50 bg-[#ff5a5f] border-3 border-black text-white px-4 py-3 rounded-xl shadow-[4px_4px_0px_0px_#000] flex items-start gap-3 animate-in fade-in slide-in-from-top-4">
           <AlertCircle className="w-5 h-5 shrink-0 text-white mt-0.5 stroke-[2.5]" />
           <p className="text-sm font-display font-black leading-relaxed">{toastError}</p>
           <button onClick={() => setToastError(null)} className="shrink-0 p-1 bg-white hover:bg-slate-100 rounded-lg border-2 border-black ml-auto text-black transition-colors shadow-[1.5px_1.5px_0px_0px_#000]">
@@ -359,30 +360,20 @@ export function ImageConverter() {
       )}
 
       {/* Drop Zone */}
-      <div 
-        className="w-full h-48 border-3 border-dashed border-black rounded-xl flex flex-col items-center justify-center hover:bg-[#a3e635]/5 bg-white text-black cursor-pointer shadow-[4px_4px_0px_0px_#000] transition-all"
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={handleFilesDrop}
-        onClick={() => document.getElementById("img-upload")?.click()}
+      <DropZone
+        inputId="img-upload"
+        multiple
+        accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.bmp,.gif,.tif,.tiff"
+        onFiles={(files) => {
+          loadFiles(files);
+        }}
       >
-        <input 
-          id="img-upload" 
-          type="file" 
-          multiple 
-          accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.bmp,.gif,.tif,.tiff"
-          className="hidden" 
-          onChange={(e) => {
-            if (e.target.files) {
-              loadFiles(e.target.files);
-            }
-          }}
-        />
         <div className="h-16 w-16 bg-[#ffde43] border-2 border-black rounded-xl flex items-center justify-center mb-4 shadow-[2px_2px_0px_0px_#000] transition-transform hover:scale-105">
           <Upload className="h-8 w-8 text-black stroke-[2.5]" />
         </div>
-        <p className="font-display font-black text-base uppercase tracking-wider">Drag & Drop images or folders</p>
-        <p className="text-xs font-mono font-semibold text-slate-600 mt-1">Queue supports HEIC, JPG, PNG, WEBP and more locally.</p>
-      </div>
+        <p className="font-display font-black text-base uppercase tracking-wider text-black">Drag & Drop images or folders</p>
+        <p className="text-xs font-mono font-semibold text-slate-800 mt-1">Queue supports HEIC, JPG, PNG, WEBP and more locally.</p>
+      </DropZone>
 
       {/* Jobs Queue */}
       {jobs.length > 0 && (

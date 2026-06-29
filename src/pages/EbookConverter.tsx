@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Upload, FileText, Download, Loader2, AlertCircle, Trash2, ShieldCheck, X, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import jsPDF from "jspdf";
+import JSZip from "jszip";
 
 interface EbookJob {
   id: string;
@@ -52,20 +53,51 @@ export function EbookConverter() {
 
         if (job.targetFormat === 'epub') {
           // Dynamic minimal EPUB packaging client-side!
+          const zip = new JSZip();
+          // Required: mimetype file, must be first and uncompressed
+          zip.file("mimetype", "application/epub+zip", { compression: "STORE" });
+
+          // Required: META-INF/container.xml
+          zip.folder("META-INF")!.file("container.xml", `<?xml version="1.0"?>
+<container version="1.0" xmlns="urn:oasis:schemas-epub:container">
+  <rootfiles>
+    <rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/>
+  </rootfiles>
+</container>`);
+
+          const title = job.file.name.split('.')[0];
           const chapterXhtml = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title>${job.file.name.split('.')[0]}</title>
+  <title>${title}</title>
 </head>
 <body>
-  <h1>${job.file.name.split('.')[0]}</h1>
+  <h1>${title}</h1>
   <p>${text.replace(/\n/g, '<br/>')}</p>
 </body>
 </html>`;
 
-          const rawEpub = chapterXhtml;
-          blob = new Blob([rawEpub], { type: 'application/epub+zip' });
+          const oebps = zip.folder("OEBPS")!;
+          oebps.file("chapter1.xhtml", chapterXhtml);
+
+          const uniqueId = crypto.randomUUID ? crypto.randomUUID() : "12345678-1234-5678-1234-567812345678";
+          oebps.file("content.opf", `<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="uid">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:title>${title}</dc:title>
+    <dc:identifier id="uid">urn:uuid:${uniqueId}</dc:identifier>
+    <dc:language>en</dc:language>
+  </metadata>
+  <manifest>
+    <item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="chapter1"/>
+  </spine>
+</package>`);
+
+          blob = await zip.generateAsync({ type: "blob", mimeType: "application/epub+zip" });
         } else if (job.targetFormat === 'pdf') {
           const pdf = new jsPDF();
           pdf.setFontSize(12);

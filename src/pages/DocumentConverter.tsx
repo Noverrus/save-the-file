@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import jsPDF from "jspdf";
 import JSZip from "jszip";
 import { useAutoDelete, formatTimeLeft } from "@/hooks/useAutoDelete";
+import { DropZone } from "@/components/DropZone";
 
 const SUPPORTED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp', 'txt', 'docx', 'html', 'pdf'];
 
@@ -181,7 +182,7 @@ export function DocumentConverter() {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8 relative">
       {toastError && (
-        <div className="fixed top-4 right-4 z-50 bg-[#ff5a5f] border-3 border-black text-black px-4 py-3 rounded-xl shadow-[4px_4px_0px_0px_#000] flex items-start gap-3 animate-in fade-in slide-in-from-top-4 max-w-md font-mono text-xs font-bold">
+        <div className="fixed top-4 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-md z-50 bg-[#ff5a5f] border-3 border-black text-black px-4 py-3 rounded-xl shadow-[4px_4px_0px_0px_#000] flex items-start gap-3 animate-in fade-in slide-in-from-top-4 font-mono text-xs font-bold">
           <AlertCircle className="w-5 h-5 shrink-0 text-black stroke-[2.5] mt-0.5" />
           <p className="leading-relaxed">{toastError}</p>
           <button 
@@ -201,30 +202,20 @@ export function DocumentConverter() {
         </p>
       </div>
 
-      <div 
-        className="w-full h-48 border-3 border-dashed border-black rounded-xl flex flex-col items-center justify-center hover:bg-[#38bdf8]/5 bg-white text-black cursor-pointer shadow-[4px_4px_0px_0px_#000] transition-all"
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={handleDrop}
-        onClick={() => document.getElementById("document-upload")?.click()}
+      <DropZone
+        inputId="document-upload"
+        multiple
+        accept=".png,.jpg,.jpeg,.webp,.txt,.docx,.html,.pdf"
+        onFiles={(files) => {
+          Array.from(files).forEach(file => loadFile(file as File));
+        }}
       >
-        <input 
-          id="document-upload" 
-          type="file" 
-          multiple
-          accept=".png,.jpg,.jpeg,.webp,.txt,.docx,.html,.pdf"
-          className="hidden" 
-          onChange={(e) => {
-            if (e.target.files) {
-              Array.from(e.target.files).forEach(file => loadFile(file as File));
-            }
-          }}
-        />
         <div className="h-16 w-16 bg-[#ffde43] border-2 border-black rounded-xl flex items-center justify-center mb-4 shadow-[2px_2px_0px_0px_#000] transition-transform hover:scale-105">
           <Upload className="h-8 w-8 text-black stroke-[2.5]" />
         </div>
-        <p className="font-display font-black text-base uppercase tracking-wider">Drag & Drop documents here</p>
-        <p className="text-xs font-mono font-semibold text-slate-600 mt-1">PNG, JPG, WEBP, TXT, DOCX, HTML, PDF files supported</p>
-      </div>
+        <p className="font-display font-black text-base uppercase tracking-wider text-black">Drag & Drop documents here</p>
+        <p className="text-xs font-mono font-semibold text-slate-800 mt-1">PNG, JPG, WEBP, TXT, DOCX, HTML, PDF files supported</p>
+      </DropZone>
 
       {jobs.length > 0 && (
         <div className="bg-white rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_#000] overflow-hidden">

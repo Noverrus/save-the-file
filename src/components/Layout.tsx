@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { FileCode2, Image, FileText, Video, Archive, FileCode, BookOpen, Type, Presentation, FileSpreadsheet, Layers, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,6 +21,52 @@ export function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeModal, setActiveModal] = useState<"privacy" | "terms" | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (activeModal && modalRef.current) {
+      const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length > 0) {
+        // Delay slightly to ensure browser rendering is complete
+        setTimeout(() => {
+          focusable[0]?.focus();
+        }, 50);
+      }
+
+      const handleTab = (e: KeyboardEvent) => {
+        if (e.key !== 'Tab') return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last?.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first?.focus();
+          }
+        }
+      };
+
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setActiveModal(null);
+        }
+      };
+
+      document.addEventListener('keydown', handleTab);
+      document.addEventListener('keydown', handleEscape);
+      return () => {
+        document.removeEventListener('keydown', handleTab);
+        document.removeEventListener('keydown', handleEscape);
+      };
+    }
+  }, [activeModal]);
 
   return (
     <div className="min-h-screen bg-[#f5f5f0] text-black font-sans flex flex-col antialiased">
@@ -150,12 +196,13 @@ export function Layout() {
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
           <div 
+            ref={modalRef}
             role="dialog"
             aria-modal="true"
-            aria-label={activeModal === "privacy" ? "Privacy Policy" : "Terms of Service"}
-            className="relative w-full max-w-md bg-white border-4 border-black rounded-xl p-6 shadow-[8px_8px_0px_0px_#000] z-10 text-black"
+            aria-labelledby="modal-title"
+            className="relative w-full max-w-md bg-white border-4 border-black rounded-xl p-6 shadow-[8px_8px_0px_0px_#000] z-10 text-black focus:outline-none"
           >
-            <h3 className="font-display font-black text-lg uppercase tracking-wider mb-3">
+            <h3 id="modal-title" className="font-display font-black text-lg uppercase tracking-wider mb-3">
               {activeModal === "privacy" ? "Privacy Policy" : "Terms of Service"}
             </h3>
             <p className="text-xs font-sans font-semibold text-slate-800 leading-relaxed mb-6">
@@ -169,7 +216,7 @@ export function Layout() {
               onClick={() => setActiveModal(null)}
               className="w-full bg-[#ffde43] hover:bg-[#ffe566] text-black border-2 border-black py-2.5 rounded-lg font-display font-black text-xs uppercase tracking-wider shadow-[3px_3px_0px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer focus-visible:ring-3 focus-visible:ring-black outline-none"
             >
-              Understand & Close
+              Got it, close
             </button>
           </div>
         </div>

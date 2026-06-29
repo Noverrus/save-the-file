@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Upload, FileCode, Download, Loader2, AlertCircle, Trash2, ShieldCheck, X, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import jsPDF from "jspdf";
+import { DropZone } from "@/components/DropZone";
 
 interface CadJob {
   id: string;
@@ -230,37 +231,27 @@ export function CadConverter() {
       )}
 
       <div>
-        <h2 className="text-3xl font-bold text-slate-800">CAD Vector Converter</h2>
-        <p className="text-slate-500 mt-1">
+        <h2 className="text-3xl font-display font-black uppercase tracking-wide text-black">CAD Vector Converter</h2>
+        <p className="text-slate-800 font-semibold text-sm mt-1">
           Open, view and render high-fidelity DXF and SVG vectors, then convert them offline into PNG, SVG or PDF.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="space-y-6">
-          <div 
-            className="w-full h-40 border-2 border-dashed border-slate-300 rounded-2xl flex flex-col items-center justify-center hover:border-indigo-400 bg-white hover:bg-indigo-50/10 cursor-pointer transition-colors"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={handleDrop}
-            onClick={() => document.getElementById("cad-upload")?.click()}
+          <DropZone
+            inputId="cad-upload"
+            accept=".dxf,.svg"
+            onFiles={(files) => {
+              if (files[0]) loadFile(files[0]);
+            }}
           >
-            <input 
-              id="cad-upload" 
-              type="file" 
-              accept=".dxf,.svg"
-              className="hidden" 
-              onChange={(e) => {
-                if (e.target.files?.[0]) {
-                  loadFile(e.target.files[0]);
-                }
-              }}
-            />
-            <div className="h-10 w-10 bg-slate-100 rounded-full flex items-center justify-center mb-2">
-              <Upload className="h-5 w-5 text-slate-500" />
+            <div className="h-10 w-10 bg-[#ffde43] border-2 border-black rounded-full flex items-center justify-center mb-1 shadow-[2px_2px_0px_0px_#000]">
+              <Upload className="h-5 w-5 text-black stroke-[2.5]" />
             </div>
-            <p className="font-semibold text-slate-800 text-sm">Upload DXF or SVG</p>
-            <p className="text-xs text-slate-500 mt-0.5">100% Secure & Client-Side</p>
-          </div>
+            <p className="font-display font-black text-xs uppercase tracking-wider text-black">Upload DXF or SVG</p>
+            <p className="text-[10px] font-mono font-bold text-slate-800">100% Secure & Client-Side</p>
+          </DropZone>
 
           {jobs.length > 0 && (
             <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
