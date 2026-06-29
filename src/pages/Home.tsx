@@ -352,6 +352,19 @@ const itemVariants = {
 export function Home() {
   const navigate = useNavigate();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Selector states
   const [activeSourceFormat, setActiveSourceFormat] = useState<string>("DOCX");
@@ -466,7 +479,7 @@ export function Home() {
   }).filter(cat => cat.formats.length > 0);
 
   return (
-    <div className="flex-1 flex flex-col space-y-20 pb-20 relative">
+    <div className="flex-1 flex flex-col space-y-12 sm:space-y-20 pb-12 sm:pb-20 relative">
       
       {/* =================================================
           1. HERO SECTION
@@ -483,7 +496,7 @@ export function Home() {
           <h1 className="text-4xl sm:text-7xl font-display font-black text-black tracking-tight uppercase leading-none">
             Convert <br className="sm:hidden" /> Almost Anything.
           </h1>
-          <p className="text-slate-700 text-sm sm:text-base max-w-2xl mx-auto font-sans font-semibold leading-relaxed">
+          <p className="text-slate-800 text-sm sm:text-base max-w-2xl mx-auto font-sans font-semibold leading-relaxed">
             Convert documents, images, videos, audio, archives, ebooks and more in one place. Fast, simple and privacy-focused.
           </p>
         </div>
@@ -491,7 +504,7 @@ export function Home() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto pt-2">
           <button
             onClick={scrollToUpload}
-            className="w-full sm:w-auto bg-[#a3e635] hover:bg-[#86efac] text-black border-3 border-black px-8 py-4 rounded-xl text-sm font-display font-black uppercase tracking-wider transition-all shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] active:scale-95 cursor-pointer inline-flex items-center justify-center gap-2"
+            className="w-full sm:w-auto bg-[#a3e635] hover:bg-[#86efac] text-black border-3 border-black px-8 py-4 rounded-xl text-sm font-display font-black uppercase tracking-wider transition-all shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] active:scale-95 cursor-pointer inline-flex items-center justify-center gap-2 focus-visible:ring-3 focus-visible:ring-black outline-none"
           >
             <UploadCloud className="w-4 h-4 stroke-[3]" />
             Convert Now
@@ -499,7 +512,7 @@ export function Home() {
           
           <button
             onClick={scrollToFormats}
-            className="w-full sm:w-auto bg-white hover:bg-slate-50 text-black border-3 border-black px-8 py-4 rounded-xl text-sm font-display font-black uppercase tracking-wider transition-all shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] active:scale-95 cursor-pointer inline-flex items-center justify-center gap-2"
+            className="w-full sm:w-auto bg-white hover:bg-slate-50 text-black border-3 border-black px-8 py-4 rounded-xl text-sm font-display font-black uppercase tracking-wider transition-all shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] active:scale-95 cursor-pointer inline-flex items-center justify-center gap-2 focus-visible:ring-3 focus-visible:ring-black outline-none"
           >
             <Layers className="w-4 h-4 stroke-[2.5]" />
             Browse Formats
@@ -527,7 +540,7 @@ export function Home() {
               <h3 className="text-lg sm:text-2xl font-display font-black text-white uppercase tracking-wider">
                 Select Formats & Upload File
               </h3>
-              <p className="text-slate-400 font-mono text-[11px] font-bold">
+              <p className="text-slate-300 font-mono text-[11px] font-bold">
                 Configure your conversion flow and select files to convert offline.
               </p>
             </div>
@@ -537,7 +550,11 @@ export function Home() {
               {/* Left format card (Source) */}
               <button
                 onClick={() => setOpenSelector("source")}
-                className="w-full sm:w-44 bg-white border-3 border-black rounded-xl p-4 text-left transition-all flex flex-col justify-between h-24 text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] active:scale-95 cursor-pointer"
+                aria-haspopup="dialog"
+                aria-expanded={openSelector === "source"}
+                aria-controls="format-selector-dialog"
+                aria-label={`Select source format. Currently selected: ${activeSourceFormat}`}
+                className="w-full sm:w-44 bg-white border-3 border-black rounded-xl p-4 text-left transition-all flex flex-col justify-between h-24 text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] active:scale-95 cursor-pointer focus-visible:ring-3 focus-visible:ring-black outline-none"
               >
                 <span className="text-[10px] uppercase font-display font-extrabold tracking-widest text-[#ff6b2b]">From</span>
                 <div className="flex items-center justify-between w-full">
@@ -550,7 +567,8 @@ export function Home() {
               <div className="flex flex-col items-center justify-center shrink-0">
                 <button
                   onClick={handleSwapFormats}
-                  className="h-10 w-10 rounded-full bg-[#ffde43] border-3 border-black hover:bg-[#ffe566] text-black transition-all flex items-center justify-center shadow-[2px_2px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] active:scale-95"
+                  aria-label="Swap source and target formats"
+                  className="h-10 w-10 rounded-full bg-[#ffde43] border-3 border-black hover:bg-[#ffe566] text-black transition-all flex items-center justify-center shadow-[2px_2px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] active:scale-95 focus-visible:ring-3 focus-visible:ring-black outline-none"
                   title="Swap formats"
                 >
                   <RefreshCw className="w-4 h-4 stroke-[2.5]" />
@@ -561,7 +579,11 @@ export function Home() {
               {/* Right format card (Target) */}
               <button
                 onClick={() => setOpenSelector("target")}
-                className="w-full sm:w-44 bg-white border-3 border-black rounded-xl p-4 text-left transition-all flex flex-col justify-between h-24 text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] active:scale-95 cursor-pointer"
+                aria-haspopup="dialog"
+                aria-expanded={openSelector === "target"}
+                aria-controls="format-selector-dialog"
+                aria-label={`Select target format. Currently selected: ${activeTargetFormat}`}
+                className="w-full sm:w-44 bg-white border-3 border-black rounded-xl p-4 text-left transition-all flex flex-col justify-between h-24 text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] active:scale-95 cursor-pointer focus-visible:ring-3 focus-visible:ring-black outline-none"
               >
                 <span className="text-[10px] uppercase font-display font-extrabold tracking-widest text-indigo-600">To</span>
                 <div className="flex items-center justify-between w-full">
@@ -577,7 +599,16 @@ export function Home() {
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => document.getElementById("hero-file-selector")?.click()}
-              className={`border-3 border-dashed rounded-xl p-8 sm:p-10 max-w-lg mx-auto transition-all flex flex-col items-center justify-center gap-4 cursor-pointer ${
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  document.getElementById("hero-file-selector")?.click();
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label="File upload dropzone. Drag and drop your files here, or click to choose from your device."
+              className={`border-3 border-dashed rounded-xl p-8 sm:p-10 max-w-lg mx-auto transition-all flex flex-col items-center justify-center gap-4 cursor-pointer focus-visible:ring-3 focus-visible:ring-black outline-none ${
                 isDragging
                   ? "border-[#ff5a5f] bg-[#ff5a5f]/10"
                   : "border-black bg-white text-black shadow-[4px_4px_0px_0px_#000] hover:bg-slate-50"
@@ -588,10 +619,10 @@ export function Home() {
               </div>
               
               <div className="space-y-1.5 text-center">
-                <p className="text-sm sm:text-base font-display font-black uppercase tracking-wider">
+                <p className="text-sm sm:text-base font-display font-black uppercase tracking-wider text-black">
                   Drop your files here
                 </p>
-                <p className="text-xs font-mono font-bold text-slate-600">
+                <p className="text-xs font-mono font-bold text-slate-800">
                   or choose files from your device.
                 </p>
               </div>
@@ -599,6 +630,7 @@ export function Home() {
               <div className="relative inline-block mt-1">
                 <button
                   type="button"
+                  tabIndex={-1} /* Interactive through parent dropzone container keypress */
                   className="bg-[#ff5a5f] hover:bg-[#ff7377] text-black border-2 border-black px-5 py-2.5 rounded-xl text-xs font-display font-black uppercase tracking-wide transition-all inline-flex items-center gap-2 shadow-[3px_3px_0px_0px_#000]"
                 >
                   <File className="w-4 h-4 stroke-[2.5]" />
@@ -613,7 +645,7 @@ export function Home() {
                 />
               </div>
 
-              <p className="text-[10px] font-mono font-bold text-slate-500 pt-1 text-center">
+              <p className="text-[10px] font-mono font-bold text-slate-600 pt-1 text-center">
                 Maximum file size depends on your selected conversion.
               </p>
             </div>
@@ -641,6 +673,10 @@ export function Home() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ type: "spring", duration: 0.3 }}
+              role="dialog"
+              aria-modal="true"
+              id="format-selector-dialog"
+              aria-label={`Select ${openSelector === "source" ? "Source" : "Target"} Format`}
               className="relative w-full max-w-2xl bg-white border-[4px] border-black rounded-xl overflow-hidden shadow-[8px_8px_0px_0px_#000] flex flex-col h-[520px] text-black"
             >
               {/* Popover Header */}
@@ -656,7 +692,8 @@ export function Home() {
                     setOpenSelector(null);
                     setSearchQuery("");
                   }}
-                  className="p-1 rounded-lg border-2 border-black bg-white hover:bg-[#ff90e8] text-black transition-colors shadow-[2px_2px_0px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer"
+                  className="p-1 rounded-lg border-2 border-black bg-white hover:bg-[#ff90e8] text-black transition-colors shadow-[2px_2px_0px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer focus-visible:ring-3 focus-visible:ring-black outline-none"
+                  aria-label="Close dialog"
                 >
                   <X className="w-4 h-4 stroke-[2.5]" />
                 </button>
@@ -670,13 +707,13 @@ export function Home() {
                   placeholder="Search Format (e.g. PNG, JPG, PDF...)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white text-black placeholder-slate-500 border-2 border-black focus:outline-none rounded-xl py-2.5 pl-11 pr-4 text-xs font-mono font-bold tracking-wider transition-colors shadow-[3px_3px_0px_0px_#000]"
+                  className="w-full bg-white text-black placeholder-slate-600 border-2 border-black focus:outline-none rounded-xl py-2.5 pl-11 pr-4 text-xs font-mono font-bold tracking-wider transition-colors shadow-[3px_3px_0px_0px_#000] focus-visible:ring-3 focus-visible:ring-black outline-none"
                   autoFocus
                 />
               </div>
 
               {/* Split Content Pane */}
-              <div className="flex-1 flex overflow-hidden">
+              <div className="flex-1 flex flex-col sm:flex-row overflow-hidden">
                 {searchQuery ? (
                   /* Search Results Panel */
                   <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-[#fdfdfb]">
@@ -684,12 +721,12 @@ export function Home() {
                       filteredCategories.map(cat => (
                         <div key={cat.id} className="space-y-2">
                           <span className="text-[10px] font-display font-black uppercase tracking-wider text-slate-500">{cat.name}</span>
-                          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                             {cat.formats.map(fmt => (
                               <button
                                 key={fmt}
                                 onClick={() => handleSelectFormat(fmt, cat.page)}
-                                className="bg-white hover:bg-[#ff90e8] border-2 border-black text-black font-mono text-xs font-bold py-2 px-1 rounded-lg text-center transition-all shadow-[2px_2px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] active:scale-95 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer"
+                                className="bg-white hover:bg-[#ff90e8] border-2 border-black text-black font-mono text-xs font-bold py-2 px-1 rounded-lg text-center transition-all shadow-[2px_2px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] active:scale-95 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer focus-visible:ring-3 focus-visible:ring-black outline-none"
                               >
                                 {fmt}
                               </button>
@@ -705,40 +742,55 @@ export function Home() {
                     )}
                   </div>
                 ) : (
-                  /* Standard Categories Split Panel */
+                  /* Standard Categories Split Panel - Highly Responsive Mobile Layout */
                   <>
-                    <div className="w-1/3 border-r-3 border-black bg-[#fdfdfb] overflow-y-auto">
+                    <div 
+                      role="tablist"
+                      aria-label="Format categories"
+                      className="w-full sm:w-1/3 border-b-3 sm:border-b-0 sm:border-r-3 border-black bg-[#fdfdfb] overflow-y-auto max-h-[100px] sm:max-h-none flex flex-row sm:flex-col overflow-x-auto sm:overflow-x-visible scrollbar-none"
+                    >
                       {categoriesList.map(cat => {
                         const isActive = activeCategoryTab === cat.id;
                         return (
                           <button
                             key={cat.id}
+                            id={`format-tab-${cat.id}`}
+                            role="tab"
+                            aria-selected={isActive}
+                            aria-controls={`format-panel-${cat.id}`}
                             onClick={() => setActiveCategoryTab(cat.id)}
-                            className={`w-full text-left px-4 py-3.5 text-xs font-extrabold font-display uppercase tracking-wider flex items-center justify-between transition-all border-b-2 border-black border-l-4 ${
+                            className={`w-auto sm:w-full text-center sm:text-left px-4 py-3 sm:py-3.5 text-xs font-extrabold font-display uppercase tracking-wider flex items-center justify-between transition-all border-b-0 border-r-2 sm:border-r-0 sm:border-b-2 border-black border-l-0 sm:border-l-4 shrink-0 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-black outline-none cursor-pointer ${
                               isActive
-                                ? "bg-[#38bdf8] border-l-[#ff5a5f] text-black font-black"
-                                : "border-l-transparent text-slate-600 hover:text-black hover:bg-slate-100/80"
+                                ? "bg-[#38bdf8] border-l-0 sm:border-l-[#ff5a5f] text-black font-black"
+                                : "border-l-transparent text-slate-700 hover:text-black hover:bg-slate-100/80"
                             }`}
                           >
-                            <span>{cat.name}</span>
-                            <ArrowRight className={`w-3.5 h-3.5 transition-transform stroke-[2.5] ${isActive ? "translate-x-0.5 opacity-100" : "opacity-0"}`} />
+                            <span className="whitespace-nowrap">{cat.name}</span>
+                            <ArrowRight className={`hidden sm:block w-3.5 h-3.5 transition-transform stroke-[2.5] ${isActive ? "translate-x-0.5 opacity-100" : "opacity-0"}`} />
                           </button>
                         );
                       })}
                     </div>
 
-                    <div className="w-2/3 p-4 overflow-y-auto bg-[#fafaf9]">
+                    <div className="w-full sm:w-2/3 p-4 overflow-y-auto bg-[#fafaf9] flex-1">
                       {categoriesList.map(cat => {
                         if (cat.id !== activeCategoryTab) return null;
                         return (
-                          <div key={cat.id} className="space-y-3">
-                            <span className="text-[10px] font-display font-black uppercase tracking-widest text-slate-500">{cat.name} Formats</span>
+                          <div 
+                            key={cat.id}
+                            id={`format-panel-${cat.id}`}
+                            role="tabpanel"
+                            aria-labelledby={`format-tab-${cat.id}`}
+                            className="space-y-3 focus:outline-none"
+                            tabIndex={0}
+                          >
+                            <span className="text-[10px] font-display font-black uppercase tracking-widest text-slate-600">{cat.name} Formats</span>
                             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                               {cat.formats.map(fmt => (
                                 <button
                                   key={fmt}
                                   onClick={() => handleSelectFormat(fmt, cat.page)}
-                                  className="bg-white hover:bg-[#ffde43] border-2 border-black text-black font-mono text-xs font-bold py-3 px-1 rounded-xl text-center transition-all shadow-[2px_2px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3.5px_3.5px_0px_0px_#000] active:scale-95 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer"
+                                  className="bg-white hover:bg-[#ffde43] border-2 border-black text-black font-mono text-xs font-bold py-3 px-1 rounded-xl text-center transition-all shadow-[2px_2px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3.5px_3.5px_0px_0px_#000] focus-visible:ring-3 focus-visible:ring-black outline-none active:scale-95 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer"
                                 >
                                   {fmt}
                                 </button>
@@ -1119,6 +1171,27 @@ export function Home() {
           })}
         </div>
       </section>
+
+      {/* Primary Conversion Floating CTA Button */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 30 }}
+            className="fixed bottom-6 right-6 z-40"
+          >
+            <button
+              onClick={scrollToUpload}
+              aria-label="Convert files now"
+              className="bg-[#a3e635] hover:bg-[#86efac] text-black border-3 border-black px-5 py-3 rounded-xl text-xs font-display font-black uppercase tracking-wider transition-all shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000] active:scale-95 cursor-pointer inline-flex items-center gap-2 focus-visible:ring-3 focus-visible:ring-black outline-none"
+            >
+              <UploadCloud className="w-4 h-4 stroke-[3]" />
+              Convert Now
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

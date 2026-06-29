@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { FileCode2, Image, FileText, Video, Archive, FileCode, BookOpen, Type, Presentation, FileSpreadsheet, Layers, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ const navLinks = [
 export function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [activeModal, setActiveModal] = useState<"privacy" | "terms" | null>(null);
 
   return (
     <div className="min-h-screen bg-[#f5f5f0] text-black font-sans flex flex-col antialiased">
@@ -112,12 +114,18 @@ export function Layout() {
                   <Link to="/" className="text-xs font-mono font-bold hover:underline bg-[#38bdf8]/10 hover:bg-[#38bdf8]/30 px-2 py-1 rounded border-2 border-black transition-colors">
                     Dashboard
                   </Link>
-                  <a href="#privacy" onClick={(e) => { e.preventDefault(); alert("Privacy: All conversion operations are done entirely in your browser using local web workers and WebAssembly. No files are sent to any server."); }} className="text-xs font-mono font-bold hover:underline bg-[#a3e635]/10 hover:bg-[#a3e635]/30 px-2 py-1 rounded border-2 border-black transition-colors">
+                  <button 
+                    onClick={() => setActiveModal("privacy")} 
+                    className="text-xs font-mono font-bold hover:underline bg-[#a3e635]/10 hover:bg-[#a3e635]/30 px-2.5 py-1.5 rounded-lg border-2 border-black transition-colors cursor-pointer text-black"
+                  >
                     Privacy
-                  </a>
-                  <a href="#terms" onClick={(e) => { e.preventDefault(); alert("Terms: This software is provided free of charge, entirely open-source, and runs local-only. Use at your own convenience."); }} className="text-xs font-mono font-bold hover:underline bg-[#ffde43]/10 hover:bg-[#ffde43]/30 px-2 py-1 rounded border-2 border-black transition-colors">
+                  </button>
+                  <button 
+                    onClick={() => setActiveModal("terms")} 
+                    className="text-xs font-mono font-bold hover:underline bg-[#ffde43]/10 hover:bg-[#ffde43]/30 px-2.5 py-1.5 rounded-lg border-2 border-black transition-colors cursor-pointer text-black"
+                  >
                     Terms
-                  </a>
+                  </button>
                   <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-xs font-mono font-bold hover:underline bg-[#fb923c]/10 hover:bg-[#fb923c]/30 px-2 py-1 rounded border-2 border-black transition-colors">
                     GitHub
                   </a>
@@ -133,6 +141,39 @@ export function Layout() {
           </div>
         </div>
       </footer>
+
+      {/* Privacy / Terms Custom Neo-brutalist Modal Overlay */}
+      {activeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div 
+            onClick={() => setActiveModal(null)}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          />
+          <div 
+            role="dialog"
+            aria-modal="true"
+            aria-label={activeModal === "privacy" ? "Privacy Policy" : "Terms of Service"}
+            className="relative w-full max-w-md bg-white border-4 border-black rounded-xl p-6 shadow-[8px_8px_0px_0px_#000] z-10 text-black"
+          >
+            <h3 className="font-display font-black text-lg uppercase tracking-wider mb-3">
+              {activeModal === "privacy" ? "Privacy Policy" : "Terms of Service"}
+            </h3>
+            <p className="text-xs font-sans font-semibold text-slate-800 leading-relaxed mb-6">
+              {activeModal === "privacy" ? (
+                "All conversion operations are done 100% locally in your browser using local web workers and WebAssembly (WASM) compiler technology. No files, logs, metadata, or telemetry are ever uploaded to any external servers. Your digital assets remain entirely within your device sandbox."
+              ) : (
+                "This browser-side conversion suite is provided free of charge, entirely open-source, and runs local-only. Use at your own convenience. Convert To Everything Corp makes no representations or warranties of any kind concerning the safety, suitability, or accuracy of local processing."
+              )}
+            </p>
+            <button
+              onClick={() => setActiveModal(null)}
+              className="w-full bg-[#ffde43] hover:bg-[#ffe566] text-black border-2 border-black py-2.5 rounded-lg font-display font-black text-xs uppercase tracking-wider shadow-[3px_3px_0px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer focus-visible:ring-3 focus-visible:ring-black outline-none"
+            >
+              Understand & Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
