@@ -111,132 +111,132 @@ const tools = [
   },
 ];
 
-// Indonesian Translation & Guide Data for bottom accordion
+// Supported Formats Guide Data for bottom accordion
 const formatData = [
   {
     id: "image",
     name: "Image Converter",
     icon: Image,
-    description: "Konversi dan optimasi gambar secara mandiri & luring langsung di browser Anda.",
+    description: "Convert and optimize images independently and offline directly in your browser.",
     subFlows: [
-      { from: "PNG", to: "JPG, WEBP, GIF", details: "Mengonversi file PNG transparan maupun opak menjadi JPG berkualitas tinggi, WEBP ultra terkompresi, atau GIF." },
-      { from: "JPG", to: "PNG, WEBP, GIF, AVIF, BMP, EPS, ICO, ODD, PS, PSD, TIFF, PDF", details: "Mengonversi gambar JPEG/JPG standar menjadi PNG, WEBP, GIF, AVIF, BMP, EPS, ICO, ODD, PS, PSD, TIFF, atau PDF." },
-      { from: "WEBP", to: "PNG, JPG, GIF", details: "Mendekompresi gambar WEBP modern menjadi PNG berkualitas tinggi atau JPG standar." },
-      { from: "HEIC / HEIF", to: "PNG, JPG, WEBP, GIF", details: "Membongkar format gambar Apple HEIC berdefinisi tinggi langsung di browser menjadi format ramah web luring." },
-      { from: "BMP", to: "PNG, JPG, WEBP, GIF", details: "Mengubah gambar Bitmap mentah menjadi format web terkompresi." },
-      { from: "GIF", to: "PNG, JPG, WEBP", details: "Mengekstrak atau mengubah berkas GIF menjadi gambar statis berkinerja tinggi." },
-      { from: "TIFF / TIF", to: "PNG, JPG, WEBP, GIF", details: "Mengonversi format gambar TIFF cetak berkualitas tinggi menjadi format yang kompatibel dengan browser." }
+      { from: "PNG", to: "JPG, WEBP, GIF", details: "Convert transparent or opaque PNG files into high-quality JPG, ultra-compressed WEBP, or GIF." },
+      { from: "JPG", to: "PNG, WEBP, GIF, AVIF, BMP, EPS, ICO, ODD, PS, PSD, TIFF, PDF", details: "Convert standard JPEG/JPG images to PNG, WEBP, GIF, AVIF, BMP, EPS, ICO, ODD, PS, PSD, TIFF, or PDF." },
+      { from: "WEBP", to: "PNG, JPG, GIF", details: "Decompress modern WEBP images to high-quality PNG or standard JPG." },
+      { from: "HEIC / HEIF", to: "PNG, JPG, WEBP, GIF", details: "Extract high-definition Apple HEIC image formats directly in the browser to offline web-friendly formats." },
+      { from: "BMP", to: "PNG, JPG, WEBP, GIF", details: "Convert raw Bitmap images to compressed web formats." },
+      { from: "GIF", to: "PNG, JPG, WEBP", details: "Extract or convert GIF files into high-performance static images." },
+      { from: "TIFF / TIF", to: "PNG, JPG, WEBP, GIF", details: "Convert high-quality print TIFF image formats into browser-compatible formats." }
     ],
-    details: "Mendukung kompresi tingkat lanjut, rotasi sudut, dan penyesuaian dimensi piksel secara instan di sisi pengguna tanpa perlu server tambahan.",
+    details: "Supports advanced compression, angle rotation, and pixel dimension adjustments instantly on the client side without needing additional servers.",
     accentColor: "bg-[#ff90e8] text-black border-black",
   },
   {
     id: "document",
     name: "Document Converter",
     icon: FileText,
-    description: "Kompilasi sekumpulan gambar hasil pindaian atau teks lurus menjadi PDF utuh.",
+    description: "Compile a set of scanned images or raw text into a complete PDF.",
     subFlows: [
-      { from: "Gambar (PNG, JPG, BMP)", to: "PDF Dokumen Terpadu", details: "Menyusun beberapa lembar gambar cetak/pindaian menjadi berkas laporan PDF terpadu luring." },
-      { from: "Teks Polos (.txt)", to: "PDF Dokumen Terpadu", details: "Mengemas draf manuskrip polos teks lurus menjadi berkas tata letak PDF modern." }
+      { from: "Images (PNG, JPG, BMP)", to: "Unified PDF Document", details: "Assemble multiple sheets of printed/scanned images into a unified PDF report file offline." },
+      { from: "Plain Text (.txt)", to: "Unified PDF Document", details: "Package plain text drafts into modern PDF layout files." }
     ],
-    details: "Membantu menata tata urutan lembar halaman, mengatur margin tepi dokumen, serta menyesuaikan layout Portrait / Landscape secara luring.",
+    details: "Helps organize page sequence, set document margin edges, and adjust Portrait / Landscape layouts offline.",
     accentColor: "bg-[#38bdf8] text-black border-black",
   },
   {
     id: "video",
     name: "Video & Audio Converter",
     icon: Video,
-    description: "Konversi video multimedia dan format audio lengkap bertenaga WebAssembly.",
+    description: "Convert multimedia video and complete audio formats powered by WebAssembly.",
     subFlows: [
-      { from: "MP4", to: "WEBM, AVI, MP3, WAV", details: "Mengekstrak klip audio MP3 atau mengubah format video wadah MP4 ke WEBM berkecepatan tinggi." },
-      { from: "WEBM", to: "MP4, AVI, MP3, WAV", details: "Mengonversi video ramah web WEBM ke format biner MP4 universal." },
-      { from: "AVI", to: "MP4, WEBM, MP3, WAV", details: "Mengompilasi video AVI lama ke kompresi modern H.264 MP4 atau audio saja." },
-      { from: "MOV / MKV", to: "MP4, WEBM, MP3, WAV", details: "Membuka wadah multimedia Apple MOV atau mkv luring untuk dikompresi." },
-      { from: "Audio (MP3, WAV, FLAC, AAC, M4A)", to: "MP3, WAV", details: "Mengompresi format audio lossless atau lossy ke tingkat bit rate target." }
+      { from: "MP4", to: "WEBM, AVI, MP3, WAV", details: "Extract MP3 audio clips or convert MP4 container video formats to high-speed WEBM." },
+      { from: "WEBM", to: "MP4, AVI, MP3, WAV", details: "Convert web-friendly WEBM videos to universal MP4 binary format." },
+      { from: "AVI", to: "MP4, WEBM, MP3, WAV", details: "Compile older AVI videos to modern H.264 MP4 compression or audio only." },
+      { from: "MOV / MKV", to: "MP4, WEBM, MP3, WAV", details: "Open Apple MOV or MKV multimedia containers offline for compression." },
+      { from: "Audio (MP3, WAV, FLAC, AAC, M4A)", to: "MP3, WAV", details: "[ponytail: filter standard streams] Compress lossless or lossy audio formats to target bit rate levels." }
     ],
-    details: "Menjalankan kompilasi offline murni di browser menggunakan porting binary FFmpeg WASM. Dilengkapi antrean proses berurutan untuk menjamin efisiensi memori.",
+    details: "Runs pure offline compilation in the browser using ported FFmpeg WASM binaries. Equipped with sequential process queuing to guarantee memory efficiency.",
     accentColor: "bg-[#a3e635] text-black border-black",
   },
   {
     id: "archive",
     name: "Archive Manager",
     icon: Archive,
-    description: "Bundel berkas ke folder ZIP terenkripsi atau bongkar arsip ZIP Anda.",
+    description: "Bundle files into compressed ZIP folders or extract your ZIP archives.",
     subFlows: [
-      { from: "Semua File Digital", to: "Arsip Terkompresi ZIP", details: "Mengemas banyak file sekaligus menjadi satu bundel ZIP terkompresi secara offline." },
-      { from: "Berkas ZIP", to: "Ekstraksi File Asli", details: "Mengekstrak isi dari berkas ZIP langsung ke sistem memori browser untuk diunduh terpisah." }
+      { from: "All Digital Files", to: "Compressed ZIP Archive", details: "Pack multiple files at once into a single compressed ZIP bundle offline." },
+      { from: "ZIP Files", to: "Original File Extraction", details: "Extract contents of ZIP files directly into browser memory for separate downloads." }
     ],
-    details: "Sistem pengompresan JSZip berkecepatan tinggi yang bebas dari batasan payload unggahan. Mengamankan file rahasia dari intaian server pihak ketiga.",
+    details: "High-speed JSZip compression system free from upload payload limits. Secure confidential files from third-party servers.",
     accentColor: "bg-[#ffde43] text-black border-black",
   },
   {
     id: "cad",
     name: "CAD Vector Converter",
     icon: FileCode,
-    description: "Urai file cetak biru DXF & format SVG menjadi representasi kanvas interaktif.",
+    description: "Parse DXF blueprint files and SVG formats into interactive canvas representations.",
     subFlows: [
-      { from: "DXF (AutoCAD Blueprint)", to: "PNG, PDF, SVG", details: "Membaca garis kurva koordinat kartesius dan merendernya ke format visual." },
-      { from: "SVG (Scalable Vector)", to: "PNG, PDF", details: "Merender garis vektor mentah menjadi format gambar bitmap piksel atau PDF cetak." }
+      { from: "DXF (AutoCAD Blueprint)", to: "PNG, PDF, SVG", details: "Read curve lines of Cartesian coordinates and render them to visual formats." },
+      { from: "SVG (Scalable Vector)", to: "PNG, PDF", details: "Render raw vector lines into bitmap pixel image formats or print-ready PDFs." }
     ],
-    details: "Membaca data entitas vektor seperti lingkaran, garis lurus, dan busur secara mekanis ke kanvas HTML5 lengkap dengan navigasi zoom dan pan.",
+    details: "Read vector entity data such as circles, straight lines, and arcs mechanically to HTML5 canvas complete with zoom and pan navigation.",
     accentColor: "bg-[#fb923c] text-black border-black",
   },
   {
     id: "ebook",
     name: "Ebook Publisher",
     icon: BookOpen,
-    description: "Tautkan manuskrip Markdown atau draf teks menjadi publikasi e-book siap edar.",
+    description: "Link Markdown manuscripts or text drafts into ready-to-publish e-book publications.",
     subFlows: [
-      { from: "TXT / MD / HTML", to: "EPUB (Standard Ebook)", details: "Mengemas naskah bab per bab lengkap dengan file cover menjadi berkas buku digital standar e-reader." },
-      { from: "TXT / MD", to: "PDF Dokumen, TXT Bersih", details: "Mengekspor draf tulisan menjadi layout PDF siap cetak atau file teks terformat." }
+      { from: "TXT / MD / HTML", to: "EPUB (Standard Ebook)", details: "Package manuscripts chapter by chapter complete with a cover file into standard e-reader digital book files." },
+      { from: "TXT / MD", to: "PDF Document, Clean TXT", details: "Export writing drafts into print-ready PDF layouts or formatted text files." }
     ],
-    details: "Sangat ideal untuk penulis mandiri. Unggah naskah bab demi bab, tambahkan berkas sampul luar, dan ekspor e-book yang lolos uji baca Google Books, Apple Books, maupun Kindle.",
+    details: "Ideal for indie authors. Upload manuscripts chapter by chapter, add a cover file, and export e-books that pass readability checks for Google Books, Apple Books, or Kindle.",
     accentColor: "bg-[#c084fc] text-black border-black",
   },
   {
     id: "font",
     name: "Font CSS Packager",
     icon: Type,
-    description: "Inspeksi rupa tipografi kustom Anda dan kemas ke stylesheet @font-face.",
+    description: "Inspect your custom typography and package them into @font-face stylesheets.",
     subFlows: [
-      { from: "TTF / OTF (TrueType / OpenType)", to: "CSS @font-face & Pratinjau", details: "Menganalisis rupa huruf tipografi Anda dan membuat file stylesheet @font-face siap pakai luring." },
-      { from: "WOFF / WOFF2 (Web Fonts)", to: "CSS @font-face & Pratinjau", details: "Mengonverifikasi font web agar kompatibel dengan peramban lama atau modern." }
+      { from: "TTF / OTF (TrueType / OpenType)", to: "CSS @font-face & Preview", details: "Analyze your typography typefaces and generate ready-to-use offline @font-face stylesheets." },
+      { from: "WOFF / WOFF2 (Web Fonts)", to: "CSS @font-face & Preview", details: "Verify web fonts to ensure compatibility with modern or older browsers." }
     ],
-    details: "Menggunakan FontFace API browser secara real-time untuk memuat rupa huruf. Mempermudah pengembang web untuk memeriksa karakter glif secara luring.",
+    details: "Uses the browser FontFace API in real-time to load typefaces. Makes it easier for web developers to inspect glyph characters offline.",
     accentColor: "bg-[#2dd4bf] text-black border-black",
   },
   {
     id: "presentation",
     name: "Presentation Slideshow",
     icon: Presentation,
-    description: "Rancang slide presentasi bergaya widescreen dan kompilasi langsung ke PDF.",
+    description: "Design widescreen-style presentation slides and compile them directly to PDF.",
     subFlows: [
-      { from: "Draf Slide Editor", to: "Slide PDF (16:9)", details: "Membuat dokumen draf presentasi widescreen lalu mengonversinya langsung menjadi berkas dokumen PDF tajam." }
+      { from: "Slide Draft Editor", to: "Slide PDF (16:9)", details: "Create widescreen presentation drafts and convert them directly into crisp PDF document files." }
     ],
-    details: "Pilihan cepat pengganti PowerPoint. Cukup masukkan konten presentasi Anda ke editor visual kami dan sistem akan menata grid dokumen secara dinamis.",
+    details: "A quick alternative to PowerPoint. Just enter your presentation content into our visual editor and the system dynamically arranges the grid.",
     accentColor: "bg-[#f472b6] text-black border-black",
   },
   {
     id: "spreadsheet",
     name: "Spreadsheet & Data Converter",
     icon: FileSpreadsheet,
-    description: "Konversi berkas baris CSV menjadi format JSON terstruktur atau sebaliknya.",
+    description: "Convert CSV row files to structured JSON format or vice versa.",
     subFlows: [
-      { from: "CSV (Comma-Separated Data)", to: "JSON Terstruktur (Array)", details: "Mengonversi data tabular dari Microsoft Excel ke data array JSON siap pakai untuk integrasi API." },
-      { from: "JSON (Array of Objects)", to: "CSV Tabular", details: "Mengonversi format data raw JSON menjadi berkas spreadsheet CSV terformat koma." }
+      { from: "CSV (Comma-Separated Data)", to: "Structured JSON (Array)", details: "Convert tabular data from Microsoft Excel to ready-to-use JSON array data for API integration." },
+      { from: "JSON (Array of Objects)", to: "Tabular CSV", details: "Convert raw JSON data formats into comma-formatted CSV spreadsheet files." }
     ],
-    details: "Sangat berguna untuk pengolahan data spreadsheet yang aman. Penguraian baris data berlangsung cepat di browser tanpa risiko kebocoran data rahasia perusahaan.",
+    details: "Extremely useful for secure spreadsheet data processing. Row parsing runs fast in the browser with no risk of corporate data leaks.",
     accentColor: "bg-[#94a3b8] text-black border-black",
   },
   {
     id: "vector",
     name: "Vector Rasterizer",
     icon: Layers,
-    description: "Rastersi kurva tajam vektor SVG menjadi gambar berbasis piksel resolusi tinggi.",
+    description: "Rasterize sharp SVG vector curves into high-resolution pixel-based images.",
     subFlows: [
-      { from: "SVG (Scalable Vector Graphics)", to: "PNG, JPG, WEBP, PDF", details: "Meraster berkas SVG tajam menjadi gambar piksel raster (lossy/lossless) dengan kontrol pengali ketajaman hingga 4x lipat." }
+      { from: "SVG (Scalable Vector Graphics)", to: "PNG, JPG, WEBP, PDF", details: "Rasterize sharp SVG files into raster pixel images (lossy/lossless) with up to 4x resolution multiplier control." }
     ],
-    details: "Mendukung penskalaan pengali hingga 4x lipat ukuran dasar untuk memastikan kurva tipografi dan logo SVG tetap tajam saat diekspor menjadi format raster.",
+    details: "Supports multiplier scaling up to 4x base size to ensure SVG typography curves and logos remain crisp when exported to raster formats.",
     accentColor: "bg-[#60a5fa] text-black border-black",
   },
 ];
@@ -668,10 +668,10 @@ export function Home() {
         <div className="text-center space-y-2 mb-8">
           <h2 className="text-2xl font-display font-black uppercase text-black tracking-tight flex items-center justify-center gap-2">
             <HelpCircle className="w-6 h-6 text-black stroke-[2.5]" />
-            Panduan Format yang Didukung
+            Supported Formats Guide
           </h2>
           <p className="text-xs font-mono font-semibold text-slate-600 max-w-lg mx-auto">
-            Klik pada kategori konverter di bawah ini untuk melihat format file asal yang didukung dan format tujuan hasil konversinya.
+            Click on a converter category below to see the supported source file formats and their target output formats.
           </p>
         </div>
 
@@ -692,7 +692,7 @@ export function Home() {
                 >
                   <div className="flex items-center space-x-3.5">
                     <div className={`p-2 rounded-lg border-2 border-black ${item.accentColor} shadow-[2px_2px_0px_0px_#000]`}>
-                      <IconComponent className="w-4.5 h-4.5 stroke-[2.5]" />
+                       <IconComponent className="w-4.5 h-4.5 stroke-[2.5]" />
                     </div>
                     <div>
                       <h3 className="font-display font-black uppercase tracking-wider text-sm text-black">{item.name}</h3>
@@ -701,7 +701,7 @@ export function Home() {
                   </div>
                   <div className="flex items-center space-x-2 pl-4">
                     <span className="text-black text-[10px] hidden sm:inline-block font-display font-black uppercase bg-[#f5f5f0] border-2 border-black px-2 py-1 shadow-[1.5px_1.5px_0px_0px_#000]">
-                      {isExpanded ? "Tutup" : "Buka"}
+                      {isExpanded ? "Close" : "Open"}
                     </span>
                     <div className="p-1 rounded-full border-2 border-black bg-[#ffde43] text-black shadow-[1.5px_1.5px_0px_0px_#000] transition-colors">
                       {isExpanded ? <ChevronUp className="w-4 h-4 stroke-[3]" /> : <ChevronDown className="w-4 h-4 stroke-[3]" />}
@@ -721,14 +721,14 @@ export function Home() {
                       <div className="px-5 pb-5 pt-3 border-t-3 border-black bg-[#fafaf9] space-y-4 text-xs">
                         {/* Extra Description / Method details */}
                         <div className="bg-white p-4 rounded-xl border-2 border-black shadow-[3px_3px_0px_0px_#000] leading-relaxed text-slate-700 font-medium">
-                          <strong className="text-black font-display font-extrabold uppercase text-xs block mb-1">Mekanisme Kerja Sandbox:</strong>
+                          <strong className="text-black font-display font-extrabold uppercase text-xs block mb-1">Sandbox Mechanism:</strong>
                           {item.details}
                         </div>
 
                         {/* Nested Collapsible Sub-Flows */}
                         <div className="space-y-2">
                           <span className="font-display font-black text-[10px] uppercase tracking-wider text-slate-500 block mb-2">
-                            Aliran Format Terperinci (Klik untuk memperluas):
+                            Detailed Format Flows (Click to expand):
                           </span>
                           <div className="space-y-2">
                             {item.subFlows.map((flow, idx) => (

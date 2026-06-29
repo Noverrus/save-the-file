@@ -99,13 +99,13 @@ export function Layout() {
             ⚡ PURE CLIENT-SIDE WASM CONVERTER ⚡
           </p>
           <p className="text-xs text-slate-600 font-semibold">
-            Semua proses dilakukan 100% luring di dalam memori peramban Anda. Tidak ada data yang dikirim ke server.
+            All processing is performed 100% offline within your browser memory. No data is sent to any server.
           </p>
           <div className="inline-block bg-[#a3e635] border-2 border-black px-3 py-1 font-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_#000]">
             Privacy Sandbox Secured
           </div>
           <p className="text-[10px] text-slate-500 font-semibold pt-1">
-            Copyright &copy; 2026 WASM Converter Corp. Hak Cipta Dilindungi Undang-Undang.
+            Copyright &copy; 2026 WASM Converter Corp. All Rights Reserved.
           </p>
         </div>
       </footer>

@@ -273,15 +273,15 @@ export function ImageConverter() {
       {/* Quick Format Flow Selector */}
       <div className="bg-white border-3 border-black rounded-xl p-5 space-y-4 shadow-[4px_4px_0px_0px_#000]">
         <h3 className="text-sm font-display font-black uppercase tracking-wider text-black flex items-center gap-2">
-          <span>🎯 Pilih Alur Konversi Gambar (Quick Selector)</span>
-          <span className="text-xs font-mono font-medium text-slate-500">(atau langsung unggah file Anda)</span>
+          <span>🎯 Select Image Conversion Flow (Quick Selector)</span>
+          <span className="text-xs font-mono font-medium text-slate-500">(or upload your files directly)</span>
         </h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
           {/* Source format selection */}
           <div className="space-y-2">
             <label className="text-xs font-display font-extrabold uppercase tracking-wide text-slate-700 block">
-              1. Pilih Format Asal (From):
+              1. Choose Source Format (From):
             </label>
             <div className="flex flex-wrap gap-1.5">
               {sourceFormatsList.map((src) => {
@@ -308,7 +308,7 @@ export function ImageConverter() {
           {/* Target format selection */}
           <div className="space-y-2">
             <label className="text-xs font-display font-extrabold uppercase tracking-wide text-slate-700 block">
-              2. Pilih Format Hasil (To):
+              2. Choose Target Format (To):
             </label>
             <div className="flex flex-wrap gap-1.5 items-center">
               {targetFormatsList.map((tgt) => {
@@ -335,7 +335,7 @@ export function ImageConverter() {
 
         <div className="bg-[#38bdf8]/10 p-3 rounded-lg border-2 border-black text-xs font-mono font-bold text-black flex items-center justify-between shadow-[2px_2px_0px_0px_#000]">
           <div className="flex items-center gap-1.5">
-            <span className="font-bold">Aliran Konversi Saat Ini:</span>
+            <span className="font-bold">Current Conversion Flow:</span>
             <span className="font-mono bg-[#ff90e8] border-2 border-black px-2 py-0.5 rounded text-black font-extrabold shadow-[1px_1px_0px_0px_#000]">{activeSourceFormat}</span>
             <ArrowRight className="w-3.5 h-3.5 text-black stroke-[3]" />
             <span className="font-mono bg-[#a3e635] border-2 border-black px-2 py-0.5 rounded text-black font-extrabold shadow-[1px_1px_0px_0px_#000]">{selectedTargetFormat.toUpperCase()}</span>
