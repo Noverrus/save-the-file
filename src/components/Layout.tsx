@@ -93,21 +93,44 @@ export function Layout() {
         <Outlet />
       </main>
 
-      {/* Footer - Neo-brutalist minimalist design */}
-      <footer className="shrink-0 border-t-[3px] border-black py-8 bg-white text-black font-mono">
-        <div className="max-w-7xl mx-auto px-4 text-center space-y-3">
-          <p className="font-extrabold text-sm uppercase tracking-wide">
-            ⚡ PURE CLIENT-SIDE WASM CONVERTER ⚡
-          </p>
-          <p className="text-xs text-slate-600 font-semibold">
-            All processing is performed 100% offline within your browser memory. No data is sent to any server.
-          </p>
-          <div className="inline-block bg-[#a3e635] border-2 border-black px-3 py-1 font-bold text-[10px] uppercase shadow-[2px_2px_0px_0px_#000]">
-            Privacy Sandbox Secured
+      {/* Footer - Redesigned simple Neo-brutalist footer */}
+      <footer className="shrink-0 border-t-[3px] border-black py-10 bg-white text-black font-sans">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start pb-8 border-b-2 border-black">
+            <div className="space-y-3">
+              <div className="inline-block bg-[#ff90e8] border-2 border-black px-3 py-1 font-display font-black text-xs uppercase tracking-wider shadow-[2px_2px_0px_0px_#000]">
+                Convert To Everything
+              </div>
+              <p className="text-xs text-slate-700 font-semibold leading-relaxed max-w-sm">
+                A high-speed, client-side, offline-first digital compilation suite. All your files are processed securely inside your browser. No server uploads, ever.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-6">
+              <div className="space-y-2">
+                <span className="font-display font-black text-xs uppercase tracking-wider text-slate-500 block">Quick Links</span>
+                <div className="flex flex-wrap gap-3">
+                  <Link to="/" className="text-xs font-mono font-bold hover:underline bg-[#38bdf8]/10 hover:bg-[#38bdf8]/30 px-2 py-1 rounded border-2 border-black transition-colors">
+                    Dashboard
+                  </Link>
+                  <a href="#privacy" onClick={(e) => { e.preventDefault(); alert("Privacy: All conversion operations are done entirely in your browser using local web workers and WebAssembly. No files are sent to any server."); }} className="text-xs font-mono font-bold hover:underline bg-[#a3e635]/10 hover:bg-[#a3e635]/30 px-2 py-1 rounded border-2 border-black transition-colors">
+                    Privacy
+                  </a>
+                  <a href="#terms" onClick={(e) => { e.preventDefault(); alert("Terms: This software is provided free of charge, entirely open-source, and runs local-only. Use at your own convenience."); }} className="text-xs font-mono font-bold hover:underline bg-[#ffde43]/10 hover:bg-[#ffde43]/30 px-2 py-1 rounded border-2 border-black transition-colors">
+                    Terms
+                  </a>
+                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-xs font-mono font-bold hover:underline bg-[#fb923c]/10 hover:bg-[#fb923c]/30 px-2 py-1 rounded border-2 border-black transition-colors">
+                    GitHub
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="text-[10px] text-slate-500 font-semibold pt-1">
-            Copyright &copy; 2026 WASM Converter Corp. All Rights Reserved.
-          </p>
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-600 font-semibold">
+            <span>&copy; 2026 Convert To Everything. Crafted with local-first WebAssembly technology.</span>
+            <div className="bg-[#a3e635] border-2 border-black px-2.5 py-0.5 text-[10px] font-bold uppercase shadow-[1.5px_1.5px_0px_0px_#000]">
+              Secure Client Sandbox
+            </div>
+          </div>
         </div>
       </footer>
     </div>
