@@ -216,37 +216,37 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F4F3EF] text-black font-sans selection:bg-[#FFE600] selection:text-black">
+    <div className="flex flex-col min-h-screen w-full overflow-x-hidden bg-[#F4F3EF] text-black font-sans selection:bg-[#FFE600] selection:text-black">
       
       {/* ==========================================
           HEADER BAR
          ========================================== */}
-      <header className="sticky top-0 z-40 bg-white border-b-4 border-black py-1">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <header className="sticky top-0 z-40 bg-white border-b-4 border-black py-1 w-full">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
           
           {/* Logo & Name on Left */}
-          <Link to="/" onClick={() => navigateTo('/')} className="flex items-center space-x-3 hover:opacity-90 transition-opacity">
+          <Link to="/" onClick={() => navigateTo('/')} className="flex items-center space-x-2 sm:space-x-3 hover:opacity-90 transition-opacity min-w-0">
             {/* Custom Neo-brutalist Placeholder Logo */}
-            <div className="w-11 h-11 border-3 border-black bg-[#FFE600] flex items-center justify-center text-black shadow-[3px_3px_0px_0px_#000000] rotate-[-2deg] shrink-0 relative overflow-hidden group">
-              <span className="font-black text-lg tracking-tighter select-none group-hover:scale-110 transition-transform">STF</span>
+            <div className="w-9 h-9 sm:w-11 sm:h-11 border-2 sm:border-3 border-black bg-[#FFE600] flex items-center justify-center text-black shadow-[2px_2px_0px_0px_#000000] sm:shadow-[3px_3px_0px_0px_#000000] rotate-[-2deg] shrink-0 relative overflow-hidden group">
+              <span className="font-black text-sm sm:text-lg tracking-tighter select-none group-hover:scale-110 transition-transform">STF</span>
               {/* Corner accent flap */}
-              <div className="absolute top-0 right-0 w-3 h-3 bg-black transform rotate-45 translate-x-1.5 translate-y-[-1.5px]" />
+              <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-black transform rotate-45 translate-x-1.2 translate-y-[-1.2px]" />
             </div>
-            <span className="font-extrabold text-xl sm:text-2xl tracking-tight text-black font-display uppercase">SaveTheFile</span>
+            <span className="font-extrabold text-base sm:text-2xl tracking-tight text-black font-display uppercase truncate">SaveTheFile</span>
           </Link>
 
           {/* Lang Selector & Hamburger Button Group */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4 shrink-0">
             
             {/* Language Switcher Dropdown Trigger */}
             <div className="relative">
               <button
                 onClick={() => setLangMenuOpen(!langMenuOpen)}
-                className="flex items-center space-x-2 px-3 py-2.5 border-3 border-black bg-white text-black font-black text-sm uppercase shadow-[3px_3px_0px_0px_#000000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000] transition-all cursor-pointer rounded-xl select-none"
+                className="flex items-center space-x-1 sm:space-x-2 px-2.5 py-1.5 sm:px-3.5 sm:py-2 border-2 sm:border-3 border-black bg-white text-black font-black text-xs sm:text-sm uppercase shadow-[2px_2px_0px_0px_#000000] sm:shadow-[3px_3px_0px_0px_#000000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000000] sm:hover:shadow-[4px_4px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000] transition-all cursor-pointer rounded-lg sm:rounded-xl select-none"
               >
-                <span className="text-base leading-none select-none">{lang === 'id' ? '🇮🇩' : '🇬🇧'}</span>
-                <span className="text-xs font-black tracking-wider select-none">{lang === 'id' ? 'ID' : 'EN'}</span>
-                <ChevronDown className={`w-3.5 h-3.5 stroke-[3] transition-transform ${langMenuOpen ? 'rotate-180' : ''}`} />
+                <span className="text-sm sm:text-base leading-none select-none">{lang === 'id' ? '🇮🇩' : '🇬🇧'}</span>
+                <span className="text-[10px] sm:text-xs font-black tracking-wider select-none">{lang === 'id' ? 'ID' : 'EN'}</span>
+                <ChevronDown className={`w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[3] transition-transform ${langMenuOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {langMenuOpen && (
@@ -255,13 +255,13 @@ export default function App() {
                   <div className="fixed inset-0 z-30 cursor-default" onClick={() => setLangMenuOpen(false)} />
                   
                   {/* Dropdown Menu */}
-                  <div className="absolute right-0 mt-2.5 w-36 border-3 border-black bg-white shadow-[4px_4px_0px_0px_#000000] rounded-xl overflow-hidden z-40 select-none">
+                  <div className="absolute right-0 mt-2 w-32 sm:w-36 border-2 sm:border-3 border-black bg-white shadow-[3px_3px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] rounded-lg sm:rounded-xl overflow-hidden z-40 select-none">
                     <button
                       onClick={() => {
                         toggleLang('id');
                         setLangMenuOpen(false);
                       }}
-                      className={`w-full flex items-center space-x-2.5 px-4 py-3 text-xs font-black uppercase text-left transition-all cursor-pointer ${
+                      className={`w-full flex items-center space-x-2 px-3 py-2 text-xs font-black uppercase text-left transition-all cursor-pointer ${
                         lang === 'id' ? 'bg-[#FFE600] text-black' : 'bg-white hover:bg-[#FFE600]/20 text-black/80 hover:text-black'
                       }`}
                     >
@@ -274,7 +274,7 @@ export default function App() {
                         toggleLang('en');
                         setLangMenuOpen(false);
                       }}
-                      className={`w-full flex items-center space-x-2.5 px-4 py-3 text-xs font-black uppercase text-left transition-all cursor-pointer ${
+                      className={`w-full flex items-center space-x-2 px-3 py-2 text-xs font-black uppercase text-left transition-all cursor-pointer ${
                         lang === 'en' ? 'bg-[#FFE600] text-black' : 'bg-white hover:bg-[#FFE600]/20 text-black/80 hover:text-black'
                       }`}
                     >
@@ -289,10 +289,10 @@ export default function App() {
             {/* Hamburger Button */}
             <button 
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-2.5 border-3 border-black bg-[#A5F3FC] text-black font-black shadow-[3px_3px_0px_0px_#000000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000] transition-all cursor-pointer rounded-xl focus:outline-none"
+              className="p-1.5 sm:p-2 border-2 sm:border-3 border-black bg-[#A5F3FC] text-black font-black shadow-[2px_2px_0px_0px_#000000] sm:shadow-[3px_3px_0px_0px_#000000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000000] sm:hover:shadow-[4px_4px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000] transition-all cursor-pointer rounded-lg sm:rounded-xl focus:outline-none"
               aria-label="Buka Menu"
             >
-              {menuOpen ? <X className="w-6 h-6 stroke-[3]" /> : <Menu className="w-6 h-6 stroke-[3]" />}
+              {menuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6 stroke-[3]" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6 stroke-[3]" />}
             </button>
           </div>
         </div>
