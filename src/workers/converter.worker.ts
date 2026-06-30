@@ -229,11 +229,11 @@ self.onmessage = async (e: MessageEvent<WorkerMessageIn>) => {
 
       let blobResponse: Blob | null = null;
       let mimeType = `image/${targetFormat}`;
-      if (targetFormat === 'jpg' || targetFormat === 'jpeg') {
+      if (targetFormat === 'jpg' || targetFormat === 'jpeg' || targetFormat === 'jfif') {
         mimeType = 'image/jpeg';
       } else if (targetFormat === 'pdf') {
         mimeType = 'application/pdf';
-      } else if (targetFormat === 'psd') {
+      } else if (targetFormat === 'psd' || targetFormat === 'psb') {
         mimeType = 'image/vnd.adobe.photoshop';
       } else if (targetFormat === 'odd') {
         mimeType = 'application/xml';
@@ -247,6 +247,22 @@ self.onmessage = async (e: MessageEvent<WorkerMessageIn>) => {
         mimeType = 'image/tiff';
       } else if (targetFormat === 'avif') {
         mimeType = 'image/avif';
+      } else if (targetFormat === 'icns') {
+        mimeType = 'image/x-icns';
+      } else if (targetFormat === 'tga') {
+        mimeType = 'image/x-targa';
+      } else if (targetFormat === 'xcf') {
+        mimeType = 'image/x-xcf';
+      } else if (targetFormat === 'ppm') {
+        mimeType = 'image/x-portable-pixmap';
+      } else if (targetFormat === 'odg') {
+        mimeType = 'application/vnd.oasis.opendocument.graphics';
+      } else if (targetFormat === 'xps') {
+        mimeType = 'application/vnd.ms-xpsdocument';
+      } else if (targetFormat === 'pub') {
+        mimeType = 'application/x-mspublisher';
+      } else if (['3fr', 'arw', 'cr2', 'cr3', 'crw', 'dcr', 'dng', 'erf', 'mos', 'mrw', 'nef', 'orf', 'pef', 'raf', 'raw', 'rw2', 'x3f'].includes(targetFormat)) {
+        mimeType = 'image/x-raw';
       }
 
       // Pre-process HEIC/HEIF to intermediate PNG

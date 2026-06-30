@@ -8,7 +8,13 @@ import { DropZone } from "@/components/DropZone";
 
 const MAX_CONCURRENT_JOBS = 2; // Prevent OOM by limiting concurrent processing
 const MEMORY_TIMEOUT_MS = 3600000; // 1 hour memory limit
-const SUPPORTED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'bmp', 'gif', 'tif', 'tiff'];
+const SUPPORTED_EXTENSIONS = [
+  '3fr', 'arw', 'avif', 'bmp', 'cr2', 'cr3', 'crw', 'dcr', 'dng', 'eps', 
+  'erf', 'gif', 'heic', 'heif', 'icns', 'ico', 'jfif', 'jpeg', 'jpg', 'mos', 
+  'mrw', 'nef', 'odd', 'odg', 'orf', 'pef', 'png', 'ppm', 'ps', 'psb', 
+  'psd', 'pub', 'raf', 'raw', 'rw2', 'tga', 'tif', 'tiff', 'webp', 'x3f', 
+  'xcf', 'xps'
+];
 
 export function ImageConverter() {
   const { format } = useParams();
@@ -32,8 +38,20 @@ export function ImageConverter() {
     }
   }, [location.state]);
 
-  const sourceFormatsList = ["PNG", "JPG", "WEBP", "HEIC", "GIF", "BMP", "TIFF"];
-  const targetFormatsList = ["WEBP", "PNG", "JPG", "GIF", "AVIF", "BMP", "EPS", "ICO", "ODD", "PS", "PSD", "TIFF", "PDF"];
+  const sourceFormatsList = [
+    "3FR", "ARW", "AVIF", "BMP", "CR2", "CR3", "CRW", "DCR", "DNG", "EPS", 
+    "ERF", "GIF", "HEIC", "HEIF", "ICNS", "ICO", "JFIF", "JPEG", "JPG", "MOS", 
+    "MRW", "NEF", "ODD", "ODG", "ORF", "PEF", "PNG", "PPM", "PS", "PSB", 
+    "PSD", "PUB", "RAF", "RAW", "RW2", "TGA", "TIF", "TIFF", "WEBP", "X3F", 
+    "XCF", "XPS"
+  ];
+  const targetFormatsList = [
+    "3FR", "ARW", "AVIF", "BMP", "CR2", "CR3", "CRW", "DCR", "DNG", "EPS", 
+    "ERF", "GIF", "HEIC", "HEIF", "ICNS", "ICO", "JFIF", "JPEG", "JPG", "MOS", 
+    "MRW", "NEF", "ODD", "ODG", "ORF", "PEF", "PNG", "PPM", "PS", "PSB", 
+    "PSD", "PUB", "RAF", "RAW", "RW2", "TGA", "TIF", "TIFF", "WEBP", "X3F", 
+    "XCF", "XPS"
+  ];
   
   // Normalize the active source format from param (case insensitive, default to PNG)
   const activeSourceFormat = format ? format.toUpperCase() : "PNG";

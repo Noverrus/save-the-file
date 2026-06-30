@@ -270,7 +270,7 @@ const categoriesList = [
   { id: "document", name: "Document", page: "document-converter", formats: ["PDF", "TXT", "DOCX", "HTML"] },
   { id: "ebook", name: "Ebook", page: "ebook-converter", formats: ["EPUB", "MD"] },
   { id: "font", name: "Font", page: "font-converter", formats: ["TTF", "OTF", "WOFF", "WOFF2"] },
-  { id: "image", name: "Image", page: "image-converter", formats: ["PNG", "JPG", "JPEG", "WEBP", "HEIC", "HEIF", "BMP", "GIF", "TIFF"] },
+  { id: "image", name: "Image", page: "image-converter", formats: ["3FR", "ARW", "AVIF", "BMP", "CR2", "CR3", "CRW", "DCR", "DNG", "EPS", "ERF", "GIF", "HEIC", "HEIF", "ICNS", "ICO", "JFIF", "JPEG", "JPG", "MOS", "MRW", "NEF", "ODD", "ODG", "ORF", "PEF", "PNG", "PPM", "PS", "PSB", "PSD", "PUB", "RAF", "RAW", "RW2", "TGA", "TIF", "TIFF", "WEBP", "X3F", "XCF", "XPS"] },
   { id: "presentation", name: "Presentation", page: "presentation-converter", formats: ["PDF"] },
   { id: "spreadsheet", name: "Spreadsheet", page: "spreadsheet-converter", formats: ["CSV", "JSON"] },
   { id: "vector", name: "Vector", page: "vector-converter", formats: ["SVG"] }
@@ -290,7 +290,7 @@ const formatCategories = [
     title: "Images",
     icon: "🖼",
     color: "bg-[#ff90e8]", // Hot Pink
-    formats: ["PNG", "JPG", "WEBP", "SVG", "BMP", "GIF", "TIFF", "HEIC"]
+    formats: ["PNG", "JPG", "WEBP", "AVIF", "BMP", "GIF", "HEIC", "HEIF", "TIFF", "PSD", "ICO", "SVG", "DNG", "RAW", "CR2", "NEF", "ARW", "EPS", "TGA", "XCF"]
   },
   {
     id: "video",
