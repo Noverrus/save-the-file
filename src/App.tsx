@@ -19,15 +19,22 @@ interface LinkProps {
   onClick?: () => void;
 }
 
+// Helper to get path from hash
+const getPathFromHash = (): string => {
+  const hash = window.location.hash;
+  if (!hash) return '/';
+  const normalized = hash.startsWith('#') ? hash.slice(1) : hash;
+  return normalized.startsWith('/') ? normalized : '/' + normalized;
+};
+
 const Link: React.FC<LinkProps> = ({ to, children, className, onClick }) => {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.history.pushState({}, '', to);
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.location.hash = to;
     if (onClick) onClick();
   };
   return (
-    <a href={to} onClick={handleClick} className={className}>
+    <a href={'#' + to} onClick={handleClick} className={className}>
       {children}
     </a>
   );
@@ -169,7 +176,7 @@ const TRANSLATIONS = {
 };
 
 export default function App() {
-  const [path, setPath] = useState(window.location.pathname);
+  const [path, setPath] = useState(getPathFromHash);
   const [menuOpen, setMenuOpen] = useState(false);
   
   // Persistent Language State (Defaulting to Indonesian "id" as requested)
@@ -184,17 +191,27 @@ export default function App() {
   };
 
   useEffect(() => {
-    const handlePopState = () => {
-      setPath(window.location.pathname);
+    const handleHashChange = () => {
+      setPath(getPathFromHash());
     };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+
+    // Redirect direct pathname landings to hash routes for 100% 404 resilience on Vercel
+    const pathname = window.location.pathname;
+    if (pathname !== '/' && pathname !== '/index.html' && !window.location.hash) {
+      window.location.replace('/#' + pathname);
+    }
+
+    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleHashChange);
+    };
   }, []);
 
   // Helper navigation function
   const navigateTo = (to: string) => {
-    window.history.pushState({}, '', to);
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.location.hash = to;
     setMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
