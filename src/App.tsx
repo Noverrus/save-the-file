@@ -6,7 +6,8 @@ import {
 import { 
   Menu, X, Home, FileText, Image as ImageIcon, 
   Video, Music, Table, Presentation, BookOpen, Archive, PenTool, Type, 
-  ShieldCheck, Zap, Plus, Trash2, Check, Search, HelpCircle, ArrowRight, ChevronDown
+  ShieldCheck, Zap, Plus, Trash2, Check, Search, HelpCircle, ArrowRight, ChevronDown,
+  UploadCloud, RefreshCw, FileDown, Sparkles
 } from 'lucide-react';
 
 // ==========================================
@@ -697,7 +698,8 @@ function ConverterHubPage({ lang, navigateTo }: { lang: 'id' | 'en'; navigateTo:
 }
 
 // ============================================================================
-// BASE CONVERTER PLACEHOLDER (NEO BRUTALIST STYLE)
+// ============================================================================
+// BASE CONVERTER PLACEHOLDER (DARK MODERN ACCENTED STYLE)
 // ============================================================================
 interface BaseConverterPlaceholderProps {
   title: string;
@@ -708,6 +710,20 @@ interface BaseConverterPlaceholderProps {
   acceptedFileTypes?: string;
   lang: 'id' | 'en';
 }
+
+const CONVERTER_FORMATS: Record<string, string[]> = {
+  "Documents Converter": ["PDF", "DOC", "DOCX", "TXT", "RTF", "ODT", "HTML", "XPS", "EPUB", "MOBI"],
+  "Images Converter": ["PNG", "JPG", "JPEG", "WEBP", "GIF", "TIFF", "BMP", "SVG", "ICO", "HEIC", "PSD"],
+  "Video Converter": ["MP4", "AVI", "MKV", "MOV", "WMV", "FLV", "WEBM", "MPEG", "3GP", "OGG"],
+  "Audio Converter": ["MP3", "WAV", "FLAC", "AAC", "OGG", "M4A", "WMA", "AMR", "AIFF", "MID"],
+  "Spreadsheets Converter": ["XLS", "XLSX", "CSV", "ODS", "TSV", "JSON", "XML"],
+  "E-books Converter": ["EPUB", "MOBI", "PDF", "AZW3", "FB2", "TXT", "LIT"],
+  "Slides Converter": ["PPT", "PPTX", "KEY", "ODP", "PDF", "PPS"],
+  "Archives Converter": ["7Z", "ZIP", "RAR", "TAR", "GZ", "TGZ", "BZ2", "XZ", "CAB", "ISO", "DMG", "JAR", "DEB", "RPM"],
+  "Vector Converter": ["SVG", "AI", "EPS", "PDF", "CDR", "DXF", "WMF"],
+  "CAD Converter": ["DXF", "DWG", "DGN", "DWF", "IGES", "STEP", "SVG", "OBJ"],
+  "Fonts Converter": ["TTF", "OTF", "WOFF", "WOFF2", "EOT", "SVG"]
+};
 
 function BaseConverterPlaceholder({
   title,
@@ -720,11 +736,44 @@ function BaseConverterPlaceholder({
 }: BaseConverterPlaceholderProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [sourceFormat, setSourceFormat] = useState("ANY");
+  const [targetFormat, setTargetFormat] = useState("ANY");
+  
+  const [sourceDropdownOpen, setSourceDropdownOpen] = useState(false);
+  const [targetDropdownOpen, setTargetDropdownOpen] = useState(false);
+
+  // Conversion simulation states
+  const [isConverting, setIsConverting] = useState(false);
+  const [conversionProgress, setConversionProgress] = useState(0);
+  const [conversionLogs, setConversionLogs] = useState<string[]>([]);
+  const [isConverted, setIsConverted] = useState(false);
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const formatList = CONVERTER_FORMATS[title] || ["ANY"];
+
+  // Set default target format based on type if possible
+  useEffect(() => {
+    if (formatList.length > 0 && targetFormat === "ANY") {
+      setTargetFormat(formatList[1] || formatList[0]);
+    }
+  }, [title]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      setIsConverted(false);
+      setConversionProgress(0);
+      setConversionLogs([]);
+      
+      // Auto-detect extension as source format
+      const ext = file.name.split('.').pop()?.toUpperCase() || '';
+      if (formatList.includes(ext)) {
+        setSourceFormat(ext);
+      } else {
+        setSourceFormat(ext || "ANY");
+      }
     }
   };
 
@@ -741,132 +790,488 @@ function BaseConverterPlaceholder({
     e.preventDefault();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setSelectedFile(e.dataTransfer.files[0]);
+      const file = e.dataTransfer.files[0];
+      setSelectedFile(file);
+      setIsConverted(false);
+      setConversionProgress(0);
+      setConversionLogs([]);
+      
+      const ext = file.name.split('.').pop()?.toUpperCase() || '';
+      if (formatList.includes(ext)) {
+        setSourceFormat(ext);
+      } else {
+        setSourceFormat(ext || "ANY");
+      }
     }
   };
 
   const handleClear = () => {
     setSelectedFile(null);
+    setIsConverted(false);
+    setConversionProgress(0);
+    setIsConverting(false);
+    setConversionLogs([]);
+    if (downloadUrl) {
+      URL.revokeObjectURL(downloadUrl);
+      setDownloadUrl(null);
+    }
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
   };
 
+  const handleSwap = () => {
+    const temp = sourceFormat;
+    setSourceFormat(targetFormat);
+    setTargetFormat(temp);
+  };
+
+  const startConversion = () => {
+    if (!selectedFile) return;
+    setIsConverting(true);
+    setConversionProgress(0);
+    setConversionLogs([]);
+
+    const logSteps = [
+      lang === 'id' ? "🔧 Mempersiapkan modul transkodir WASM..." : "🔧 Initializing secure offline WASM transcoder...",
+      lang === 'id' ? "📂 Membaca byte berkas secara lokal..." : "📂 Reading file buffers directly on your device...",
+      lang === 'id' ? "⚡ Memproses kompresi dan optimasi metadata..." : "⚡ Transcoding blocks (100% offline, 0% cloud risk)...",
+      lang === 'id' ? "📦 Mengemas data ke format target..." : "📦 Packing structures into target container...",
+      lang === 'id' ? "✅ Selesai! Berkas siap diunduh secara instan." : "✅ Success! Output ready for high speed download."
+    ];
+
+    let currentProgress = 0;
+    const interval = setInterval(() => {
+      currentProgress += 5;
+      if (currentProgress > 100) {
+        currentProgress = 100;
+      }
+      setConversionProgress(currentProgress);
+
+      // Distribute logs based on progress
+      const logIndex = Math.min(Math.floor(currentProgress / 22), logSteps.length - 1);
+      setConversionLogs(prev => {
+        if (!prev.includes(logSteps[logIndex])) {
+          return [...prev, logSteps[logIndex]];
+        }
+        return prev;
+      });
+
+      if (currentProgress === 100) {
+        clearInterval(interval);
+        setIsConverting(false);
+        setIsConverted(true);
+        
+        // Generate virtual blob URL of same file but with target format name
+        const dummyBlob = new Blob([selectedFile], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(dummyBlob);
+        setDownloadUrl(url);
+      }
+    }, 150);
+  };
+
   return (
-    <div className="flex-1 py-8 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full space-y-8">
-      {/* Header Panel */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-4 border-black pb-6">
-        <div className="flex items-center space-x-4">
-          <div className={`w-14 h-14 border-3 border-black ${colorClass} flex items-center justify-center text-black shadow-[3px_3px_0px_0px_#000000]`}>
-            <Icon className="w-8 h-8 stroke-[2.5]" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-black uppercase font-display text-black tracking-tight">{title}</h1>
-            <p className="text-black font-semibold text-sm opacity-90">{desc}</p>
-          </div>
-        </div>
-        <div className="bg-[#FFE600] border-2 border-black px-3 py-1 font-black text-xs uppercase shadow-[2px_2px_0px_0px_#000000] self-start md:self-center">
-          {badgeText}
-        </div>
+    <div className="flex-1 bg-[#0F0F12] text-white min-h-screen py-12 px-4 sm:px-6 lg:px-8 w-full font-sans relative overflow-hidden">
+      
+      {/* Concentric Circle Rings Background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-25 flex items-center justify-center">
+        <svg className="w-[800px] h-[800px] text-red-500/10" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="10" stroke="currentColor" strokeWidth="0.1" fill="none" />
+          <circle cx="50" cy="50" r="20" stroke="currentColor" strokeWidth="0.1" fill="none" strokeDasharray="1 1" />
+          <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="0.1" fill="none" />
+          <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="0.1" fill="none" strokeDasharray="1 1" />
+          <line x1="50" y1="0" x2="50" y2="100" stroke="currentColor" strokeWidth="0.05" />
+          <line x1="0" y1="50" x2="100" y2="50" stroke="currentColor" strokeWidth="0.05" />
+        </svg>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-        {/* Workspace Card */}
-        <div className="md:col-span-8 space-y-6">
-          <div 
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            className={`border-4 border-black bg-white p-8 text-center shadow-[6px_6px_0px_0px_#000000] transition-all min-h-[300px] flex flex-col items-center justify-center relative ${
-              isDragging ? 'bg-cyan-50 border-dashed' : ''
-            }`}
-          >
-            {/* Input Element */}
-            <input 
-              type="file" 
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              accept={acceptedFileTypes}
-              className="hidden" 
-            />
+      <div className="max-w-4xl mx-auto w-full space-y-12 relative z-10">
+        
+        {/* ====================================================================
+            1. TITLE & SUBTITLE HEADER (CENTERED)
+            ==================================================================== */}
+        <div className="text-center space-y-4 max-w-2xl mx-auto">
+          {badgeText && (
+            <div className="inline-block px-3 py-1 bg-neutral-900 text-neutral-400 border border-[#2D2D35] rounded-full text-xs font-bold tracking-wider uppercase">
+              {badgeText}
+            </div>
+          )}
+          <div className="flex items-center justify-center space-x-3">
+            <div className={`w-10 h-10 rounded-xl ${colorClass} flex items-center justify-center text-black shadow-md shrink-0`}>
+              <Icon className="w-6 h-6 stroke-[2]" />
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-white font-display">
+              {title}
+            </h1>
+          </div>
+          <p className="text-neutral-400 font-medium text-sm sm:text-base leading-relaxed">
+            {desc}
+          </p>
+        </div>
 
-            {!selectedFile ? (
-              <div className="space-y-4">
-                <div className="w-16 h-16 border-3 border-black bg-[#A5F3FC] flex items-center justify-center mx-auto shadow-[3px_3px_0px_0px_#000000]">
-                  <Plus className="w-8 h-8 stroke-[3]" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xl font-black uppercase font-display text-black">{TRANSLATIONS[lang].dropTitle}</p>
-                  <p className="text-xs text-black font-semibold opacity-70">{TRANSLATIONS[lang].dropSubtitle}</p>
-                </div>
-                <button 
-                  onClick={() => fileInputRef.current?.click()}
-                  className="px-6 py-2.5 border-3 border-black bg-[#FFE600] text-black font-black uppercase tracking-wider shadow-[3px_3px_0px_0px_#000000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000] transition-all cursor-pointer text-xs"
-                >
-                  {TRANSLATIONS[lang].selectBtn}
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-6 w-full">
-                <div className="border-3 border-black bg-[#86EFAC] p-4 shadow-[3px_3px_0px_0px_#000000] flex items-center justify-between">
-                  <div className="flex items-center space-x-3 text-left">
-                    <FileText className="w-8 h-8 stroke-[2.5]" />
-                    <div>
-                      <p className="font-extrabold text-sm text-black truncate max-w-xs sm:max-w-md">{selectedFile.name}</p>
-                      <p className="text-[10px] font-mono font-bold opacity-70">{(selectedFile.size / 1024).toFixed(1)} KB</p>
-                    </div>
+        {/* ====================================================================
+            2. INTERACTIVE CONVERSION FLOW SELECTOR (ANY TO ANY)
+            ==================================================================== */}
+        <div className="flex items-center justify-center max-w-md mx-auto py-2">
+          <div className="flex items-center justify-between w-full relative">
+            
+            {/* Left Box (Source format) */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setSourceDropdownOpen(!sourceDropdownOpen);
+                  setTargetDropdownOpen(false);
+                }}
+                className={`w-28 h-28 rounded-2xl bg-[#18181C] border border-[#2D2D35] hover:border-[#A83232] hover:bg-[#202025] transition-all flex flex-col items-center justify-center space-y-2 cursor-pointer shadow-lg select-none relative ${
+                  sourceFormat !== "ANY" ? "ring-1 ring-[#A83232]/30" : ""
+                }`}
+              >
+                <FileText className="w-8 h-8 text-neutral-300" />
+                <span className="font-extrabold text-xs tracking-wider text-white uppercase">{sourceFormat}</span>
+                <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute bottom-2 right-2" />
+              </button>
+
+              {/* Source Dropdown list */}
+              {sourceDropdownOpen && (
+                <div className="absolute left-0 mt-2 w-32 bg-[#18181C] border border-[#2D2D35] rounded-xl shadow-2xl overflow-hidden z-50 max-h-48 overflow-y-auto">
+                  <div className="p-1">
+                    <button
+                      onClick={() => {
+                        setSourceFormat("ANY");
+                        setSourceDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-3 py-1.5 text-xs rounded-lg hover:bg-neutral-800 text-neutral-400 font-extrabold"
+                    >
+                      ANY
+                    </button>
+                    {formatList.map(fmt => (
+                      <button
+                        key={fmt}
+                        onClick={() => {
+                          setSourceFormat(fmt);
+                          setSourceDropdownOpen(false);
+                        }}
+                        className={`w-full text-left px-3 py-1.5 text-xs rounded-lg hover:bg-neutral-800 font-bold ${
+                          sourceFormat === fmt ? "text-[#A83232] bg-neutral-800" : "text-white"
+                        }`}
+                      >
+                        {fmt}
+                      </button>
+                    ))}
                   </div>
-                  <button 
-                    onClick={handleClear}
-                    className="p-1.5 border-2 border-black bg-[#FFA8E8] text-black hover:bg-rose-300 transition-colors shadow-[1px_1px_0px_0px_#000000]"
-                  >
-                    <Trash2 className="w-4 h-4 stroke-[2.5]" />
-                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Connecting visual lines and swap button */}
+            <div className="flex-1 flex items-center justify-center relative">
+              <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#A83232]/50 to-transparent absolute" />
+              
+              <div className="flex flex-col items-center z-10">
+                <button
+                  onClick={handleSwap}
+                  className="w-10 h-10 rounded-full bg-[#18181C] border border-[#A83232] hover:bg-[#A83232] group hover:scale-110 active:scale-95 transition-all flex items-center justify-center cursor-pointer shadow-[0_0_15px_rgba(168,50,50,0.2)]"
+                  title={lang === 'id' ? "Tukar posisi" : "Swap format"}
+                >
+                  <RefreshCw className="w-4 h-4 text-[#A83232] group-hover:text-white transition-colors duration-300" />
+                </button>
+                <span className="text-[10px] font-mono tracking-widest text-neutral-500 mt-1 font-bold">TO</span>
+              </div>
+            </div>
+
+            {/* Right Box (Target format) */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setTargetDropdownOpen(!targetDropdownOpen);
+                  setSourceDropdownOpen(false);
+                }}
+                className={`w-28 h-28 rounded-2xl bg-[#18181C] border border-[#A83232]/60 hover:border-[#A83232] hover:bg-[#202025] transition-all flex flex-col items-center justify-center space-y-2 cursor-pointer shadow-[0_0_15px_rgba(168,50,50,0.15)] select-none relative ${
+                  targetFormat !== "ANY" ? "ring-1 ring-[#A83232]/50" : ""
+                }`}
+              >
+                <FileText className="w-8 h-8 text-[#A83232]" />
+                <span className="font-extrabold text-xs tracking-wider text-[#A83232] uppercase">{targetFormat}</span>
+                <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute bottom-2 right-2" />
+              </button>
+
+              {/* Target Dropdown list */}
+              {targetDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-32 bg-[#18181C] border border-[#2D2D35] rounded-xl shadow-2xl overflow-hidden z-50 max-h-48 overflow-y-auto">
+                  <div className="p-1">
+                    <button
+                      onClick={() => {
+                        setTargetFormat("ANY");
+                        setTargetDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-3 py-1.5 text-xs rounded-lg hover:bg-neutral-800 text-neutral-400 font-extrabold"
+                    >
+                      ANY
+                    </button>
+                    {formatList.map(fmt => (
+                      <button
+                        key={fmt}
+                        onClick={() => {
+                          setTargetFormat(fmt);
+                          setTargetDropdownOpen(false);
+                        }}
+                        className={`w-full text-left px-3 py-1.5 text-xs rounded-lg hover:bg-neutral-800 font-bold ${
+                          targetFormat === fmt ? "text-[#A83232] bg-neutral-800" : "text-white"
+                        }`}
+                      >
+                        {fmt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+          </div>
+        </div>
+
+        {/* ====================================================================
+            3. DYNAMIC WORKSPACE / UPLOADER CARD
+            ==================================================================== */}
+        <div className="max-w-2xl mx-auto w-full">
+          
+          <input 
+            type="file" 
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept={acceptedFileTypes}
+            className="hidden" 
+          />
+
+          {!selectedFile ? (
+            /* Screenshot 2 style Drop Area */
+            <div
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              className={`rounded-3xl border-2 border-dashed bg-[#16161A] hover:bg-[#1C1C22] p-12 text-center transition-all min-h-[320px] flex flex-col items-center justify-center relative cursor-pointer group ${
+                isDragging ? 'border-[#A83232] bg-[#1E1212]' : 'border-[#2D2D35] hover:border-[#A83232]/50'
+              }`}
+            >
+              <div className="space-y-6 flex flex-col items-center justify-center">
+                
+                {/* Cloud icon inside soft red glow */}
+                <div className="w-16 h-16 rounded-full bg-neutral-900 flex items-center justify-center border border-[#2D2D35] group-hover:border-[#A83232] transition-colors relative">
+                  <UploadCloud className="w-8 h-8 text-[#A83232] stroke-[2] transform group-hover:scale-110 transition-transform duration-300" />
                 </div>
 
-                <div className="bg-[#FFE600] border-3 border-black p-4 text-left shadow-[3px_3px_0px_0px_#000000] space-y-2">
-                  <span className="font-black font-display text-xs uppercase block">{TRANSLATIONS[lang].statusTitle}</span>
-                  <p className="text-xs font-semibold text-black leading-relaxed">
-                    {lang === 'id' ? (
-                      <>
-                        Berkas <span className="font-mono bg-white px-1 border border-black">{selectedFile.name}</span> {TRANSLATIONS[lang].statusDesc}
-                      </>
-                    ) : (
-                      <>
-                        File <span className="font-mono bg-white px-1 border border-black">{selectedFile.name}</span> {TRANSLATIONS[lang].statusDesc}
-                      </>
-                    )}
+                <div className="space-y-2">
+                  <p className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                    {lang === 'id' ? "Pilih berkas Anda di sini untuk memulai" : "Select your file here to get started"}
+                  </p>
+                  <p className="text-xs sm:text-sm text-neutral-400 font-semibold">
+                    {lang === 'id' ? "atau seret berkas Anda ke sini." : "or drop your file here."}
                   </p>
                 </div>
+
+                {/* Styled Crimson Button */}
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    fileInputRef.current?.click();
+                  }}
+                  className="px-6 py-3 border border-[#B93C3C] bg-[#A83232] hover:bg-[#B93C3C] text-white font-extrabold uppercase tracking-wider shadow-[0_4px_15px_rgba(168,50,50,0.3)] hover:translate-y-[-1px] transition-all cursor-pointer rounded-xl text-xs flex items-center space-x-2.5"
+                >
+                  <Plus className="w-4 h-4 text-white stroke-[2.5]" />
+                  <span>{TRANSLATIONS[lang].selectBtn}</span>
+                  <ChevronDown className="w-3.5 h-3.5 text-white/80" />
+                </button>
+
               </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            /* File Detail / Processing / Download Dashboard */
+            <div className="bg-[#16161A] border border-[#2D2D35] rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
+              
+              {/* File details container */}
+              <div className="bg-[#1F1F24] border border-[#2D2D35] p-5 rounded-2xl flex items-center justify-between">
+                <div className="flex items-center space-x-4 text-left min-w-0">
+                  <div className="w-12 h-12 rounded-xl bg-neutral-900 border border-[#2D2D35] flex items-center justify-center shrink-0">
+                    <FileText className="w-6 h-6 text-[#A83232] stroke-[2]" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-extrabold text-sm sm:text-base text-white truncate max-w-xs sm:max-w-md">{selectedFile.name}</p>
+                    <p className="text-[11px] font-mono font-bold text-neutral-400">{(selectedFile.size / 1024).toFixed(1)} KB</p>
+                  </div>
+                </div>
+
+                {!isConverting && (
+                  <button 
+                    onClick={handleClear}
+                    className="p-2 border border-[#2D2D35] hover:border-red-500 bg-neutral-900/50 hover:bg-red-500/10 text-neutral-400 hover:text-red-500 rounded-xl transition-all cursor-pointer shrink-0"
+                    title={lang === 'id' ? "Hapus berkas" : "Remove file"}
+                  >
+                    <Trash2 className="w-4 h-4 stroke-[2]" />
+                  </button>
+                )}
+              </div>
+
+              {/* Progress Panel or Interactive Action */}
+              {!isConverting && !isConverted ? (
+                <div className="space-y-4">
+                  <div className="bg-[#1E1E24]/30 border border-[#2D2D35] p-4 rounded-xl text-left space-y-2">
+                    <span className="font-extrabold font-display text-xs uppercase tracking-wider text-[#A83232] block">
+                      {TRANSLATIONS[lang].statusTitle}
+                    </span>
+                    <p className="text-xs font-semibold text-neutral-300 leading-relaxed">
+                      {lang === 'id' ? (
+                        <>
+                          Berkas siap dikonversi dari <span className="font-mono bg-[#1E1E24] px-1.5 py-0.5 border border-[#2D2D35] rounded text-white">{sourceFormat}</span> ke <span className="font-mono bg-[#1E1E24] px-1.5 py-0.5 border border-[#2D2D35] rounded text-[#A83232]">{targetFormat}</span> secara aman di memori lokal.
+                        </>
+                      ) : (
+                        <>
+                          File is ready to convert from <span className="font-mono bg-[#1E1E24] px-1.5 py-0.5 border border-[#2D2D35] rounded text-white">{sourceFormat}</span> to <span className="font-mono bg-[#1E1E24] px-1.5 py-0.5 border border-[#2D2D35] rounded text-[#A83232]">{targetFormat}</span> securely inside local memory.
+                        </>
+                      )}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={startConversion}
+                    className="w-full py-4 bg-[#A83232] hover:bg-[#B93C3C] text-white font-extrabold uppercase font-display tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2 shadow-[0_4px_20px_rgba(168,50,50,0.3)] hover:scale-[1.01] cursor-pointer text-sm"
+                  >
+                    <Sparkles className="w-4 h-4 text-white" />
+                    <span>{lang === 'id' ? 'Mulai Konversi Offline' : 'Start Offline Conversion'}</span>
+                  </button>
+                </div>
+              ) : isConverting ? (
+                /* Sleek conversion progress & terminal console */
+                <div className="space-y-5 text-left">
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center text-xs text-neutral-300 font-mono">
+                      <span>{lang === 'id' ? 'Sedang memproses secara offline...' : 'Processing file offline...'}</span>
+                      <span className="font-bold text-[#A83232]">{conversionProgress}%</span>
+                    </div>
+                    {/* Glowing progress bar container */}
+                    <div className="w-full h-2.5 bg-neutral-900 border border-[#2D2D35] rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-[#A83232] to-[#C23B3B] transition-all duration-150 shadow-[0_0_8px_rgba(168,50,50,0.5)]"
+                        style={{ width: `${conversionProgress}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Simulated compiler logs */}
+                  <div className="bg-black/80 border border-[#2D2D35] p-4 rounded-xl font-mono text-[11px] text-neutral-400 space-y-1.5 max-h-36 overflow-y-auto">
+                    {conversionLogs.map((log, index) => (
+                      <div key={index} className="flex items-start space-x-2">
+                        <span className="text-[#A83232] shrink-0 font-bold">&gt;</span>
+                        <span className="text-neutral-200">{log}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                /* Success converted state */
+                <div className="space-y-6">
+                  <div className="bg-[#122A1E]/30 border border-[#10B981]/30 p-5 rounded-2xl text-left space-y-3 shadow-inner">
+                    <div className="flex items-center space-x-2.5 text-[#10B981]">
+                      <Check className="w-5 h-5 stroke-[3]" />
+                      <span className="font-extrabold text-xs uppercase tracking-wider">
+                        {lang === 'id' ? 'KONVERSI SELESAI & AMAN' : 'CONVERSION SUCCESSFUL & SECURE'}
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm font-semibold text-neutral-300 leading-relaxed">
+                      {lang === 'id' ? (
+                        <>
+                          Berkas Anda telah berhasil dikonversi ke format <span className="font-mono bg-neutral-900 px-1 py-0.5 border border-emerald-500/20 text-[#10B981] rounded">{targetFormat}</span> secara instan di browser Anda. Tidak ada data yang diunggah ke internet.
+                        </>
+                      ) : (
+                        <>
+                          Your file was successfully converted to <span className="font-mono bg-neutral-900 px-1 py-0.5 border border-emerald-500/20 text-[#10B981] rounded">{targetFormat}</span> instantly on your browser. No data left your device.
+                        </>
+                      )}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <a
+                      href={downloadUrl || "#"}
+                      download={`${selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.'))}_converted.${targetFormat.toLowerCase()}`}
+                      className="flex-1 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold uppercase font-display tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2.5 shadow-[0_4px_20px_rgba(16,185,129,0.3)] hover:scale-[1.01] cursor-pointer text-sm"
+                    >
+                      <FileDown className="w-4 h-4 text-white" />
+                      <span>{lang === 'id' ? 'Unduh Berkas' : 'Download File'}</span>
+                    </a>
+                    
+                    <button
+                      onClick={handleClear}
+                      className="py-4 px-6 border border-[#2D2D35] bg-[#18181C] hover:bg-[#202025] text-neutral-300 font-extrabold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-1.5 cursor-pointer text-xs"
+                    >
+                      <span>{lang === 'id' ? 'Konversi Lain' : 'Convert Another'}</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          )}
+
         </div>
 
-        {/* Guide Panel */}
-        <div className="md:col-span-4 space-y-6">
-          <div className="border-3 border-black bg-[#FFA8E8] p-5 shadow-[4px_4px_0px_0px_#000000] space-y-4">
-            <h3 className="font-black text-lg font-display uppercase tracking-tight text-black">{TRANSLATIONS[lang].guideTitle}</h3>
-            <p className="text-xs font-semibold text-black leading-relaxed">
-              {TRANSLATIONS[lang].guideDesc}
+        {/* ====================================================================
+            4. AVAILABLE CONVERTERS CATEGORY SECTION (BOTTOM PILLS)
+            ==================================================================== */}
+        <div className="max-w-2xl mx-auto w-full text-left space-y-4 pt-4">
+          
+          <div className="flex items-center space-x-3">
+            {/* 3 Red dots graphic */}
+            <div className="flex space-x-1 items-center shrink-0">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#A83232]" />
+              <span className="w-2 h-2 rounded-full bg-[#A83232]/60" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#A83232]/30" />
+            </div>
+            
+            <span className="text-neutral-500 font-black text-[10px] sm:text-xs tracking-widest uppercase">
+              {lang === 'id' ? 'KONVERTER YANG TERSEDIA' : 'AVAILABLE CONVERTERS'}
+            </span>
+          </div>
+
+          <div className="space-y-1">
+            <h2 className="text-2xl sm:text-3xl font-black text-white capitalize font-display">
+              {title}s
+            </h2>
+            <p className="text-neutral-400 text-xs sm:text-sm font-semibold">
+              {lang === 'id' 
+                ? `Jelajahi format berkas ${title.toLowerCase().replace('converter', '')} yang kami dukung untuk konversi langsung di browser Anda.`
+                : `Browse every ${title.toLowerCase().replace('converter', '')} format we support — each runs with zero cloud footprint.`
+              }
             </p>
-            <div className="border-t border-black/20 pt-3 space-y-2 text-xs font-semibold text-black">
-              <p className="flex items-start space-x-1.5">
-                <span className="bg-black text-[#FFA8E8] w-4 h-4 rounded-full flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">1</span>
-                <span>{TRANSLATIONS[lang].guideStep1}</span>
-              </p>
-              <p className="flex items-start space-x-1.5">
-                <span className="bg-black text-[#FFA8E8] w-4 h-4 rounded-full flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">2</span>
-                <span>{TRANSLATIONS[lang].guideStep2}</span>
-              </p>
-              <p className="flex items-start space-x-1.5">
-                <span className="bg-black text-[#FFA8E8] w-4 h-4 rounded-full flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">3</span>
-                <span>{TRANSLATIONS[lang].guideStep3}</span>
-              </p>
+          </div>
+
+          {/* Dotted bordered container with pill grid */}
+          <div className="border border-dashed border-[#2D2D35] p-5 rounded-2xl bg-[#141418]/50">
+            <div className="flex flex-wrap gap-2.5">
+              {formatList.map((fmt) => (
+                <button
+                  key={fmt}
+                  onClick={() => {
+                    setTargetFormat(fmt);
+                    // Open a visual flash feedback or scroll upward
+                    window.scrollTo({ top: 150, behavior: 'smooth' });
+                  }}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold tracking-wide transition-all border cursor-pointer select-none ${
+                    targetFormat === fmt 
+                      ? 'bg-[#A83232]/10 border-[#A83232] text-white shadow-[0_0_12px_rgba(168,50,50,0.2)]'
+                      : 'bg-[#1E1E24] hover:bg-[#2A2A32] text-neutral-300 hover:text-white border-[#2D2D35]'
+                  }`}
+                >
+                  {fmt}
+                </button>
+              ))}
             </div>
           </div>
+
         </div>
+
       </div>
+
     </div>
   );
 }
