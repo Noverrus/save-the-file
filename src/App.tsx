@@ -6,7 +6,7 @@ import {
 import { 
   Menu, X, Home, FileText, Image as ImageIcon, 
   Video, Music, Table, Presentation, BookOpen, Archive, PenTool, Type, 
-  ShieldCheck, Zap, Plus, Trash2, Check, Search, HelpCircle, ArrowRight, ChevronDown,
+  ShieldCheck, Zap, Plus, Trash2, Check, Search, HelpCircle, ArrowRight, ChevronDown, ChevronRight,
   UploadCloud, RefreshCw, FileDown, Sparkles
 } from 'lucide-react';
 
@@ -725,12 +725,25 @@ const CONVERTER_FORMATS: Record<string, string[]> = {
   "Fonts Converter": ["TTF", "OTF", "WOFF", "WOFF2", "EOT", "SVG"]
 };
 
+const DROPDOWN_CATEGORIES = [
+  { label: "Archive", key: "Archives Converter" },
+  { label: "Audio", key: "Audio Converter" },
+  { label: "Cad", key: "CAD Converter" },
+  { label: "Document", key: "Documents Converter" },
+  { label: "Ebook", key: "E-books Converter" },
+  { label: "Font", key: "Fonts Converter" },
+  { label: "Image", key: "Images Converter" },
+  { label: "Presentation", key: "Slides Converter" },
+  { label: "Spreadsheet", key: "Spreadsheets Converter" },
+  { label: "Vector", key: "Vector Converter" },
+  { label: "Video", key: "Video Converter" }
+];
+
 function BaseConverterPlaceholder({
   title,
   desc,
   icon: Icon,
   colorClass,
-  badgeText,
   acceptedFileTypes = "*/*",
   lang
 }: BaseConverterPlaceholderProps) {
@@ -758,6 +771,54 @@ function BaseConverterPlaceholder({
       setTargetFormat(formatList[1] || formatList[0]);
     }
   }, [title]);
+
+  const [activeSourceCategory, setActiveSourceCategory] = useState<string>("Documents Converter");
+  const [activeTargetCategory, setActiveTargetCategory] = useState<string>("Documents Converter");
+  const [sourceSearch, setSourceSearch] = useState<string>("");
+  const [targetSearch, setTargetSearch] = useState<string>("");
+
+  useEffect(() => {
+    if (title) {
+      setActiveSourceCategory(title);
+      setActiveTargetCategory(title);
+    }
+  }, [title]);
+
+  const getFilteredSourceFormats = () => {
+    if (!sourceSearch.trim()) {
+      return ["ANY", ...(CONVERTER_FORMATS[activeSourceCategory] || [])];
+    }
+    const matched: string[] = [];
+    Object.values(CONVERTER_FORMATS).forEach(fmts => {
+      fmts.forEach(fmt => {
+        if (fmt.toLowerCase().includes(sourceSearch.toLowerCase()) && !matched.includes(fmt)) {
+          matched.push(fmt);
+        }
+      });
+    });
+    if ("ANY".toLowerCase().includes(sourceSearch.toLowerCase()) && !matched.includes("ANY")) {
+      return ["ANY", ...matched];
+    }
+    return matched;
+  };
+
+  const getFilteredTargetFormats = () => {
+    if (!targetSearch.trim()) {
+      return ["ANY", ...(CONVERTER_FORMATS[activeTargetCategory] || [])];
+    }
+    const matched: string[] = [];
+    Object.values(CONVERTER_FORMATS).forEach(fmts => {
+      fmts.forEach(fmt => {
+        if (fmt.toLowerCase().includes(targetSearch.toLowerCase()) && !matched.includes(fmt)) {
+          matched.push(fmt);
+        }
+      });
+    });
+    if ("ANY".toLowerCase().includes(targetSearch.toLowerCase()) && !matched.includes("ANY")) {
+      return ["ANY", ...matched];
+    }
+    return matched;
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -891,11 +952,6 @@ function BaseConverterPlaceholder({
             1. TITLE & SUBTITLE HEADER (CENTERED)
             ==================================================================== */}
         <div className="text-center space-y-4 max-w-2xl mx-auto">
-          {badgeText && (
-            <div className="inline-block px-3 py-1 bg-black text-white border-2 border-black rounded-lg text-xs font-black tracking-wider uppercase rotate-[-1deg] shadow-[2px_2px_0px_0px_#000000]">
-              {badgeText}
-            </div>
-          )}
           <div className="flex items-center justify-center space-x-3">
             <div className={`w-12 h-12 rounded-xl ${colorClass} flex items-center justify-center text-black border-3 border-black shadow-[3px_3px_0px_0px_#000000] shrink-0 rotate-[-2deg]`}>
               <Icon className="w-6 h-6 stroke-[2.5]" />
@@ -933,33 +989,98 @@ function BaseConverterPlaceholder({
 
               {/* Source Dropdown list */}
               {sourceDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-32 bg-white border-3 border-black rounded-xl shadow-[4px_4px_0px_0px_#000000] overflow-hidden z-50 max-h-48 overflow-y-auto">
-                  <div className="p-1">
-                    <button
-                      onClick={() => {
-                        setSourceFormat("ANY");
-                        setSourceDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-[#FFE600] text-black font-black uppercase border-b-2 border-black last:border-b-0 cursor-pointer"
-                    >
-                      ANY
-                    </button>
-                    {formatList.map(fmt => (
-                      <button
-                        key={fmt}
-                        onClick={() => {
-                          setSourceFormat(fmt);
-                          setSourceDropdownOpen(false);
-                        }}
-                        className={`w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-[#FFE600] font-black uppercase border-b border-black last:border-b-0 cursor-pointer ${
-                          sourceFormat === fmt ? "bg-[#FFE600] text-black" : "text-black"
-                        }`}
-                      >
-                        {fmt}
-                      </button>
-                    ))}
+                <>
+                  {/* Invisible backdrop to close the dropdown when clicked outside */}
+                  <div className="fixed inset-0 z-40 cursor-default" onClick={() => setSourceDropdownOpen(false)} />
+                  
+                  {/* Dropdown Menu */}
+                  <div className="absolute left-0 mt-3 w-[290px] xs:w-[340px] sm:w-[460px] md:w-[480px] bg-[#1E1E1E] border-4 border-black rounded-2xl shadow-[6px_6px_0px_0px_#000000] overflow-hidden z-50 flex flex-col text-white">
+                    {/* Search Input Header */}
+                    <div className="flex items-center px-3 py-2 border-b-3 border-black bg-zinc-800">
+                      <Search className="w-4 h-4 text-zinc-400 mr-2 shrink-0 stroke-[2.5]" />
+                      <input
+                        type="text"
+                        placeholder="Search Format"
+                        value={sourceSearch}
+                        onChange={(e) => setSourceSearch(e.target.value)}
+                        className="bg-transparent text-white font-extrabold text-xs sm:text-sm w-full outline-none placeholder-zinc-500 uppercase tracking-wider"
+                      />
+                      {sourceSearch && (
+                        <button
+                          onClick={() => setSourceSearch("")}
+                          className="text-zinc-400 hover:text-white font-black text-xs px-1 cursor-pointer"
+                        >
+                          CLEAR
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Split Panels */}
+                    <div className="flex h-56 sm:h-64">
+                      {/* Left column: Categories List */}
+                      <div className="w-24 xs:w-28 sm:w-36 shrink-0 border-r-3 border-black overflow-y-auto bg-zinc-950">
+                        {sourceSearch.trim() !== "" && (
+                          <button
+                            className="w-full text-left px-2 sm:px-3 py-2 text-[10px] sm:text-xs font-black uppercase bg-zinc-800 text-[#FFE600] border-b border-zinc-800 border-l-4 border-l-[#FFE600] flex items-center justify-between"
+                          >
+                            <span className="truncate">Search Results</span>
+                            <ChevronRight className="w-3 h-3 text-[#FFE600] shrink-0" />
+                          </button>
+                        )}
+                        {DROPDOWN_CATEGORIES.map((cat) => {
+                          const isSelected = sourceSearch.trim() === "" && activeSourceCategory === cat.key;
+                          return (
+                            <button
+                              key={cat.key}
+                              onClick={() => {
+                                setSourceSearch("");
+                                setActiveSourceCategory(cat.key);
+                              }}
+                              className={`w-full text-left px-2 sm:px-3 py-2 text-[10px] sm:text-xs font-black uppercase border-b border-zinc-900 last:border-b-0 flex items-center justify-between transition-colors duration-150 cursor-pointer ${
+                                isSelected
+                                  ? "bg-zinc-800 text-[#FFE600] border-l-4 border-l-[#FFE600]"
+                                  : "text-zinc-400 hover:text-white hover:bg-zinc-900"
+                              }`}
+                            >
+                              <span className="truncate">{cat.label}</span>
+                              {isSelected && <ChevronRight className="w-3 h-3 text-[#FFE600] shrink-0" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {/* Right column: Formats Grid */}
+                      <div className="flex-1 overflow-y-auto bg-zinc-900 p-2 sm:p-3">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
+                          {getFilteredSourceFormats().map((fmt) => {
+                            const isSelected = sourceFormat === fmt;
+                            return (
+                              <button
+                                key={fmt}
+                                onClick={() => {
+                                  setSourceFormat(fmt);
+                                  setSourceDropdownOpen(false);
+                                }}
+                                className={`w-full border-2 border-black rounded-lg py-1.5 px-1 text-[10px] sm:text-xs font-black font-mono text-center tracking-tight transition-all duration-150 shadow-[2px_2px_0px_0px_#000000] cursor-pointer hover:scale-[1.03] active:scale-[0.98] ${
+                                  isSelected
+                                    ? "bg-[#FFE600] text-black border-2 border-black shadow-[1px_1px_0px_0px_#000000]"
+                                    : "bg-zinc-950 text-zinc-300 hover:bg-[#FFE600] hover:text-black hover:shadow-[3px_3px_0px_0px_#000000]"
+                                }`}
+                              >
+                                {fmt}
+                              </button>
+                            );
+                          })}
+                          {getFilteredSourceFormats().length === 0 && (
+                            <div className="col-span-full py-8 text-center text-zinc-500 font-extrabold text-xs uppercase">
+                              No formats found
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
 
@@ -997,33 +1118,98 @@ function BaseConverterPlaceholder({
 
               {/* Target Dropdown list */}
               {targetDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-32 bg-white border-3 border-black rounded-xl shadow-[4px_4px_0px_0px_#000000] overflow-hidden z-50 max-h-48 overflow-y-auto">
-                  <div className="p-1">
-                    <button
-                      onClick={() => {
-                        setTargetFormat("ANY");
-                        setTargetDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-[#FFE600] text-black font-black uppercase border-b-2 border-black last:border-b-0 cursor-pointer"
-                    >
-                      ANY
-                    </button>
-                    {formatList.map(fmt => (
-                      <button
-                        key={fmt}
-                        onClick={() => {
-                          setTargetFormat(fmt);
-                          setTargetDropdownOpen(false);
-                        }}
-                        className={`w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-[#FFE600] font-black uppercase border-b border-black last:border-b-0 cursor-pointer ${
-                          targetFormat === fmt ? "bg-[#FFE600] text-black" : "text-black"
-                        }`}
-                      >
-                        {fmt}
-                      </button>
-                    ))}
+                <>
+                  {/* Invisible backdrop to close the dropdown when clicked outside */}
+                  <div className="fixed inset-0 z-40 cursor-default" onClick={() => setTargetDropdownOpen(false)} />
+                  
+                  {/* Dropdown Menu */}
+                  <div className="absolute right-0 mt-3 w-[290px] xs:w-[340px] sm:w-[460px] md:w-[480px] bg-[#1E1E1E] border-4 border-black rounded-2xl shadow-[6px_6px_0px_0px_#000000] overflow-hidden z-50 flex flex-col text-white">
+                    {/* Search Input Header */}
+                    <div className="flex items-center px-3 py-2 border-b-3 border-black bg-zinc-800">
+                      <Search className="w-4 h-4 text-zinc-400 mr-2 shrink-0 stroke-[2.5]" />
+                      <input
+                        type="text"
+                        placeholder="Search Format"
+                        value={targetSearch}
+                        onChange={(e) => setTargetSearch(e.target.value)}
+                        className="bg-transparent text-white font-extrabold text-xs sm:text-sm w-full outline-none placeholder-zinc-500 uppercase tracking-wider"
+                      />
+                      {targetSearch && (
+                        <button
+                          onClick={() => setTargetSearch("")}
+                          className="text-zinc-400 hover:text-white font-black text-xs px-1 cursor-pointer"
+                        >
+                          CLEAR
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Split Panels */}
+                    <div className="flex h-56 sm:h-64">
+                      {/* Left column: Categories List */}
+                      <div className="w-24 xs:w-28 sm:w-36 shrink-0 border-r-3 border-black overflow-y-auto bg-zinc-950">
+                        {targetSearch.trim() !== "" && (
+                          <button
+                            className="w-full text-left px-2 sm:px-3 py-2 text-[10px] sm:text-xs font-black uppercase bg-zinc-800 text-[#FFE600] border-b border-zinc-800 border-l-4 border-l-[#FFE600] flex items-center justify-between"
+                          >
+                            <span className="truncate">Search Results</span>
+                            <ChevronRight className="w-3 h-3 text-[#FFE600] shrink-0" />
+                          </button>
+                        )}
+                        {DROPDOWN_CATEGORIES.map((cat) => {
+                          const isSelected = targetSearch.trim() === "" && activeTargetCategory === cat.key;
+                          return (
+                            <button
+                              key={cat.key}
+                              onClick={() => {
+                                setTargetSearch("");
+                                setActiveTargetCategory(cat.key);
+                              }}
+                              className={`w-full text-left px-2 sm:px-3 py-2 text-[10px] sm:text-xs font-black uppercase border-b border-zinc-900 last:border-b-0 flex items-center justify-between transition-colors duration-150 cursor-pointer ${
+                                isSelected
+                                  ? "bg-zinc-800 text-[#FFE600] border-l-4 border-l-[#FFE600]"
+                                  : "text-zinc-400 hover:text-white hover:bg-zinc-900"
+                              }`}
+                            >
+                              <span className="truncate">{cat.label}</span>
+                              {isSelected && <ChevronRight className="w-3 h-3 text-[#FFE600] shrink-0" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {/* Right column: Formats Grid */}
+                      <div className="flex-1 overflow-y-auto bg-zinc-900 p-2 sm:p-3">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
+                          {getFilteredTargetFormats().map((fmt) => {
+                            const isSelected = targetFormat === fmt;
+                            return (
+                              <button
+                                key={fmt}
+                                onClick={() => {
+                                  setTargetFormat(fmt);
+                                  setTargetDropdownOpen(false);
+                                }}
+                                className={`w-full border-2 border-black rounded-lg py-1.5 px-1 text-[10px] sm:text-xs font-black font-mono text-center tracking-tight transition-all duration-150 shadow-[2px_2px_0px_0px_#000000] cursor-pointer hover:scale-[1.03] active:scale-[0.98] ${
+                                  isSelected
+                                    ? "bg-[#FFE600] text-black border-2 border-black shadow-[1px_1px_0px_0px_#000000]"
+                                    : "bg-zinc-950 text-zinc-300 hover:bg-[#FFE600] hover:text-black hover:shadow-[3px_3px_0px_0px_#000000]"
+                                }`}
+                              >
+                                {fmt}
+                              </button>
+                            );
+                          })}
+                          {getFilteredTargetFormats().length === 0 && (
+                            <div className="col-span-full py-8 text-center text-zinc-500 font-extrabold text-xs uppercase">
+                              No formats found
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
 
@@ -1080,7 +1266,6 @@ function BaseConverterPlaceholder({
                 >
                   <Plus className="w-4 h-4 text-black stroke-[3]" />
                   <span>{TRANSLATIONS[lang].selectBtn}</span>
-                  <ChevronDown className="w-3.5 h-3.5 text-black stroke-[2.5]" />
                 </button>
 
               </div>
