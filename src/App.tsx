@@ -871,11 +871,11 @@ function BaseConverterPlaceholder({
   };
 
   return (
-    <div className="flex-1 bg-[#0F0F12] text-white min-h-screen py-12 px-4 sm:px-6 lg:px-8 w-full font-sans relative overflow-hidden">
+    <div className="flex-1 bg-[#F4F3EF] text-black min-h-screen py-12 px-4 sm:px-6 lg:px-8 w-full font-sans relative overflow-hidden">
       
       {/* Concentric Circle Rings Background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-25 flex items-center justify-center">
-        <svg className="w-[800px] h-[800px] text-red-500/10" viewBox="0 0 100 100">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-5 flex items-center justify-center">
+        <svg className="w-[800px] h-[800px] text-black" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="10" stroke="currentColor" strokeWidth="0.1" fill="none" />
           <circle cx="50" cy="50" r="20" stroke="currentColor" strokeWidth="0.1" fill="none" strokeDasharray="1 1" />
           <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="0.1" fill="none" />
@@ -892,19 +892,19 @@ function BaseConverterPlaceholder({
             ==================================================================== */}
         <div className="text-center space-y-4 max-w-2xl mx-auto">
           {badgeText && (
-            <div className="inline-block px-3 py-1 bg-neutral-900 text-neutral-400 border border-[#2D2D35] rounded-full text-xs font-bold tracking-wider uppercase">
+            <div className="inline-block px-3 py-1 bg-black text-white border-2 border-black rounded-lg text-xs font-black tracking-wider uppercase rotate-[-1deg] shadow-[2px_2px_0px_0px_#000000]">
               {badgeText}
             </div>
           )}
           <div className="flex items-center justify-center space-x-3">
-            <div className={`w-10 h-10 rounded-xl ${colorClass} flex items-center justify-center text-black shadow-md shrink-0`}>
-              <Icon className="w-6 h-6 stroke-[2]" />
+            <div className={`w-12 h-12 rounded-xl ${colorClass} flex items-center justify-center text-black border-3 border-black shadow-[3px_3px_0px_0px_#000000] shrink-0 rotate-[-2deg]`}>
+              <Icon className="w-6 h-6 stroke-[2.5]" />
             </div>
-            <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-white font-display">
+            <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-black font-display uppercase">
               {title}
             </h1>
           </div>
-          <p className="text-neutral-400 font-medium text-sm sm:text-base leading-relaxed">
+          <p className="text-black/80 font-bold text-sm sm:text-base leading-relaxed">
             {desc}
           </p>
         </div>
@@ -922,25 +922,25 @@ function BaseConverterPlaceholder({
                   setSourceDropdownOpen(!sourceDropdownOpen);
                   setTargetDropdownOpen(false);
                 }}
-                className={`w-28 h-28 rounded-2xl bg-[#18181C] border border-[#2D2D35] hover:border-[#A83232] hover:bg-[#202025] transition-all flex flex-col items-center justify-center space-y-2 cursor-pointer shadow-lg select-none relative ${
-                  sourceFormat !== "ANY" ? "ring-1 ring-[#A83232]/30" : ""
+                className={`w-28 h-28 rounded-2xl bg-white border-3 border-black hover:bg-[#F4F3EF] hover:shadow-[5px_5px_0px_0px_#000000] transition-all flex flex-col items-center justify-center space-y-2 cursor-pointer shadow-[4px_4px_0px_0px_#000000] select-none relative ${
+                  sourceFormat !== "ANY" ? "bg-[#A5F3FC]/15" : ""
                 }`}
               >
-                <FileText className="w-8 h-8 text-neutral-300" />
-                <span className="font-extrabold text-xs tracking-wider text-white uppercase">{sourceFormat}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute bottom-2 right-2" />
+                <FileText className="w-8 h-8 text-black stroke-[2.5]" />
+                <span className="font-black text-sm tracking-wider text-black uppercase">{sourceFormat}</span>
+                <ChevronDown className="w-3.5 h-3.5 text-black absolute bottom-2 right-2 stroke-[2.5]" />
               </button>
 
               {/* Source Dropdown list */}
               {sourceDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-32 bg-[#18181C] border border-[#2D2D35] rounded-xl shadow-2xl overflow-hidden z-50 max-h-48 overflow-y-auto">
+                <div className="absolute left-0 mt-2 w-32 bg-white border-3 border-black rounded-xl shadow-[4px_4px_0px_0px_#000000] overflow-hidden z-50 max-h-48 overflow-y-auto">
                   <div className="p-1">
                     <button
                       onClick={() => {
                         setSourceFormat("ANY");
                         setSourceDropdownOpen(false);
                       }}
-                      className="w-full text-left px-3 py-1.5 text-xs rounded-lg hover:bg-neutral-800 text-neutral-400 font-extrabold"
+                      className="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-[#FFE600] text-black font-black uppercase border-b-2 border-black last:border-b-0 cursor-pointer"
                     >
                       ANY
                     </button>
@@ -951,8 +951,8 @@ function BaseConverterPlaceholder({
                           setSourceFormat(fmt);
                           setSourceDropdownOpen(false);
                         }}
-                        className={`w-full text-left px-3 py-1.5 text-xs rounded-lg hover:bg-neutral-800 font-bold ${
-                          sourceFormat === fmt ? "text-[#A83232] bg-neutral-800" : "text-white"
+                        className={`w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-[#FFE600] font-black uppercase border-b border-black last:border-b-0 cursor-pointer ${
+                          sourceFormat === fmt ? "bg-[#FFE600] text-black" : "text-black"
                         }`}
                       >
                         {fmt}
@@ -965,17 +965,17 @@ function BaseConverterPlaceholder({
 
             {/* Connecting visual lines and swap button */}
             <div className="flex-1 flex items-center justify-center relative">
-              <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#A83232]/50 to-transparent absolute" />
+              <div className="w-full h-[3px] bg-black absolute" />
               
               <div className="flex flex-col items-center z-10">
                 <button
                   onClick={handleSwap}
-                  className="w-10 h-10 rounded-full bg-[#18181C] border border-[#A83232] hover:bg-[#A83232] group hover:scale-110 active:scale-95 transition-all flex items-center justify-center cursor-pointer shadow-[0_0_15px_rgba(168,50,50,0.2)]"
+                  className="w-11 h-11 rounded-xl bg-[#FFE600] border-3 border-black hover:bg-[#FFE600]/80 group hover:rotate-180 active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000] transition-all flex items-center justify-center cursor-pointer shadow-[3px_3px_0px_0px_#000000]"
                   title={lang === 'id' ? "Tukar posisi" : "Swap format"}
                 >
-                  <RefreshCw className="w-4 h-4 text-[#A83232] group-hover:text-white transition-colors duration-300" />
+                  <RefreshCw className="w-4 h-4 text-black stroke-[3]" />
                 </button>
-                <span className="text-[10px] font-mono tracking-widest text-neutral-500 mt-1 font-bold">TO</span>
+                <span className="text-[10px] font-black tracking-widest text-black bg-[#F4F3EF] px-2.5 py-0.5 border-2 border-black rounded-md mt-1 shadow-[1px_1px_0px_0px_#000000] uppercase">TO</span>
               </div>
             </div>
 
@@ -986,25 +986,25 @@ function BaseConverterPlaceholder({
                   setTargetDropdownOpen(!targetDropdownOpen);
                   setSourceDropdownOpen(false);
                 }}
-                className={`w-28 h-28 rounded-2xl bg-[#18181C] border border-[#A83232]/60 hover:border-[#A83232] hover:bg-[#202025] transition-all flex flex-col items-center justify-center space-y-2 cursor-pointer shadow-[0_0_15px_rgba(168,50,50,0.15)] select-none relative ${
-                  targetFormat !== "ANY" ? "ring-1 ring-[#A83232]/50" : ""
+                className={`w-28 h-28 rounded-2xl bg-white border-3 border-black hover:bg-[#F4F3EF] hover:shadow-[5px_5px_0px_0px_#000000] transition-all flex flex-col items-center justify-center space-y-2 cursor-pointer shadow-[4px_4px_0px_0px_#000000] select-none relative ${
+                  targetFormat !== "ANY" ? "bg-[#FFA8E8]/15 border-black" : ""
                 }`}
               >
-                <FileText className="w-8 h-8 text-[#A83232]" />
-                <span className="font-extrabold text-xs tracking-wider text-[#A83232] uppercase">{targetFormat}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute bottom-2 right-2" />
+                <FileText className="w-8 h-8 text-black stroke-[2.5]" />
+                <span className="font-black text-sm tracking-wider text-black uppercase">{targetFormat}</span>
+                <ChevronDown className="w-3.5 h-3.5 text-black absolute bottom-2 right-2 stroke-[2.5]" />
               </button>
 
               {/* Target Dropdown list */}
               {targetDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-32 bg-[#18181C] border border-[#2D2D35] rounded-xl shadow-2xl overflow-hidden z-50 max-h-48 overflow-y-auto">
+                <div className="absolute right-0 mt-2 w-32 bg-white border-3 border-black rounded-xl shadow-[4px_4px_0px_0px_#000000] overflow-hidden z-50 max-h-48 overflow-y-auto">
                   <div className="p-1">
                     <button
                       onClick={() => {
                         setTargetFormat("ANY");
                         setTargetDropdownOpen(false);
                       }}
-                      className="w-full text-left px-3 py-1.5 text-xs rounded-lg hover:bg-neutral-800 text-neutral-400 font-extrabold"
+                      className="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-[#FFE600] text-black font-black uppercase border-b-2 border-black last:border-b-0 cursor-pointer"
                     >
                       ANY
                     </button>
@@ -1015,8 +1015,8 @@ function BaseConverterPlaceholder({
                           setTargetFormat(fmt);
                           setTargetDropdownOpen(false);
                         }}
-                        className={`w-full text-left px-3 py-1.5 text-xs rounded-lg hover:bg-neutral-800 font-bold ${
-                          targetFormat === fmt ? "text-[#A83232] bg-neutral-800" : "text-white"
+                        className={`w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-[#FFE600] font-black uppercase border-b border-black last:border-b-0 cursor-pointer ${
+                          targetFormat === fmt ? "bg-[#FFE600] text-black" : "text-black"
                         }`}
                       >
                         {fmt}
@@ -1044,28 +1044,28 @@ function BaseConverterPlaceholder({
           />
 
           {!selectedFile ? (
-            /* Screenshot 2 style Drop Area */
+            /* Screenshot 2 style Drop Area - REDESIGNED TO NEO-BRUTALISM */
             <div
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`rounded-3xl border-2 border-dashed bg-[#16161A] hover:bg-[#1C1C22] p-12 text-center transition-all min-h-[320px] flex flex-col items-center justify-center relative cursor-pointer group ${
-                isDragging ? 'border-[#A83232] bg-[#1E1212]' : 'border-[#2D2D35] hover:border-[#A83232]/50'
+              className={`rounded-3xl border-4 border-dashed border-black bg-white p-12 text-center transition-all min-h-[320px] flex flex-col items-center justify-center relative cursor-pointer shadow-[8px_8px_0px_0px_#000000] hover:translate-y-[-2px] hover:shadow-[10px_10px_0px_0px_#000000] group ${
+                isDragging ? 'bg-[#FFE600]/10' : ''
               }`}
             >
               <div className="space-y-6 flex flex-col items-center justify-center">
                 
-                {/* Cloud icon inside soft red glow */}
-                <div className="w-16 h-16 rounded-full bg-neutral-900 flex items-center justify-center border border-[#2D2D35] group-hover:border-[#A83232] transition-colors relative">
-                  <UploadCloud className="w-8 h-8 text-[#A83232] stroke-[2] transform group-hover:scale-110 transition-transform duration-300" />
+                {/* Cloud icon inside soft yellow background */}
+                <div className="w-16 h-16 rounded-2xl bg-[#A5F3FC] border-3 border-black flex items-center justify-center shadow-[3px_3px_0px_0px_#000000] shrink-0 rotate-[3deg] group-hover:scale-110 transition-transform duration-300">
+                  <UploadCloud className="w-8 h-8 text-black stroke-[2.5]" />
                 </div>
 
                 <div className="space-y-2">
-                  <p className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                  <p className="text-xl sm:text-2xl font-black text-black tracking-tight uppercase font-display">
                     {lang === 'id' ? "Pilih berkas Anda di sini untuk memulai" : "Select your file here to get started"}
                   </p>
-                  <p className="text-xs sm:text-sm text-neutral-400 font-semibold">
+                  <p className="text-xs sm:text-sm text-black/70 font-extrabold">
                     {lang === 'id' ? "atau seret berkas Anda ke sini." : "or drop your file here."}
                   </p>
                 </div>
@@ -1076,38 +1076,38 @@ function BaseConverterPlaceholder({
                     e.stopPropagation();
                     fileInputRef.current?.click();
                   }}
-                  className="px-6 py-3 border border-[#B93C3C] bg-[#A83232] hover:bg-[#B93C3C] text-white font-extrabold uppercase tracking-wider shadow-[0_4px_15px_rgba(168,50,50,0.3)] hover:translate-y-[-1px] transition-all cursor-pointer rounded-xl text-xs flex items-center space-x-2.5"
+                  className="px-6 py-3.5 border-3 border-black bg-[#FFE600] text-black font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000] transition-all cursor-pointer rounded-xl text-xs flex items-center space-x-2.5"
                 >
-                  <Plus className="w-4 h-4 text-white stroke-[2.5]" />
+                  <Plus className="w-4 h-4 text-black stroke-[3]" />
                   <span>{TRANSLATIONS[lang].selectBtn}</span>
-                  <ChevronDown className="w-3.5 h-3.5 text-white/80" />
+                  <ChevronDown className="w-3.5 h-3.5 text-black stroke-[2.5]" />
                 </button>
 
               </div>
             </div>
           ) : (
             /* File Detail / Processing / Download Dashboard */
-            <div className="bg-[#16161A] border border-[#2D2D35] rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
+            <div className="bg-white border-4 border-black rounded-3xl p-6 sm:p-8 space-y-6 shadow-[8px_8px_0px_0px_#000000]">
               
               {/* File details container */}
-              <div className="bg-[#1F1F24] border border-[#2D2D35] p-5 rounded-2xl flex items-center justify-between">
+              <div className="bg-[#F4F3EF] border-3 border-black p-5 rounded-2xl flex items-center justify-between shadow-[3px_3px_0px_0px_#000000]">
                 <div className="flex items-center space-x-4 text-left min-w-0">
-                  <div className="w-12 h-12 rounded-xl bg-neutral-900 border border-[#2D2D35] flex items-center justify-center shrink-0">
-                    <FileText className="w-6 h-6 text-[#A83232] stroke-[2]" />
+                  <div className="w-12 h-12 rounded-xl bg-[#A5F3FC] border-2 border-black flex items-center justify-center shrink-0 rotate-[-3deg] shadow-[2px_2px_0px_0px_#000000]">
+                    <FileText className="w-6 h-6 text-black stroke-[2]" />
                   </div>
                   <div className="min-w-0">
-                    <p className="font-extrabold text-sm sm:text-base text-white truncate max-w-xs sm:max-w-md">{selectedFile.name}</p>
-                    <p className="text-[11px] font-mono font-bold text-neutral-400">{(selectedFile.size / 1024).toFixed(1)} KB</p>
+                    <p className="font-black text-sm sm:text-base text-black truncate max-w-xs sm:max-w-md">{selectedFile.name}</p>
+                    <p className="text-[11px] font-mono font-bold text-black/60">{(selectedFile.size / 1024).toFixed(1)} KB</p>
                   </div>
                 </div>
 
                 {!isConverting && (
                   <button 
                     onClick={handleClear}
-                    className="p-2 border border-[#2D2D35] hover:border-red-500 bg-neutral-900/50 hover:bg-red-500/10 text-neutral-400 hover:text-red-500 rounded-xl transition-all cursor-pointer shrink-0"
+                    className="p-2.5 border-2 border-black bg-[#FFA8E8] hover:bg-rose-300 text-black rounded-xl transition-all shadow-[2px_2px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000] cursor-pointer shrink-0"
                     title={lang === 'id' ? "Hapus berkas" : "Remove file"}
                   >
-                    <Trash2 className="w-4 h-4 stroke-[2]" />
+                    <Trash2 className="w-4 h-4 stroke-[2.5]" />
                   </button>
                 )}
               </div>
@@ -1115,18 +1115,18 @@ function BaseConverterPlaceholder({
               {/* Progress Panel or Interactive Action */}
               {!isConverting && !isConverted ? (
                 <div className="space-y-4">
-                  <div className="bg-[#1E1E24]/30 border border-[#2D2D35] p-4 rounded-xl text-left space-y-2">
-                    <span className="font-extrabold font-display text-xs uppercase tracking-wider text-[#A83232] block">
+                  <div className="bg-[#FFE600]/20 border-3 border-black p-4 rounded-xl text-left space-y-1.5 shadow-[2px_2px_0px_0px_#000000]">
+                    <span className="font-black font-display text-xs uppercase tracking-wider text-black block">
                       {TRANSLATIONS[lang].statusTitle}
                     </span>
-                    <p className="text-xs font-semibold text-neutral-300 leading-relaxed">
+                    <p className="text-xs font-bold text-black leading-relaxed">
                       {lang === 'id' ? (
                         <>
-                          Berkas siap dikonversi dari <span className="font-mono bg-[#1E1E24] px-1.5 py-0.5 border border-[#2D2D35] rounded text-white">{sourceFormat}</span> ke <span className="font-mono bg-[#1E1E24] px-1.5 py-0.5 border border-[#2D2D35] rounded text-[#A83232]">{targetFormat}</span> secara aman di memori lokal.
+                          Berkas siap dikonversi dari <span className="font-mono bg-white px-1.5 py-0.5 border-2 border-black rounded text-black font-black">{sourceFormat}</span> ke <span className="font-mono bg-[#FFE600] px-1.5 py-0.5 border-2 border-black rounded text-black font-black">{targetFormat}</span> secara aman di memori lokal.
                         </>
                       ) : (
                         <>
-                          File is ready to convert from <span className="font-mono bg-[#1E1E24] px-1.5 py-0.5 border border-[#2D2D35] rounded text-white">{sourceFormat}</span> to <span className="font-mono bg-[#1E1E24] px-1.5 py-0.5 border border-[#2D2D35] rounded text-[#A83232]">{targetFormat}</span> securely inside local memory.
+                          File is ready to convert from <span className="font-mono bg-white px-1.5 py-0.5 border-2 border-black rounded text-black font-black">{sourceFormat}</span> to <span className="font-mono bg-[#FFE600] px-1.5 py-0.5 border-2 border-black rounded text-black font-black">{targetFormat}</span> securely inside local memory.
                         </>
                       )}
                     </p>
@@ -1134,9 +1134,9 @@ function BaseConverterPlaceholder({
 
                   <button
                     onClick={startConversion}
-                    className="w-full py-4 bg-[#A83232] hover:bg-[#B93C3C] text-white font-extrabold uppercase font-display tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2 shadow-[0_4px_20px_rgba(168,50,50,0.3)] hover:scale-[1.01] cursor-pointer text-sm"
+                    className="w-full py-4 border-3 border-black bg-[#FFE600] hover:bg-[#FFE600]/90 text-black font-black uppercase font-display tracking-wider rounded-2xl transition-all flex items-center justify-center space-x-2 shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000] cursor-pointer text-sm"
                   >
-                    <Sparkles className="w-4 h-4 text-white" />
+                    <Sparkles className="w-4 h-4 text-black stroke-[2.5]" />
                     <span>{lang === 'id' ? 'Mulai Konversi Offline' : 'Start Offline Conversion'}</span>
                   </button>
                 </div>
@@ -1144,24 +1144,24 @@ function BaseConverterPlaceholder({
                 /* Sleek conversion progress & terminal console */
                 <div className="space-y-5 text-left">
                   <div className="space-y-2">
-                    <div className="flex justify-between items-center text-xs text-neutral-300 font-mono">
+                    <div className="flex justify-between items-center text-xs text-black font-mono font-black">
                       <span>{lang === 'id' ? 'Sedang memproses secara offline...' : 'Processing file offline...'}</span>
-                      <span className="font-bold text-[#A83232]">{conversionProgress}%</span>
+                      <span className="font-bold text-black">{conversionProgress}%</span>
                     </div>
                     {/* Glowing progress bar container */}
-                    <div className="w-full h-2.5 bg-neutral-900 border border-[#2D2D35] rounded-full overflow-hidden">
+                    <div className="w-full h-4 bg-white border-3 border-black rounded-full overflow-hidden shadow-[2px_2px_0px_0px_#000000]">
                       <div 
-                        className="h-full bg-gradient-to-r from-[#A83232] to-[#C23B3B] transition-all duration-150 shadow-[0_0_8px_rgba(168,50,50,0.5)]"
+                        className="h-full bg-[#86EFAC] border-r-3 border-black transition-all duration-150"
                         style={{ width: `${conversionProgress}%` }}
                       />
                     </div>
                   </div>
 
                   {/* Simulated compiler logs */}
-                  <div className="bg-black/80 border border-[#2D2D35] p-4 rounded-xl font-mono text-[11px] text-neutral-400 space-y-1.5 max-h-36 overflow-y-auto">
+                  <div className="bg-black text-white border-3 border-black p-4 rounded-xl font-mono text-[11px] space-y-1.5 max-h-36 overflow-y-auto shadow-[3px_3px_0px_0px_#000000]">
                     {conversionLogs.map((log, index) => (
                       <div key={index} className="flex items-start space-x-2">
-                        <span className="text-[#A83232] shrink-0 font-bold">&gt;</span>
+                        <span className="text-[#86EFAC] shrink-0 font-bold">&gt;</span>
                         <span className="text-neutral-200">{log}</span>
                       </div>
                     ))}
@@ -1170,21 +1170,21 @@ function BaseConverterPlaceholder({
               ) : (
                 /* Success converted state */
                 <div className="space-y-6">
-                  <div className="bg-[#122A1E]/30 border border-[#10B981]/30 p-5 rounded-2xl text-left space-y-3 shadow-inner">
-                    <div className="flex items-center space-x-2.5 text-[#10B981]">
-                      <Check className="w-5 h-5 stroke-[3]" />
-                      <span className="font-extrabold text-xs uppercase tracking-wider">
+                  <div className="bg-[#86EFAC] border-3 border-black p-5 rounded-2xl text-left space-y-3 shadow-[3px_3px_0px_0px_#000000]">
+                    <div className="flex items-center space-x-2.5 text-black font-black">
+                      <Check className="w-5 h-5 stroke-[3.5]" />
+                      <span className="font-black text-xs uppercase tracking-wider">
                         {lang === 'id' ? 'KONVERSI SELESAI & AMAN' : 'CONVERSION SUCCESSFUL & SECURE'}
                       </span>
                     </div>
-                    <p className="text-xs sm:text-sm font-semibold text-neutral-300 leading-relaxed">
+                    <p className="text-xs sm:text-sm font-bold text-black leading-relaxed">
                       {lang === 'id' ? (
                         <>
-                          Berkas Anda telah berhasil dikonversi ke format <span className="font-mono bg-neutral-900 px-1 py-0.5 border border-emerald-500/20 text-[#10B981] rounded">{targetFormat}</span> secara instan di browser Anda. Tidak ada data yang diunggah ke internet.
+                          Berkas Anda telah berhasil dikonversi ke format <span className="font-mono bg-white px-1.5 py-0.5 border-2 border-black rounded text-black font-black">{targetFormat}</span> secara instan di browser Anda. Tidak ada data yang diunggah ke internet.
                         </>
                       ) : (
                         <>
-                          Your file was successfully converted to <span className="font-mono bg-neutral-900 px-1 py-0.5 border border-emerald-500/20 text-[#10B981] rounded">{targetFormat}</span> instantly on your browser. No data left your device.
+                          Your file was successfully converted to <span className="font-mono bg-white px-1.5 py-0.5 border-2 border-black rounded text-black font-black">{targetFormat}</span> instantly on your browser. No data left your device.
                         </>
                       )}
                     </p>
@@ -1194,15 +1194,15 @@ function BaseConverterPlaceholder({
                     <a
                       href={downloadUrl || "#"}
                       download={`${selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.'))}_converted.${targetFormat.toLowerCase()}`}
-                      className="flex-1 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold uppercase font-display tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2.5 shadow-[0_4px_20px_rgba(16,185,129,0.3)] hover:scale-[1.01] cursor-pointer text-sm"
+                      className="flex-1 py-4 border-3 border-black bg-[#86EFAC] hover:bg-[#86EFAC]/90 text-black font-black uppercase font-display tracking-wider rounded-2xl transition-all flex items-center justify-center space-x-2.5 shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000] cursor-pointer text-sm"
                     >
-                      <FileDown className="w-4 h-4 text-white" />
+                      <FileDown className="w-4 h-4 text-black stroke-[2.5]" />
                       <span>{lang === 'id' ? 'Unduh Berkas' : 'Download File'}</span>
                     </a>
                     
                     <button
                       onClick={handleClear}
-                      className="py-4 px-6 border border-[#2D2D35] bg-[#18181C] hover:bg-[#202025] text-neutral-300 font-extrabold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-1.5 cursor-pointer text-xs"
+                      className="py-4 px-6 border-3 border-black bg-white hover:bg-[#F4F3EF] text-black font-black uppercase tracking-wider rounded-2xl transition-all flex items-center justify-center space-x-1.5 cursor-pointer text-xs shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000]"
                     >
                       <span>{lang === 'id' ? 'Konversi Lain' : 'Convert Another'}</span>
                     </button>
@@ -1221,23 +1221,23 @@ function BaseConverterPlaceholder({
         <div className="max-w-2xl mx-auto w-full text-left space-y-4 pt-4">
           
           <div className="flex items-center space-x-3">
-            {/* 3 Red dots graphic */}
-            <div className="flex space-x-1 items-center shrink-0">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#A83232]" />
-              <span className="w-2 h-2 rounded-full bg-[#A83232]/60" />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#A83232]/30" />
+            {/* 3 Red/Black dots graphic */}
+            <div className="flex space-x-1.5 items-center shrink-0">
+              <span className="w-2.5 h-2.5 rounded-full bg-black border border-black" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#FFE600] border border-black" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#A5F3FC] border border-black" />
             </div>
             
-            <span className="text-neutral-500 font-black text-[10px] sm:text-xs tracking-widest uppercase">
+            <span className="text-black font-black text-[10px] sm:text-xs tracking-widest uppercase">
               {lang === 'id' ? 'KONVERTER YANG TERSEDIA' : 'AVAILABLE CONVERTERS'}
             </span>
           </div>
 
           <div className="space-y-1">
-            <h2 className="text-2xl sm:text-3xl font-black text-white capitalize font-display">
+            <h2 className="text-2xl sm:text-3xl font-black text-black capitalize font-display">
               {title}s
             </h2>
-            <p className="text-neutral-400 text-xs sm:text-sm font-semibold">
+            <p className="text-black/80 text-xs sm:text-sm font-bold">
               {lang === 'id' 
                 ? `Jelajahi format berkas ${title.toLowerCase().replace('converter', '')} yang kami dukung untuk konversi langsung di browser Anda.`
                 : `Browse every ${title.toLowerCase().replace('converter', '')} format we support — each runs with zero cloud footprint.`
@@ -1246,7 +1246,7 @@ function BaseConverterPlaceholder({
           </div>
 
           {/* Dotted bordered container with pill grid */}
-          <div className="border border-dashed border-[#2D2D35] p-5 rounded-2xl bg-[#141418]/50">
+          <div className="border-3 border-black p-5 rounded-2xl bg-white shadow-[4px_4px_0px_0px_#000000]">
             <div className="flex flex-wrap gap-2.5">
               {formatList.map((fmt) => (
                 <button
@@ -1256,10 +1256,10 @@ function BaseConverterPlaceholder({
                     // Open a visual flash feedback or scroll upward
                     window.scrollTo({ top: 150, behavior: 'smooth' });
                   }}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold tracking-wide transition-all border cursor-pointer select-none ${
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-black tracking-wide transition-all border-2 border-black cursor-pointer select-none ${
                     targetFormat === fmt 
-                      ? 'bg-[#A83232]/10 border-[#A83232] text-white shadow-[0_0_12px_rgba(168,50,50,0.2)]'
-                      : 'bg-[#1E1E24] hover:bg-[#2A2A32] text-neutral-300 hover:text-white border-[#2D2D35]'
+                      ? 'bg-[#FFE600] text-black shadow-[2px_2px_0px_0px_#000000]'
+                      : 'bg-[#F4F3EF] hover:bg-[#FFE600]/30 text-black'
                   }`}
                 >
                   {fmt}
