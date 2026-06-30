@@ -264,8 +264,8 @@ const formatData = [
 
 // Rich Formats Structure for Popover
 const categoriesList = [
-  { id: "archive", name: "Archive", page: "archive-converter", formats: ["ZIP", "7Z", "RAR", "TAR", "GZ", "BZ2"] },
-  { id: "audio", name: "Audio", page: "video-converter", formats: ["MP3", "WAV", "FLAC", "AAC", "OGG", "M4A"] },
+  { id: "archive", name: "Archive", page: "archive-converter", formats: ["7Z", "ACE", "ALZ", "ARC", "ARJ", "BZ", "BZ2", "CAB", "CPIO", "DEB", "DMG", "EML", "GZ", "IMG", "ISO", "JAR", "LHA", "LZ", "LZMA", "LZO", "RAR", "RPM", "RZ", "TAR", "TAR.7Z", "TAR.BZ", "TAR.BZ2", "TAR.GZ", "TAR.LZO", "TAR.XZ", "TAR.Z", "TBZ", "TBZ2", "TGZ", "TZ", "TZO", "XZ", "Z", "ZIP"] },
+  { id: "audio", name: "Audio", page: "video-converter", formats: ["AAC", "AC3", "AIF", "AIFC", "AIFF", "AMR", "AU", "CAF", "DSS", "FLAC", "M4A", "M4B", "MP3", "OGA", "OPUS", "SF2", "SFARK", "VOC", "WAV", "WEBA", "WM"] },
   { id: "cad", name: "Cad", page: "cad-converter", formats: ["DXF"] },
   { id: "document", name: "Document", page: "document-converter", formats: ["PDF", "TXT", "DOCX", "HTML"] },
   { id: "ebook", name: "Ebook", page: "ebook-converter", formats: ["EPUB", "MD"] },
@@ -304,14 +304,14 @@ const formatCategories = [
     title: "Audio",
     icon: "🎵",
     color: "bg-[#ffde43]", // Vibrant Yellow
-    formats: ["MP3", "WAV", "FLAC", "AAC", "OGG", "M4A"]
+    formats: ["AAC", "AC3", "AIF", "AIFC", "AIFF", "AMR", "AU", "CAF", "DSS", "FLAC", "M4A", "M4B", "MP3", "OGA", "OPUS", "SF2", "SFARK", "VOC", "WAV", "WEBA", "WM"]
   },
   {
     id: "archive",
     title: "Archives",
     icon: "📦",
     color: "bg-[#fb923c]", // Vibrant Orange
-    formats: ["ZIP", "RAR", "7Z", "TAR", "GZ"]
+    formats: ["ZIP", "7Z", "RAR", "TAR", "GZ", "TAR.GZ", "BZ2", "DMG", "ISO", "JAR", "DEB"]
   },
   {
     id: "ebook",
