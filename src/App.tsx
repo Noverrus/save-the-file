@@ -502,243 +502,80 @@ export default function App() {
 // PAGE: HOME PAGE
 // ============================================================================
 function HomePage({ lang, navigateTo }: { lang: 'id' | 'en'; navigateTo: (to: string) => void }) {
-  const getFlatColor = (id: string) => {
-    switch(id) {
-      case 'documents': return 'bg-[#FFE600]';
-      case 'images': return 'bg-[#86EFAC]';
-      case 'video': return 'bg-[#FFA8E8]';
-      case 'audio': return 'bg-[#A5F3FC]';
-      case 'spreadsheets': return 'bg-[#FFD0A3]';
-      case 'slides': return 'bg-[#FFE600]';
-      case 'e-books': return 'bg-[#FFA8E8]';
-      case 'archives': return 'bg-[#86EFAC]';
-      case 'vector': return 'bg-[#A5F3FC]';
-      case 'cad': return 'bg-[#FFD0A3]';
-      case 'fonts': return 'bg-[#FFE600]';
-      default: return 'bg-[#FFE600]';
-    }
-  };
-
   return (
-    <div className="flex-1 py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-16">
+    <div className="flex-1 py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full space-y-16 flex flex-col items-center">
       
-      {/* Hero Section */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center py-6">
-        <div className="lg:col-span-7 space-y-6 text-left">
-          
-          <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="inline-flex items-center space-x-2 px-4 py-2 border-3 border-black bg-[#86EFAC] text-black text-xs font-black uppercase shadow-[2px_2px_0px_0px_#000000]"
-          >
-            <ShieldCheck className="w-4 h-4 stroke-[3]" />
-            <span className="font-display font-extrabold tracking-wider">
-              {TRANSLATIONS[lang].heroBadge}
-            </span>
-          </motion.div>
-
-          <motion.h1 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-black leading-[1.1] font-display uppercase"
-          >
-            {lang === 'id' ? 'Konversi File' : 'File Converter'} <br />
-            <span className="bg-[#FFE600] border-3 border-black px-3 py-1 inline-block rotate-[-1.5deg] shadow-[5px_5px_0px_0px_#000000] mt-2 mb-1">
-              {TRANSLATIONS[lang].heroTitle2}
-            </span>
-          </motion.h1>
-
-          {/* Description explaining benefits and features which is updated periodically as requested */}
-          <motion.p 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-base sm:text-lg text-black font-semibold max-w-2xl leading-relaxed bg-white border-3 border-black p-5 shadow-[4px_4px_0px_0px_#000000]"
-          >
-            {TRANSLATIONS[lang].heroDesc}
-          </motion.p>
-
-          <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-wrap gap-4"
-          >
-            <button 
-              onClick={() => navigateTo('/converter')}
-              className="inline-flex items-center space-x-2 px-8 py-4 border-4 border-black bg-[#FFE600] text-black font-black uppercase font-display tracking-wider shadow-[6px_6px_0px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[2px_2px_0px_0px_#000000] transition-all cursor-pointer text-base rounded-none"
-            >
-              <span>{TRANSLATIONS[lang].exploreBtn}</span>
-              <ArrowRight className="w-5 h-5 stroke-[3]" />
-            </button>
-          </motion.div>
-        </div>
-
-        {/* Neo-brutalist Interactive CSS Illustration */}
+      {/* Hero Section - Centered for pristine visual layout */}
+      <section className="text-center py-6 space-y-6 flex flex-col items-center w-full">
+        
         <motion.div 
-          initial={{ x: 40, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ type: 'spring', damping: 20, stiffness: 100, delay: 0.15 }}
-          className="lg:col-span-5 flex flex-col items-center justify-center border-4 border-black bg-white shadow-[8px_8px_0px_0px_#000000] p-6 relative overflow-hidden group select-none"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="inline-flex items-center space-x-2 px-4 py-2 border-3 border-black bg-[#86EFAC] text-black text-xs font-black uppercase shadow-[2px_2px_0px_0px_#000000]"
         >
-          {/* Accent Badge */}
-          <div className="absolute top-3 left-3 bg-[#FFE600] border-2 border-black px-2.5 py-1 text-xs font-black uppercase rotate-[-3deg] shadow-[2px_2px_0px_0px_#000000] z-10">
-            input file
-          </div>
-          <div className="absolute top-3 right-3 bg-[#86EFAC] border-2 border-black px-2.5 py-1 text-xs font-black uppercase rotate-[2deg] shadow-[2px_2px_0px_0px_#000000] z-10">
-            100% lokal
-          </div>
+          <ShieldCheck className="w-4 h-4 stroke-[3]" />
+          <span className="font-display font-extrabold tracking-wider">
+            {TRANSLATIONS[lang].heroBadge}
+          </span>
+        </motion.div>
 
-          {/* Graphical Mockup of conversion flow */}
-          <div className="w-full py-8 px-4 flex flex-col items-center space-y-6">
-            <div className="flex items-center justify-between w-full max-w-sm gap-4">
-              {/* Input doc representation */}
-              <div className="flex-1 border-3 border-black bg-[#FFE600] p-4 shadow-[4px_4px_0px_0px_#000000] text-center transform group-hover:rotate-[-2deg] transition-all">
-                <FileText className="w-10 h-10 mx-auto stroke-[2.5]" />
-                <span className="font-mono text-xs font-extrabold mt-2 block uppercase">source.any</span>
-              </div>
+        <motion.h1 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-black leading-[1.15] font-display uppercase text-center"
+        >
+          {lang === 'id' ? 'Konversi File' : 'File Converter'} <br />
+          <span className="bg-[#FFE600] border-3 border-black px-4 py-1.5 inline-block rotate-[-1.5deg] shadow-[5px_5px_0px_0px_#000000] mt-3 mb-1">
+            {TRANSLATIONS[lang].heroTitle2}
+          </span>
+        </motion.h1>
 
-              {/* Action converting arrows */}
-              <div className="flex flex-col items-center justify-center space-y-1">
-                <div className="w-10 h-10 rounded-full border-3 border-black bg-[#FFA8E8] flex items-center justify-center shadow-[2px_2px_0px_0px_#000000] animate-bounce">
-                  <Zap className="w-5 h-5 stroke-[2.5] fill-black" />
-                </div>
-                <span className="font-display font-extrabold text-[10px] uppercase tracking-wider">instan</span>
-              </div>
+        {/* Description explaining benefits and features */}
+        <motion.p 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-base sm:text-lg text-black font-semibold max-w-2xl leading-relaxed bg-white border-3 border-black p-5 shadow-[4px_4px_0px_0px_#000000] text-center"
+        >
+          {TRANSLATIONS[lang].heroDesc}
+        </motion.p>
 
-              {/* Output doc representation */}
-              <div className="flex-1 border-3 border-black bg-[#86EFAC] p-4 shadow-[4px_4px_0px_0px_#000000] text-center transform group-hover:rotate-[2deg] transition-all">
-                <Check className="w-10 h-10 mx-auto stroke-[3] text-black" />
-                <span className="font-mono text-xs font-extrabold mt-2 block uppercase text-black">output.file</span>
-              </div>
-            </div>
-
-            {/* Simulated file conversion progress bars */}
-            <div className="w-full max-w-sm border-3 border-black bg-[#F4F3EF] p-3 shadow-[3px_3px_0px_0px_#000000] space-y-2">
-              <div className="flex justify-between text-xs font-extrabold uppercase">
-                <span>{lang === 'id' ? 'MEMPROSES SECARA PRIVAT...' : 'PROCESSING PRIVATELY...'}</span>
-                <span>100%</span>
-              </div>
-              <div className="w-full h-4 border-2 border-black bg-white overflow-hidden p-0.5">
-                <div className="h-full bg-[#A5F3FC] border-r-2 border-black animate-[pulse_1.5s_infinite]" style={{ width: '100%' }}></div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-2 w-full text-center border-t-3 border-black pt-3 bg-[#F4F3EF] px-2 py-1.5">
-            <span className="font-mono text-xs text-black font-extrabold uppercase tracking-wide">
-              {lang === 'id' ? 'Mulai bimbing untuk membuat modul konversi lokal Anda!' : 'Guide me to build your local conversion modules!'}
-            </span>
-          </div>
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="flex justify-center pt-2"
+        >
+          <button 
+            onClick={() => navigateTo('/converter')}
+            className="inline-flex items-center space-x-2 px-8 py-4 border-4 border-black bg-[#FFE600] text-black font-black uppercase font-display tracking-wider shadow-[6px_6px_0px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[2px_2px_0px_0px_#000000] transition-all cursor-pointer text-base rounded-none"
+          >
+            <span>{TRANSLATIONS[lang].exploreBtn}</span>
+            <ArrowRight className="w-5 h-5 stroke-[3]" />
+          </button>
         </motion.div>
       </section>
 
-      {/* Grid of Features / Converters */}
-      <section className="space-y-8 pt-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b-4 border-black pb-4">
-          <div className="space-y-1">
-            <h2 className="text-3xl font-black uppercase font-display text-black">{TRANSLATIONS[lang].converterTitle}</h2>
-            <p className="text-black font-semibold text-sm">{TRANSLATIONS[lang].converterSubtitle}</p>
+      {/* "Converter File" Box Section */}
+      <section className="w-full pt-4 flex justify-center">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="w-full max-w-2xl bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_#000000] text-center space-y-4"
+        >
+          <div className="text-2xl sm:text-3xl font-black uppercase font-display text-black bg-[#A5F3FC] border-3 border-black py-3 px-6 inline-block rotate-[0.5deg] shadow-[4px_4px_0px_0px_#000000]">
+            Converter File
           </div>
-          <div className="bg-[#FFA8E8] border-2 border-black px-3 py-1 font-black text-xs uppercase shadow-[2px_2px_0px_0px_#000000]">
-            {TRANSLATIONS[lang].activeBadge}
-          </div>
-        </div>
-
-        {/* Converters Navigation Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {CONVERTERS.map((conv, idx) => {
-            const Icon = conv.icon;
-            const flatColor = getFlatColor(conv.id);
-            return (
-              <motion.div
-                key={conv.id}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.03 * idx }}
-                onClick={() => navigateTo(conv.path)}
-                className="group relative bg-white border-3 border-black p-6 shadow-[5px_5px_0px_0px_#000000] hover:translate-x-[-3px] hover:translate-y-[-3px] hover:shadow-[8px_8px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[2px_2px_0px_0px_#000000] transition-all cursor-pointer flex flex-col justify-between min-h-[220px]"
-              >
-                <div className="space-y-4">
-                  <div className={`w-12 h-12 border-3 border-black ${flatColor} flex items-center justify-center text-black shadow-[3px_3px_0px_0px_#000000] group-hover:rotate-[-6deg] transition-transform`}>
-                    <Icon className="w-6 h-6 stroke-[2.5]" />
-                  </div>
-                  <div className="space-y-1.5">
-                    <h3 className="font-extrabold text-xl text-black font-display uppercase tracking-tight">{conv.name}</h3>
-                    <p className="text-black font-medium text-xs leading-relaxed opacity-85">
-                      {lang === 'id' ? conv.descId : conv.descEn}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-5 pt-3 border-t-2 border-black flex items-center justify-between text-black font-black text-xs uppercase tracking-wider">
-                  <span>{TRANSLATIONS[lang].openConverterBtn}</span>
-                  <div className="w-6 h-6 border-2 border-black bg-white flex items-center justify-center group-hover:bg-[#FFE600] group-hover:translate-x-1 transition-all shadow-[1px_1px_0px_0px_#000000]">
-                    <ArrowRight className="w-3.5 h-3.5 stroke-[3]" />
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-
-          {/* Upcoming Feature Box 1 (As requested: 'ditambahkan juga kotak yang berisi fitur lain') */}
-          <div className="relative bg-[#F4F3EF] border-3 border-black border-dashed p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,0.1)] flex flex-col justify-between min-h-[220px] select-none">
-            <div className="space-y-4">
-              <div className="w-12 h-12 border-3 border-black border-dashed bg-[#FFA8E8]/40 flex items-center justify-center text-black/50">
-                <PenTool className="w-6 h-6 stroke-[2]" />
-              </div>
-              <div className="space-y-1.5">
-                <div className="flex items-center space-x-2">
-                  <h3 className="font-extrabold text-xl text-black/60 font-display uppercase tracking-tight">
-                    {TRANSLATIONS[lang].upcomingTitle1}
-                  </h3>
-                  <span className="bg-[#FFA8E8] border border-black px-1.5 py-0.5 text-[9px] font-black uppercase shadow-[1px_1px_0px_0px_#000000]">
-                    {TRANSLATIONS[lang].upcomingBadge}
-                  </span>
-                </div>
-                <p className="text-black/60 font-medium text-xs leading-relaxed">
-                  {TRANSLATIONS[lang].upcomingDesc1}
-                </p>
-              </div>
-            </div>
-            <div className="mt-5 pt-3 border-t-2 border-black/10 flex items-center justify-between text-black/40 font-black text-xs uppercase tracking-wider">
-              <span>{TRANSLATIONS[lang].moreFeaturesBadge}</span>
-              <div className="w-6 h-6 border-2 border-black border-dashed bg-white flex items-center justify-center">
-                <Plus className="w-3.5 h-3.5 stroke-[2] text-black/40" />
-              </div>
-            </div>
-          </div>
-
-          {/* Upcoming Feature Box 2 (As requested: 'ditambahkan juga kotak yang berisi fitur lain') */}
-          <div className="relative bg-[#F4F3EF] border-3 border-black border-dashed p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,0.1)] flex flex-col justify-between min-h-[220px] select-none">
-            <div className="space-y-4">
-              <div className="w-12 h-12 border-3 border-black border-dashed bg-[#A5F3FC]/40 flex items-center justify-center text-black/50">
-                <Type className="w-6 h-6 stroke-[2]" />
-              </div>
-              <div className="space-y-1.5">
-                <div className="flex items-center space-x-2">
-                  <h3 className="font-extrabold text-xl text-black/60 font-display uppercase tracking-tight">
-                    {TRANSLATIONS[lang].upcomingTitle2}
-                  </h3>
-                  <span className="bg-[#A5F3FC] border border-black px-1.5 py-0.5 text-[9px] font-black uppercase shadow-[1px_1px_0px_0px_#000000]">
-                    {TRANSLATIONS[lang].upcomingBadge}
-                  </span>
-                </div>
-                <p className="text-black/60 font-medium text-xs leading-relaxed">
-                  {TRANSLATIONS[lang].upcomingDesc2}
-                </p>
-              </div>
-            </div>
-            <div className="mt-5 pt-3 border-t-2 border-black/10 flex items-center justify-between text-black/40 font-black text-xs uppercase tracking-wider">
-              <span>{TRANSLATIONS[lang].moreFeaturesBadge}</span>
-              <div className="w-6 h-6 border-2 border-black border-dashed bg-white flex items-center justify-center">
-                <Plus className="w-3.5 h-3.5 stroke-[2] text-black/40" />
-              </div>
-            </div>
-          </div>
-
-        </div>
+          <p className="text-black font-semibold text-sm sm:text-base leading-relaxed pt-2">
+            {lang === 'id'
+              ? 'Konversikan berkas dokumen, gambar, video, audio, spreadsheet, presentasi, e-book, arsip, vektor, CAD, dan font secara aman langsung di perangkat lokal Anda tanpa melibatkan pihak ketiga atau server cloud.'
+              : 'Convert documents, images, videos, audio, spreadsheets, presentations, e-books, archives, vectors, CAD files, and fonts securely on your local device without third-party or cloud servers.'}
+          </p>
+        </motion.div>
       </section>
+
     </div>
   );
 }
