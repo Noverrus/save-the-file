@@ -1,24 +1,17 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+/* Custom scrollbars and transition defaults */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
-
-/* Custom Neo-brutalist shadows for reuse if desired, though we can write standard Tailwind arbitrary shadows like shadow-[4px_4px_0px_0px_#000] */
-.neoshadow {
-  box-shadow: 4px 4px 0px 0px #000000;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
-.neoshadow-lg {
-  box-shadow: 8px 8px 0px 0px #000000;
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
 }
-.neoshadow-sm {
-  box-shadow: 2px 2px 0px 0px #000000;
-}
-.neoshadow-indigo {
-  box-shadow: 4px 4px 0px 0px #4f46e5;
-}
-.neoshadow-rose {
-  box-shadow: 4px 4px 0px 0px #e11d48;
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
