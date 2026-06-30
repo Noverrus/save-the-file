@@ -6,7 +6,7 @@ import {
 import { 
   Menu, X, Home, FileText, Image as ImageIcon, 
   Video, Music, Table, Presentation, BookOpen, Archive, PenTool, Type, 
-  ShieldCheck, Zap, Plus, Trash2, Check, Search, HelpCircle, ArrowRight
+  ShieldCheck, Zap, Plus, Trash2, Check, Search, HelpCircle, ArrowRight, ChevronDown
 } from 'lucide-react';
 
 // ==========================================
@@ -176,6 +176,7 @@ const TRANSLATIONS = {
 export default function App() {
   const [path, setPath] = useState(getPathFromHash);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
   
   // Persistent Language State (Defaulting to Indonesian "id" as requested)
   const [lang, setLang] = useState<'id' | 'en'>(() => {
@@ -237,21 +238,52 @@ export default function App() {
           {/* Lang Selector & Hamburger Button Group */}
           <div className="flex items-center space-x-4">
             
-            {/* Language Switcher Toggle Buttons */}
-            <div className="flex border-3 border-black bg-white shadow-[3px_3px_0px_0px_#000000] overflow-hidden rounded-xl text-xs font-black shrink-0 select-none">
+            {/* Language Switcher Dropdown Trigger */}
+            <div className="relative">
               <button
-                onClick={() => toggleLang('id')}
-                className={`px-3 py-2 transition-all uppercase ${lang === 'id' ? 'bg-[#FFE600] text-black font-extrabold' : 'bg-white text-black/60 hover:text-black hover:bg-gray-100'}`}
+                onClick={() => setLangMenuOpen(!langMenuOpen)}
+                className="flex items-center space-x-2 px-3 py-2.5 border-3 border-black bg-white text-black font-black text-sm uppercase shadow-[3px_3px_0px_0px_#000000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_#000000] transition-all cursor-pointer rounded-xl select-none"
               >
-                ID
+                <span className="text-base leading-none select-none">{lang === 'id' ? '🇮🇩' : '🇬🇧'}</span>
+                <span className="text-xs font-black tracking-wider select-none">{lang === 'id' ? 'ID' : 'EN'}</span>
+                <ChevronDown className={`w-3.5 h-3.5 stroke-[3] transition-transform ${langMenuOpen ? 'rotate-180' : ''}`} />
               </button>
-              <div className="w-[3px] bg-black shrink-0" />
-              <button
-                onClick={() => toggleLang('en')}
-                className={`px-3 py-2 transition-all uppercase ${lang === 'en' ? 'bg-[#FFE600] text-black font-extrabold' : 'bg-white text-black/60 hover:text-black hover:bg-gray-100'}`}
-              >
-                EN
-              </button>
+
+              {langMenuOpen && (
+                <>
+                  {/* Invisible backdrop to close the dropdown when clicked outside */}
+                  <div className="fixed inset-0 z-30 cursor-default" onClick={() => setLangMenuOpen(false)} />
+                  
+                  {/* Dropdown Menu */}
+                  <div className="absolute right-0 mt-2.5 w-36 border-3 border-black bg-white shadow-[4px_4px_0px_0px_#000000] rounded-xl overflow-hidden z-40 select-none">
+                    <button
+                      onClick={() => {
+                        toggleLang('id');
+                        setLangMenuOpen(false);
+                      }}
+                      className={`w-full flex items-center space-x-2.5 px-4 py-3 text-xs font-black uppercase text-left transition-all cursor-pointer ${
+                        lang === 'id' ? 'bg-[#FFE600] text-black' : 'bg-white hover:bg-[#FFE600]/20 text-black/80 hover:text-black'
+                      }`}
+                    >
+                      <span className="text-base">🇮🇩</span>
+                      <span>Indonesian</span>
+                    </button>
+                    <div className="h-[2px] bg-black" />
+                    <button
+                      onClick={() => {
+                        toggleLang('en');
+                        setLangMenuOpen(false);
+                      }}
+                      className={`w-full flex items-center space-x-2.5 px-4 py-3 text-xs font-black uppercase text-left transition-all cursor-pointer ${
+                        lang === 'en' ? 'bg-[#FFE600] text-black' : 'bg-white hover:bg-[#FFE600]/20 text-black/80 hover:text-black'
+                      }`}
+                    >
+                      <span className="text-base">🇬🇧</span>
+                      <span>English</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Hamburger Button */}
@@ -382,13 +414,6 @@ export default function App() {
                     <span>{lang === 'id' ? 'Hubungi Kami' : 'Contact Us'}</span>
                   </Link>
                 </div>
-              </div>
-
-              <div className="p-5 border-t-3 border-black bg-[#86EFAC] text-black font-bold flex items-center space-x-2.5 text-xs">
-                <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
-                <span className="font-display font-extrabold uppercase tracking-wider">
-                  {lang === 'id' ? '100% Client-Side & Privat' : '100% Client-Side & Private'}
-                </span>
               </div>
             </motion.div>
           </>
